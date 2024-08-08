@@ -12,31 +12,34 @@ import { TokenExpiredError } from 'jsonwebtoken';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+  constructor(private readonly jwtService: JwtService) {}
 
-  canActivate(
+  async canActivate(
     context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const request = context.switchToHttp().getRequest();
+  ): Promise<boolean> {
+    const request = context.switchToHttp().getRequest<Request>();
     const token = this.extractTokenFromHeader(request);
+    
     if (!token) {
-      throw new UnauthorizedException('Token Is Not Found');
+      throw new UnauthorizedException('Token is not found');
     }
+
     try {
-      const payload = this.jwtService.verifyAsync(token, {
+      const payload = await this.jwtService.verifyAsync(token, {
         secret: jwtConstants.secret,
       });
-
-      request['user'] = payload;
+      (request as any).user = payload;
+      request['token']=token;
     } catch (error) {
       if (error instanceof TokenExpiredError) {
-        throw new UnauthorizedException('Expired token');
+        throw new UnauthorizedException('Token has expired');
       } else {
         throw new UnauthorizedException('Invalid token');
       }
     }
     return true;
   }
+
   private extractTokenFromHeader(request: Request): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
     return type === 'Bearer' ? token : undefined;
