@@ -6,6 +6,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Token } from '../schemas/Token.schema';
+import {stringify} from "flatted";
 
 @Injectable()
 export class AuthService {
@@ -17,6 +18,7 @@ export class AuthService {
 
   async validateUser({ email, password }: AuthPayloadDto) {
     const findUser = await this.userModel.findOne({ email: email });
+    console.log(findUser);
     if (!findUser) {
       throw new UnauthorizedException('Invalid email');
     }
@@ -48,16 +50,16 @@ export class AuthService {
       token: token,
     });
     InsertToken.save();
-    const userupdate = await this.userModel.findByIdAndUpdate(
+    const userupdate = this.userModel.findByIdAndUpdate(
       user._id,
       {
         IsloggedIn: true,
         token_id: InsertToken.id,
-      },{new:true}
+      }
     );
     if (InsertToken && userupdate) {
       return {
-        data: userupdate,
+        data: user,
         accessToken: token,
       };
     }
