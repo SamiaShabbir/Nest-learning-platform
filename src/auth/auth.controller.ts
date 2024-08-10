@@ -23,11 +23,19 @@ export class AuthController {
 
   @UseGuards(AuthGuard)
   @Get('profile')
-  
   getProfile(@Request() req) {
     return {
       user:req.user,
       token:req.token
     };
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('logout')
+
+  async logoutToken(@Request() req){
+    
+    return await this.authService.logout(req.token,req.user);
+    
   }
 }

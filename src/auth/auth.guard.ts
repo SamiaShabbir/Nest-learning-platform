@@ -9,10 +9,11 @@ import { JwtService } from '@nestjs/jwt';
 import { jwtConstants } from './constants';
 import { Request } from 'express';
 import { TokenExpiredError } from 'jsonwebtoken';
-
+import { AuthService } from './auth.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly jwtService: JwtService,
+              private readonly authService: AuthService) {}
 
   async canActivate(
     context: ExecutionContext,
@@ -28,12 +29,15 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: jwtConstants.secret,
       });
-      (request as any).user = payload;
+       const getUser=await this.authService.GetUserById(payload.user_id); 
+       console.log("getUser:",getUser);
+      (request as any).user = getUser;
       request['token']=token;
     } catch (error) {
       if (error instanceof TokenExpiredError) {
         throw new UnauthorizedException('Token has expired');
       } else {
+        console.log(error);
         throw new UnauthorizedException('Invalid token');
       }
     }

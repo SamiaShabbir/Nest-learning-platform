@@ -9,6 +9,7 @@ import { User, UserSchema } from '../schemas/User.schama';
 import { Role, RoleSchema } from '../schemas/Role.schema';
 import { Token,TokenSchema } from '../schemas/Token.schema';
 import {AuthMiddleware} from './auth.middleware';
+import { AuthRepository } from './repositories/auth.repository';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -23,12 +24,15 @@ import {AuthMiddleware} from './auth.middleware';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthRepository,AuthService],
 })
 export class AuthModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes('*'); // Apply middleware to all routes or adjust as necessary
+      .forRoutes(
+        // { path: 'auth/profile', method: RequestMethod.GET },
+        { path: 'auth/logout', method: RequestMethod.GET }
+      );    
   }
 }

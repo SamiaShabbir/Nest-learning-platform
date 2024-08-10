@@ -6,12 +6,14 @@ import * as bcrypt from 'bcrypt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Token } from '../schemas/Token.schema';
-
+import { AuthRepository } from './repositories/auth.repository';
+import { ExecutionContextHost } from '@nestjs/core/helpers/execution-context-host';
 @Injectable()
 export class AuthService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Token.name) private tokenModel: Model<Token>,
+    private readonly authRepository: AuthRepository,
     private jwtService: JwtService,
   ) {}
 
@@ -64,4 +66,22 @@ export class AuthService {
 
     return null;
   }
+
+  async logout(token:string,user:any):Promise<any> {
+    const response= await this.authRepository.logout(token,user);
+
+    if(response==false){
+      throw new UnauthorizedException('Invalid password');
+    }
+
+    return "User logged Out Succcesfully";
+ }
+  async CheckToken(token:string):Promise<boolean>{
+    return this.authRepository.CheckToken(token);
+  }
+
+  async GetUserById(userId:string):Promise<any>{
+    return await this.authRepository.GetUserById(userId);
+  }
+
 }
