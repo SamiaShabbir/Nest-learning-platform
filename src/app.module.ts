@@ -8,7 +8,7 @@ import { IsUniqueConstraint } from "./shared/validation/is-unique-constraint";
 import { BlogModule } from './blog/blog.module';
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost:27017/test'),
+    MongooseModule.forRoot('mongodb://localhost:27017/learning_platform'),
     UserModule,
     AuthModule,
     BlogModule,

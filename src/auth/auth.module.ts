@@ -25,6 +25,7 @@ import { AuthRepository } from './repositories/auth.repository';
   ],
   controllers: [AuthController],
   providers: [AuthRepository,AuthService],
+  exports:[AuthService,AuthRepository]
 })
 export class AuthModule {
   configure(consumer: MiddlewareConsumer) {
