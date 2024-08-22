@@ -35,6 +35,8 @@ export class AuthGuard implements CanActivate {
       request['token']=token;
     } catch (error) {
       if (error instanceof TokenExpiredError) {
+        const DeletedToken=await this.authService.DeleteToken(token); 
+        console.log("DeletedToken",DeletedToken);
         throw new UnauthorizedException('Token has expired');
       } else {
         console.log(error);

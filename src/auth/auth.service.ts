@@ -68,8 +68,9 @@ export class AuthService {
   }
 
   async logout(token:string,user:any):Promise<any> {
-    const response= await this.authRepository.logout(token,user);
+    console.log("user",user);
 
+    const response= await this.authRepository.logout(token,user);
     if(response==false){
       throw new UnauthorizedException('Invalid password');
     }
@@ -83,5 +84,8 @@ export class AuthService {
   async GetUserById(userId:string):Promise<any>{
     return await this.authRepository.GetUserById(userId);
   }
-
+  
+  async DeleteToken(token:string):Promise<boolean>{
+    return await this.authRepository.DeleteTokenForGuard(token);
+  }
 }

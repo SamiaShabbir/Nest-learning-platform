@@ -11,14 +11,18 @@ import {
   BadRequestException,
   Patch,
   Delete,
+  UseGuards
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/createUser.dto';
 import mongoose from 'mongoose';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
-import {ApiTags,ApiResponse
-  ,ApiBody,
-  ApiParam} from '@nestjs/swagger'
+import { ApiTags,
+         ApiResponse,
+         ApiBody,
+         ApiParam,
+         ApiBearerAuth  } from '@nestjs/swagger'
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @ApiTags('User')
 @Controller('user')
@@ -38,19 +42,17 @@ export class UserController {
   }
   @Get()
   @ApiResponse({ status: 201, description: 'User Data'})
-  @ApiBody({
-     description: 'Json structure for user object',
-  })
   GetUser() {
     return this.userService.GetUsers();
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
+  @ApiBearerAuth()
   @ApiResponse({ status: 201, description: 'User Data'})
-  @ApiBody({
-     description: 'Json structure for user object',
-  })
+  @UseGuards(AuthGuard)
   @ApiParam({name:'id'})
+  @ApiBearerAuth()
   getUserbyId(@Param('id') id: string) {
     const isValid = mongoose.Types.ObjectId.isValid(id);
     if (!isValid) throw new BadRequestException('Please enter a valid id');
@@ -59,6 +61,8 @@ export class UserController {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     return findUser;
   }
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Patch(':id')
   @ApiResponse({ status: 201, description: 'User Data'})
   @ApiBody({
@@ -78,6 +82,8 @@ export class UserController {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     return updateUser;
   }
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
   @Delete(':id')
   @ApiResponse({ status: 201, description: 'User Data'})
   @ApiBody({

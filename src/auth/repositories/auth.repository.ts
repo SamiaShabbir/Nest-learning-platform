@@ -2,6 +2,7 @@ import { User } from '../../schemas/User.schama';
 import { BadRequestException } from '@nestjs/common';
 
 import { InjectModel } from '@nestjs/mongoose';
+import mongoose from 'mongoose';
 
 import { Model } from 'mongoose';
 
@@ -14,7 +15,8 @@ export class AuthRepository {
   
     async logout(token:string,user:any):Promise<boolean>{
           
-          const userData=await this.userModel.findById(user.user_id);
+          const userData=await this.userModel.findById(user.id);
+          console.log("userData",userData);
           const deletetoken=await this.tokenModel.findByIdAndDelete(userData.token_id);
           const updateUser=await this.userModel.findByIdAndUpdate(userData.id,{token_id:null,IsloggedIn:false});
           if(!deletetoken && !updateUser){
@@ -24,6 +26,17 @@ export class AuthRepository {
 
     }
 
+    async DeleteTokenForGuard(token:string): Promise<any>{
+        const getToken=await this.tokenModel.findOne({token:token});
+        console.log("getToken",getToken);
+        if(getToken){
+            // const userId = new mongoose.Types.ObjectId(getToken.user_id);
+            await this.userModel.findByIdAndUpdate(getToken.user_id,{token_id:null,IsloggedIn:false});
+              await this.DeleteToken(getToken.id);
+
+        }
+        return true;
+    }
     async CheckToken(token:string):Promise<boolean>{
 
         const gettoken= await this.tokenModel.findOne({token:token});
@@ -51,8 +64,9 @@ export class AuthRepository {
 
     async GetUserById(userId:string):Promise<any>{
         console.log(userId);
-        return await this.userModel.findById(userId);
+        return await this.userModel.findById(userId).populate('role_id','token_id');
     }
 
+ 
 
 }
