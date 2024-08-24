@@ -12,6 +12,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { Token, TokenSchema } from 'src/schemas/Token.schema';
 import { AuthModule } from 'src/auth/auth.module';
 import { AuthRepository } from 'src/auth/repositories/auth.repository';
+import { View, ViewSchema } from 'src/schemas/View.schema';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { AuthRepository } from 'src/auth/repositories/auth.repository';
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Blog.name, schema:BlogSchema  },
-      { name: Token.name, schema:TokenSchema}
+      { name: Token.name, schema:TokenSchema},
+      { name: View.name, schema:ViewSchema  }
     ]),
     JwtModule.register({
       global: true,

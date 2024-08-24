@@ -47,6 +47,15 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @Get('roles')
+  @ApiResponse({ status: 200, description: 'Role Data'})
+  async getRoles()
+  {
+    return await this.userService.getRole();
+  }
+  
+  @UseGuards(AuthGuard)
   @Get(':id')
   @ApiBearerAuth()
   @ApiResponse({ status: 201, description: 'User Data'})
@@ -96,7 +105,10 @@ export class UserController {
     if (!isValid) throw new BadRequestException('Please enter a valid id');
     const DeleteUser = await this.userService.DeleteUser(id);
     if (!DeleteUser)
+    {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
     return DeleteUser;
   }
+
 }

@@ -23,11 +23,11 @@ export class AuthService {
       throw new UnauthorizedException('Invalid email');
     }
 
-    if (findUser.token_id !== null && findUser.IsloggedIn !== false) {
-      throw new UnauthorizedException(
-        'Cannot login Please loggout first from previous device to login again',
-      );
-    }
+    // if (findUser.token_id !== null && findUser.IsloggedIn !== false) {
+    //   throw new UnauthorizedException(
+    //     'Cannot login Please loggout first from previous device to login again',
+    //   );
+    // }
 
     const isMatch = await bcrypt.compare(password, findUser.password);
     if (!isMatch) {

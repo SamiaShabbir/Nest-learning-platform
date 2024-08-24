@@ -25,4 +25,18 @@ export class BlogRepository {
       return await this.blogModel.findById(blogId);
     }
 
+    async getAll():Promise<Blog[]>{
+      return await this.blogModel.find();
+    }
+
+    async update(blogId:string,data:CreateBlog): Promise<Blog>{
+      const updateblog=await this.blogModel.findByIdAndUpdate(blogId,data,{new:true});
+      // console.log("updateblog",updateblog);
+      return updateblog;
+    }
+
+    async delete(blogId:string): Promise<Boolean>{
+      return await this.blogModel.findByIdAndDelete(blogId);
+    }
+
 }

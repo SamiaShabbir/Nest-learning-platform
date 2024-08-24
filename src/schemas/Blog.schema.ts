@@ -7,5 +7,8 @@ export class Blog {
   body: string; 
   @Prop({ required:false ,default:null ,type: mongoose.Schema.Types.ObjectId, ref: 'User'})
   user_id: User;
+  @Prop({ default: 0 })
+  viewCount: number;
+
 }
 export const BlogSchema = SchemaFactory.createForClass(Blog);
