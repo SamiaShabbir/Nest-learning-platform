@@ -1,12 +1,17 @@
 import {
   IsAlphanumeric ,
+  IsArray,
   IsEmail ,
+  IsEnum,
   IsNotEmpty ,
   IsNumber ,
+  IsOptional,
   IsString , Validate ,
 } from 'class-validator';
 import { IsUnique } from "../../shared/validation/is-unique";
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiQuery } from '@nestjs/swagger';
+import { Role } from 'src/enums/role.enum';
+import { Query } from '@nestjs/common';
 const Model="User";
 export class CreateUserDto {
   @ApiProperty({
@@ -62,13 +67,28 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsNumber()
   age: number;
-  @ApiProperty({
-    example: '66c4aa20a62061fd53c09e64',
-    required: true
- })
-  @IsNotEmpty()
-  @IsString()
-  role_id: string;
+  // @ApiProperty({
+  //   type: 'array',
+  //   items: {
+  //     Role
+  //   },
+  // })
+  // role: Role;
+  // @ApiProperty({
+  //   example: ['admin', 'user'],
+  //   description: 'Array of roles',
+  //   type: 'array',
+  //   items: {
+  //     type: 'string',
+  //     enum: Object.values(Role), // Convert enum to an array of values
+  //   },
+  //   required: false,
+  // })
+  // @IsOptional()
+  // @IsArray()
+  // @IsEnum(Role, { each: true })
+  // role?: Role;
+ 
   @ApiProperty({
     example: 'hello world!',
     required: true

@@ -4,13 +4,17 @@ import { BlogService } from './blog.service';
 import { AuthGuard } from '../auth/auth.guard';
 import { ApiResponse, ApiBody, ApiBearerAuth, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
 import { CreateBlog } from './dto/CreateBlog.dto';
+import { Roles } from 'src/shared/acl/roles.decorator';
+import { Role } from 'src/enums/role.enum';
+import { RolesGuard } from 'src/shared/guards/roles.gaurd';
 
 @ApiTags('Blog')
 @Controller('blog')
 export class BlogController {
   constructor(private blogService: BlogService) {}
   @Post('create')
-  @UseGuards(AuthGuard)
+  @Roles(Role.TEACHER)
+  @UseGuards(AuthGuard,RolesGuard)
   @ApiOperation({ summary: 'Submit HTML content from CKEditor' })
   @ApiResponse({ status: 201, description: 'User Data' })
   @ApiBody({
@@ -39,7 +43,8 @@ export class BlogController {
   //Get Logged In User Blog Ony
   @Get()
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  @Roles(Role.TEACHER)
+  @UseGuards(AuthGuard,RolesGuard)
   @ApiResponse({ status: 200, description: 'Blog Data' })
   async getBlog(@Request() req){
    // console.log(req.user);
@@ -106,8 +111,10 @@ export class BlogController {
    data:result
    }
   }
+ 
   @Put(':id')
-  @UseGuards(AuthGuard)
+  @Roles(Role.TEACHER)
+  @UseGuards(AuthGuard,RolesGuard)
   @ApiBearerAuth()
   @ApiParam({
     name: 'id',
@@ -138,7 +145,8 @@ export class BlogController {
   }
 
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  @Roles(Role.TEACHER,Role.USER)
+  @UseGuards(AuthGuard,RolesGuard)
   @ApiBearerAuth()
   async deleteBlog(@Param('id') id:string){
      const result= await this.blogService.delete(id);

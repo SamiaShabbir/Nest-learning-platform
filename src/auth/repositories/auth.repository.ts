@@ -63,8 +63,9 @@ export class AuthRepository {
     }
 
     async GetUserById(userId:string):Promise<any>{
-        console.log(userId);
-        return await this.userModel.findById(userId).populate('role_id','token_id');
+        const user=await this.userModel.findById(userId).populate(['role_id','token_id']);
+        return user;
+        
     }
 
  

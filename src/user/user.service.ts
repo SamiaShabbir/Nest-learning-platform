@@ -31,14 +31,16 @@ export class UserService {
   createRole() {
     return this.roleModel.insertMany(this.rolesarray);
   }
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
+  async createUser(createUserDto: CreateUserDto,role:string): Promise<User> {
+    const Role=await this.roleModel.findOne({name:role});
     const { password, ...userDetails } = createUserDto;
     const hashedPassword = await this.hashPassword(password);
 
     const newUser = new this.userModel({
       ...userDetails,
       password: hashedPassword,
-      token_id:null
+      token_id:null,
+      role_id:Role.id
     });
 
     return newUser.save();
