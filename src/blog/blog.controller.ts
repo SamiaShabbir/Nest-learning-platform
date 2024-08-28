@@ -7,6 +7,8 @@ import { CreateBlog } from './dto/CreateBlog.dto';
 import { Roles } from 'src/shared/acl/roles.decorator';
 import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/shared/guards/roles.gaurd';
+import { CreateLike } from 'src/like/dto/createLike.dto';
+import { CreateBlogLike } from './dto/CreateLike.dto';
 
 @ApiTags('Blog')
 @Controller('blog')
@@ -164,4 +166,31 @@ export class BlogController {
      }
   }
 
+  @Post('like')
+  @Roles(Role.TEACHER,Role.STUDENT)
+  @UseGuards(AuthGuard,RolesGuard)
+  @ApiOperation({ summary: 'Submit HTML content from CKEditor' })
+  @ApiResponse({ status: 201, description: 'User Data' })
+  @ApiBody({
+    type: CreateBlogLike,
+    description: 'Json structure for blog object',
+  })
+  @ApiBearerAuth()
+  async LikeForBlog(@Request() req,@Body() createblogLike:CreateBlogLike): Promise<any> {
+   
+   const createdBlog= await this.blogService.likeBlog(createblogLike.BlogId,req.user.id);
+   if(!createdBlog){
+      return {
+         code:401,
+         status:"failed",
+         message:"Something Went Wrong Try Again"
+       };
+   } 
+   return {
+      code:201,
+      status:"success",
+      message:"Blog Created Successfully",
+      data:createdBlog
+   }
+  }
 }

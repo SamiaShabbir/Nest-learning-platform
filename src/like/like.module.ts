@@ -1,15 +1,13 @@
 import { Module } from '@nestjs/common';
+import { LikeService } from './like.service';
+import { LikeRepository } from './repository/like.respository';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema, User } from 'src/schemas/User.schama';
-import { RoleSchema, Role } from '../schemas/Role.schema';
-import { UserService } from './user.service';
-import { UserController } from './user.controller';
 import { AuthModule } from 'src/auth/auth.module';
-import { AuthService } from 'src/auth/auth.service';
-import { AuthRepository } from 'src/auth/repositories/auth.repository';
-import { Token,TokenSchema } from 'src/schemas/Token.schema';
-import { Like, LikeSchema } from 'src/schemas/Like.schema';
 import { BlogLike, BlogLikeSchema } from 'src/schemas/BlogLike.schema';
+import { Like, LikeSchema } from 'src/schemas/Like.schema';
+import { Role, RoleSchema } from 'src/schemas/Role.schema';
+import { Token, TokenSchema } from 'src/schemas/Token.schema';
+import { User, UserSchema } from 'src/schemas/User.schama';
 
 @Module({
   imports: [
@@ -27,8 +25,7 @@ import { BlogLike, BlogLikeSchema } from 'src/schemas/BlogLike.schema';
       },
     ]),
   ],
-  providers: [UserService,AuthService,AuthRepository],
-  controllers: [UserController],
-  exports:[UserService]
+  providers: [LikeService,LikeRepository],
+  exports:[LikeService,LikeRepository]
 })
-export class UserModule {}
+export class LikeModule {}

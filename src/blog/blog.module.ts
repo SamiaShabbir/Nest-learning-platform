@@ -12,14 +12,24 @@ import { AuthService } from 'src/auth/auth.service';
 import { Token, TokenSchema } from 'src/schemas/Token.schema';
 import { AuthModule } from 'src/auth/auth.module';
 import { AuthRepository } from 'src/auth/repositories/auth.repository';
+import { LikeModule } from 'src/like/like.module';
+import { LikeRepository } from 'src/like/repository/like.respository';
+import { LikeService } from 'src/like/like.service';
+import { BlogLike, BlogLikeSchema } from 'src/schemas/BlogLike.schema';
+import { Like, LikeSchema } from 'src/schemas/Like.schema';
 
 @Module({
   imports: [
+    LikeModule,
     AuthModule,
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Blog.name, schema:BlogSchema  },
       { name: Token.name, schema:TokenSchema},
+      {
+        name: Like.name,
+        schema: LikeSchema,
+      },
     ]),
     JwtModule.register({
       global: true,
@@ -28,6 +38,11 @@ import { AuthRepository } from 'src/auth/repositories/auth.repository';
     }),
   ],
   controllers: [BlogController],
-  providers: [BlogService,BlogRepository,AuthService,AuthRepository]
+  providers: [ BlogService,
+               BlogRepository,
+               AuthService,
+               AuthRepository,
+               LikeRepository,
+               LikeService ]
 })
 export class BlogModule {}
