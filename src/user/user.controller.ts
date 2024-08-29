@@ -43,7 +43,7 @@ export class UserController {
   })
   @ApiQuery({ name: 'role', enum: Role })
   createUser(@Body() createUserDto: CreateUserDto,@Query('role') role: Role = Role.USER) {
-    console.log(role);
+    console.log('this_role',role);
     console.log(createUserDto);
     return this.userService.createUser(createUserDto,role);
   }
@@ -79,7 +79,7 @@ export class UserController {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     return findUser;
   }
-  @Roles(Role.ADMIN,Role.STUDENT,Role.TEACHER)
+  @Roles(Role.ADMIN,Role.USER,Role.TEACHER)
   @UseGuards(AuthGuard,RolesGuard)
   @ApiBearerAuth()
   @Patch(':id')
@@ -101,7 +101,7 @@ export class UserController {
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
     return updateUser;
   }
-  @Roles(Role.ADMIN,Role.STUDENT,Role.TEACHER)
+  @Roles(Role.ADMIN,Role.USER,Role.TEACHER)
   @UseGuards(AuthGuard,RolesGuard)
   @UseGuards(AuthGuard)
   @ApiBearerAuth()
@@ -122,5 +122,10 @@ export class UserController {
     }
     return DeleteUser;
   }
+
+  @Get('create/roles')
+  async getrole(){
+    return this.userService.createRole();
+  } 
 
 }

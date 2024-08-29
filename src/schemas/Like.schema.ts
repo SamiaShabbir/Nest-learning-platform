@@ -8,12 +8,6 @@ export class Like extends Document {
 
   @Prop({ default: Date.now })
   timestamp: Date;
-
-  // @Prop({
-  //   type: String,
-  //   required: true
-  // })
-  // type: string;
 }
 
 export const LikeSchema = SchemaFactory.createForClass(Like);

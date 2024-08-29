@@ -20,16 +20,11 @@ import { Like, LikeSchema } from 'src/schemas/Like.schema';
 
 @Module({
   imports: [
-    LikeModule,
     AuthModule,
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Blog.name, schema:BlogSchema  },
-      { name: Token.name, schema:TokenSchema},
-      {
-        name: Like.name,
-        schema: LikeSchema,
-      },
+      { name: Token.name, schema:TokenSchema}
     ]),
     JwtModule.register({
       global: true,
@@ -42,7 +37,7 @@ import { Like, LikeSchema } from 'src/schemas/Like.schema';
                BlogRepository,
                AuthService,
                AuthRepository,
-               LikeRepository,
-               LikeService ]
+             ],
+  exports:[BlogRepository,BlogService]
 })
 export class BlogModule {}

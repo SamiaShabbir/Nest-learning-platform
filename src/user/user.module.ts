@@ -18,13 +18,6 @@ import { BlogLike, BlogLikeSchema } from 'src/schemas/BlogLike.schema';
       { name: User.name, schema: UserSchema },
       { name: Role.name, schema: RoleSchema },
       { name: Token.name, schema:TokenSchema},
-      {
-        name: Like.name,
-        schema: LikeSchema,
-        discriminators: [
-          { name: BlogLike.name, schema: BlogLikeSchema },
-        ],
-      },
     ]),
   ],
   providers: [UserService,AuthService,AuthRepository],

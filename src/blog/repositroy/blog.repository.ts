@@ -11,14 +11,12 @@ export class BlogRepository {
   
     async create(createblogDto:CreateBlog):Promise<Blog>
     {
-      console.log("createblogDto",createblogDto);
       const createNew= await new this.blogModel(createblogDto);
-      console.log("createNew",createNew);
       return createNew.save();
     }
 
     async get(userId: string): Promise<Blog[]> {
-      return await this.blogModel.find({ user_id:userId }).populate('user_id');
+      return await this.blogModel.find({ user_id:userId }).populate(['user_id','likes']);
     }
 
     async getById(blogId: string): Promise<Blog[]> {
@@ -26,7 +24,7 @@ export class BlogRepository {
     }
 
     async getAll():Promise<Blog[]>{
-      return await this.blogModel.find();
+      return await this.blogModel.find().populate(['user_id','likes']);
     }
 
     async update(blogId:string,data:CreateBlog): Promise<Blog>{
@@ -38,5 +36,13 @@ export class BlogRepository {
     async delete(blogId:string): Promise<Boolean>{
       return await this.blogModel.findByIdAndDelete(blogId);
     }
-
+    async updateLike(blogId:string,likeId:string): Promise<Blog>{
+      return await this.blogModel.findByIdAndUpdate(
+        blogId,
+        { $addToSet: { likes: likeId},
+        $inc: { viewCount: 1 } 
+        },  
+        { new: true }
+      )
+    }
 }

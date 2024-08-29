@@ -1,16 +1,18 @@
 import { BlogLike } from './../../schemas/BlogLike.schema';
-import { Like } from "src/schemas/Like.schema";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { CreateLike } from '../dto/createLike.dto';
 export class LikeRepository{
     constructor(
-        @InjectModel(Like.name) private likeModel: Model<Like>,
-        // @InjectModel(BlogLike.name) private BlogLike:Model<BlogLike>
+        @InjectModel(BlogLike.name) private bloglikeModel:Model<BlogLike>
     ) {}
 
     async create(createlikeDto:CreateLike):Promise<any>{
-        const createNew= await new this.likeModel(createlikeDto);
+        const createNew= await new this.bloglikeModel(createlikeDto);
         return createNew.save();
+    }
+
+    async get():Promise<any>{
+        return await this.bloglikeModel.find().populate('blogId');
     }
 }

@@ -1,12 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { BlogRepository } from './repositroy/blog.repository';
 import { CreateBlog } from './dto/CreateBlog.dto';
-import { LikeService } from 'src/like/like.service';
+import { CreateLike } from 'src/like/dto/createLike.dto';
 @Injectable()
 export class BlogService {
-    constructor(private blogRepository:BlogRepository,
-        private likeService:LikeService
-    ){}
+    constructor(private blogRepository:BlogRepository){}
 
     async create(createblogDto:CreateBlog,userId:string)
     {
@@ -35,12 +33,8 @@ export class BlogService {
         return await this.blogRepository.delete(blogId);
     }
 
-    async likeBlog(blogId:string,userId:string){
-        const createLike={
-            userId:userId,
-            type:'Blog',
-            type_id:blogId
-        }
-        return this.likeService.create(createLike);
+    async updateLike(blogId:string,likeId:string)
+    {
+        return await this.blogRepository.updateLike(blogId,likeId);
     }
 }

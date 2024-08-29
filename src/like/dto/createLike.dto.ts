@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class CreateLike {
   @IsOptional()
@@ -8,8 +9,12 @@ export class CreateLike {
   @IsOptional()
   type:string;
   
+  @ApiProperty({
+    example: '872348394829hhh',
+    required: true
+ })
   @IsString()
-  @IsOptional()
-  type_id:string;
+  @IsNotEmpty()
+  blogId:string;
 
 }

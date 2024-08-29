@@ -16,15 +16,15 @@ export class UserService {
 
   private rolesarray = [
     {
-      role_name: 'admin',
+      name: 'admin',
       permissions: 'all',
     },
     {
-      role_name: 'student',
-      permissions: 'student',
+      name: 'user',
+      permissions: 'user',
     },
     {
-      role_name: 'teacher',
+      name: 'teacher',
       permissions: 'teacher',
     },
   ];
@@ -33,6 +33,7 @@ export class UserService {
   }
   async createUser(createUserDto: CreateUserDto,role:string): Promise<User> {
     const Role=await this.roleModel.findOne({name:role});
+    console.log('role:',role);
     const { password, ...userDetails } = createUserDto;
     const hashedPassword = await this.hashPassword(password);
 

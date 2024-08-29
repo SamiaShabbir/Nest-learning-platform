@@ -10,8 +10,8 @@ export class Blog {
   user_id: User;
   @Prop({ default: 0 })
   viewCount: number;
-  @Prop({ required:false ,default:null ,type: mongoose.Schema.Types.ObjectId, ref: 'BlogLike'})
-  likes:BlogLike;
+  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'BlogLike' }]})
+  likes: BlogLike[];
 
-}
+  }
 export const BlogSchema = SchemaFactory.createForClass(Blog);
