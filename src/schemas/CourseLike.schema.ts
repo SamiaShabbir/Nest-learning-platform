@@ -1,14 +1,13 @@
-import { Schema, Document } from 'mongoose';
 import { Prop, Schema as MongooseSchema, SchemaFactory } from '@nestjs/mongoose';
-import { Blog } from './Blog.schema';
 import mongoose from 'mongoose';
+import { Like } from './Like.schema';
+import { Course } from './Course.schema';
 
 @MongooseSchema()
-export class CousreLike {
-  type: string;
+export class CourseLike extends Like{
 
-  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Blog'})
-  type_id:Blog;
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Course'})
+  courseId:Course;
 }
 
-export const CousreLikeSchema = SchemaFactory.createForClass(CousreLike);
+export const CousreLikeSchema = SchemaFactory.createForClass(CourseLike);

@@ -24,7 +24,11 @@ export class BlogRepository {
     }
 
     async getAll():Promise<Blog[]>{
-      return await this.blogModel.find().populate(['user_id','likes']);
+      return await this.blogModel.find().populate('user_id').populate({path: 'likes',
+        populate: {
+          path: 'userId',
+          select: 'first_name last_name username email', // Adjust fields as needed
+        },});
     }
 
     async update(blogId:string,data:CreateBlog): Promise<Blog>{

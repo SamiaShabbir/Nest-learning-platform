@@ -6,6 +6,7 @@ import { User } from './User.schama';
 export class Token {
   @Prop({ required: true })
   token: string;
+  
   @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
   user_id: User;
 }

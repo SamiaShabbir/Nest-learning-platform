@@ -10,14 +10,19 @@ export class LikeService {
     ){}
 
     async create(createlikeDto:CreateLike){
-        const likeCreated=await this.likeRepository.create(createlikeDto);
+        if(createlikeDto.type=="Blog")
+        {
+            const likeCreated=await this.likeRepository.create(createlikeDto);
     
-        const updateBlog=await this.blogService.updateLike(createlikeDto.blogId,likeCreated.id);            
-    
-        return updateBlog;
+            const updateBlog=await this.blogService.updateLike(createlikeDto.blogId,likeCreated.id);            
+        
+            return updateBlog;
+        }
+     
     }
 
-    async get(){
+    async get()
+    {
         return this.likeRepository.get();
     }
 }

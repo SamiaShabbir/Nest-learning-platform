@@ -1,11 +1,12 @@
-import { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document } from 'mongoose';
 import { Prop, Schema as MongooseSchema, SchemaFactory } from '@nestjs/mongoose';
+import { User } from './User.schama';
 
 @MongooseSchema({discriminatorKey:'type'})
 export class Like extends Document {
-  @Prop({ type: Schema.Types.ObjectId, required: true })
-  userId: Schema.Types.ObjectId;  // User who liked the post
-
+  @Prop({ required: true, type: mongoose.Schema.Types.ObjectId, ref: 'User' })
+  userId: User;
+  
   @Prop({ default: Date.now })
   timestamp: Date;
 }
