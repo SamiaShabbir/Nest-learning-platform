@@ -10,11 +10,17 @@ export class CreateLike {
   type:string;
   
   @ApiProperty({
-    example: '872348394829hhh',
-    required: true
- })
+    example:"sjdfhjsdf38982232"
+  })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
+  typeId:string;
+
+  @IsString()
+  @IsOptional()
   blogId:string;
 
+  @IsString()
+  @IsOptional()
+  courseId:string;
 }

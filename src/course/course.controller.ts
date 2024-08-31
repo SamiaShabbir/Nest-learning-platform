@@ -1,4 +1,4 @@
-import { Request, Body, Controller, Post, UseGuards, Get, Param, BadRequestException, Put } from '@nestjs/common';
+import { Request, Body, Controller, Post, UseGuards, Get, Param, BadRequestException, Put, Delete } from '@nestjs/common';
 import { CourseService } from './course.service';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
@@ -73,9 +73,9 @@ export class CourseController {
     type: CreateCourseDto,
   })
   async update (@Param('id') id:string,
-  @Body() createcourseDto:CreateCourseDto){
+  @Body() createcourseDto:CreateCourseDto,@Request() req){
     
-    const result= await this.courseService.update(id,createcourseDto);
+    const result= await this.courseService.update(id,createcourseDto,req.user.id);
     console.log(result);
     if(!result || result==null){
       return {
@@ -141,5 +141,26 @@ export class CourseController {
           message:"Courses Fetched Successfully",
           data:result
       }
+  }
+
+  @Delete(':id')
+  @Roles(Role.TEACHER,Role.USER)
+  @UseGuards(AuthGuard,RolesGuard)
+  @ApiBearerAuth()
+  async deleteCourse(@Param('id') id:string,@Request() req){
+     
+     const result= await this.courseService.delete(id,req.user.id);
+     if(!result){
+      return {
+        code:403,
+        status:"failed",
+        message:"Error Occured Try Again"
+      };
+     }
+     return {
+      code:200,
+      status:"success",
+      message:"Course Deleted Successfully"
+     }
   }
 }

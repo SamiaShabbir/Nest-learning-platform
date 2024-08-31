@@ -2,9 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { useContainer } from "class-validator";
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { join } from 'path';
+import { NestExpressApplication } from '@nestjs/platform-express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
   useContainer(app.select(AppModule),{fallbackOnErrors:true});
   const port = 3001;
   app.setGlobalPrefix('api');
@@ -19,6 +21,8 @@ async function bootstrap() {
     .build();
      const document = SwaggerModule.createDocument(app, options);
      SwaggerModule.setup('api', app, document);
+
+     app.useStaticAssets(join(__dirname, '..', 'uploads')); // Serve uploaded files
 
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);

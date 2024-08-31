@@ -1,3 +1,4 @@
 export enum Type {
-    BLOG = 'Blog',
+    BLOG = 'BlogLike',
+    COURSE='CourseLike'
   }

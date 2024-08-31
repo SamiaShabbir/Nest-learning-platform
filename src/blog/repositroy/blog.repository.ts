@@ -44,7 +44,7 @@ export class BlogRepository {
       return await this.blogModel.findByIdAndUpdate(
         blogId,
         { $addToSet: { likes: likeId},
-        $inc: { viewCount: 1 } 
+        $inc: { likeCount: 1 } 
         },  
         { new: true }
       )

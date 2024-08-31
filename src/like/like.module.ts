@@ -13,26 +13,40 @@ import { BlogModule } from 'src/blog/blog.module';
 import { BlogRepository } from 'src/blog/repositroy/blog.repository';
 import { BlogService } from 'src/blog/blog.service';
 import { Blog, BlogSchema } from 'src/schemas/Blog.schema';
+import { CourseLike, CousreLikeSchema } from 'src/schemas/CourseLike.schema';
+import { CourseModule } from 'src/course/course.module';
+import { CourseService } from 'src/course/course.service';
+import { CourseRepository } from 'src/course/repository/course.repository';
+import { Course, CourseSchema } from 'src/schemas/Course.schema';
 
 @Module({
   imports: [
     AuthModule,
     BlogModule,
+    CourseModule,
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Role.name, schema: RoleSchema },
-      { name: Token.name, schema:TokenSchema},
-      {name: Blog.name,schema:BlogSchema},
+      { name: Token.name, schema:TokenSchema },
+      { name: Blog.name, schema:BlogSchema },
+      { name:Course.name, schema:CourseSchema },
       {
         name: Like.name,
         schema: LikeSchema,
         discriminators: [
-          { name: BlogLike.name, schema: BlogLikeSchema }
+          { name: BlogLike.name, schema: BlogLikeSchema },
+          { name: CourseLike.name, schema: CousreLikeSchema }
         ],
       },
     ]),
   ],
-  providers: [LikeService,LikeRepository,BlogRepository,BlogService],
+  providers: [ LikeService,
+               LikeRepository,
+               BlogRepository,
+               BlogService,
+               CourseService,
+               CourseRepository 
+             ],
   exports:[LikeService,LikeRepository],
   controllers: [LikeController]
 })

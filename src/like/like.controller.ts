@@ -27,7 +27,9 @@ export class LikeController {
     @ApiQuery({ name: 'type', enum: Type })
     async LikeForBlog(@Request() req,@Body() createblogLike:CreateLike,@Query('type') type: Type = Type.BLOG): Promise<any> {
         createblogLike.userId=req.user.id;
+        createblogLike.type=type;
      const createdBlog= await this.likeService.create(createblogLike);
+     console.log(createdBlog);
      if(!createdBlog){
         return {
            code:401,

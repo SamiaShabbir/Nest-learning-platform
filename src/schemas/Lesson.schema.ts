@@ -9,8 +9,11 @@ export class Lesson {
   @Prop({required:false})
   description:string;
 
-  @Prop({required:true})
+  @Prop({required:false})
   file:string;
+
+  @Prop({required:false})
+  video:string;
 
   @Prop({ required:false ,default:null ,type: mongoose.Schema.Types.ObjectId, ref:'Course'})
   course: Course;

@@ -24,18 +24,12 @@ import { Token, TokenSchema } from 'src/schemas/Token.schema';
            { name:Token.name,schema:TokenSchema  },
             { name: Course.name, schema: CourseSchema },
             {name:Lesson.name,schema:LessonSchema},
-            {
-              name: Like.name,
-              schema: LikeSchema,
-              discriminators: [
-                { name: CourseLike.name, schema: CousreLikeSchema }
-              ],
-            },
           ])
         ],
     providers: [CourseService,LessonService,LessonRepositpory,CourseRepository,  AuthService,
       AuthRepository],
-    controllers: [CourseController,LessonController]  
+    controllers: [CourseController,LessonController],
+    exports:[CourseRepository,CourseService]
 })
 export class CourseModule {
     

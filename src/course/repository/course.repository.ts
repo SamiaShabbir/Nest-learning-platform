@@ -12,7 +12,11 @@ export class CourseRepository{
     }
 
     async get():Promise<Course[]>{
-      return await this.courseModel.find().populate(['lessons','user_id']);
+      return await this.courseModel.find().populate(['lessons','user_id']).populate({path: 'likes',
+        populate: {
+          path: 'userId',
+          select: 'first_name last_name username email', // Adjust fields as needed
+        },});
     }
 
     async getByUserId(userId:string):Promise<Course[]>{
@@ -27,4 +31,19 @@ export class CourseRepository{
     async getById(courseId:string):Promise<Course>{
       return await this.courseModel.findById(courseId);
     }
+
+    async delete(courseId:string):Promise<Boolean>{
+      return await this.courseModel.findByIdAndDelete(courseId);
+    }
+
+    async updateLike(courseId:string,likeId:string): Promise<Course>{
+      return await this.courseModel.findByIdAndUpdate(
+        courseId,
+        { $addToSet: { likes: likeId},
+        $inc: { likeCount: 1 } 
+        },  
+        { new: true }
+      )
+    }
+
 }
