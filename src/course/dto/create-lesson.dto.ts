@@ -16,15 +16,19 @@ export class CreateLessonDto {
   @ApiPropertyOptional({ description: 'Path to the PDF file', type: 'string', format: 'binary' })
   @IsString()
   @IsOptional()
-  file?: string; // Path or URL to the PDF file
+  file?: string; 
 
   @ApiPropertyOptional({ description: 'Path to the video file', type: 'string', format: 'binary' })
   @IsString()
   @IsOptional()
-  video?: string; // Path or URL to the video file
+  video?: string;
 
   @ApiPropertyOptional({ description: 'ID of the course' })
   @IsString()
   @IsOptional()
-  course?: string; // ID of the course
+  course_id?: string; 
+
+  course:any;
+  user_id:string;
+
 }

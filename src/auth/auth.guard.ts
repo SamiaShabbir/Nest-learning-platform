@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate {
         secret: jwtConstants.secret,
       });
        const getUser=await this.authService.GetUserById(payload.user_id); 
-       console.log("getUser:",getUser);
+      //  console.log("getUser:",getUser);
       (request as any).user = getUser;
       request['token']=token;
     } catch (error) {

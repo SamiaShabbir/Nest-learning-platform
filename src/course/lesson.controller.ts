@@ -1,49 +1,119 @@
-import { Body, Controller, Post, Res, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
-import { ApiOperation, ApiResponse, ApiConsumes, ApiTags } from '@nestjs/swagger';
+import { Request,BadRequestException, Body, Controller, Delete, Get, Param, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import { ApiOperation, ApiResponse, ApiConsumes, ApiTags, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { LessonService } from './lesson.service';
 import { Role } from 'src/enums/role.enum';
 import { Roles } from 'src/shared/acl/roles.decorator';
 import { AuthGuard } from 'src/auth/auth.guard';
-import { RolesGuard } from 'src/shared/guards/roles.gaurd';
+import { RolesGuard } from '../shared/guards/roles.gaurd';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @ApiTags('lesson')
 @Controller('lesson')
-export class LessonController{
-    constructor(private lessonService:LessonService){}
+export class LessonController {
+    constructor(private lessonService: LessonService) {}
 
     @Post('create')
     @Roles(Role.TEACHER)
-    @UseGuards(AuthGuard,RolesGuard)
+    @UseGuards(AuthGuard, RolesGuard)
+    @ApiBearerAuth()
     @ApiOperation({ summary: 'Upload lesson with PDF and video files' })
     @ApiResponse({ status: 201, description: 'The lesson has been successfully created.' })
     @ApiResponse({ status: 400, description: 'Invalid input' })
     @ApiConsumes('multipart/form-data')
-    @UseInterceptors(FilesInterceptor('files', 2)) // Handle up to 2 files
-    async uploadFiles(
-      @Body() createLessonDto: CreateLessonDto,
-      @UploadedFiles() files: Express.Multer.File[],
-      @Res() res: Response
+    @UseInterceptors(FileFieldsInterceptor([
+        { name: 'file', maxCount: 1 },
+        { name: 'video', maxCount: 1 }
+    ]))
+    async createLesson(
+        @Request() req,
+        @Body() createLessonDto: CreateLessonDto,
+        @UploadedFiles() files: { file?: Express.Multer.File[], video?: Express.Multer.File[] }
     ) {
-      const file = files.find(file => file.fieldname === 'file');
-      const video = files.find(file => file.fieldname === 'video');
-  
-      // Assume `file` is the PDF and `video` is the video
-      const filePath = file ? file.path : null;
-      const videoPath = video ? video.path : null;
-  
-      const result = await this.lessonService.create({
-        ...createLessonDto,
-        file: filePath,
-        video: videoPath,
-      });
-  
-      return {
-            code:200,
-            status:"success",
-            message:"blog updated successfully",
-            data:result
-      };
+        const projectRoot = path.resolve(__dirname, '../../');
+        const uploadDir = path.join(projectRoot, 'src/uploads');
+
+        if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true }); // Create the directory and any necessary parent directories
+        }
+
+        const saveFile = (file: Express.Multer.File, fieldName: string) => {
+            const fileName = `${fieldName}-${Date.now()}-${file.originalname}`;
+
+            const filePath = path.join(uploadDir, fileName);
+            fs.writeFileSync(filePath, file.buffer);
+            return path.join('uploads', fileName); // Return the relative path
+        };
+
+        const file = files.file ? files.file[0] : null;
+        const video = files.video ? files.video[0] : null;
+
+        const filePath = file ? saveFile(file, 'file') : null;
+        const videoPath = video ? saveFile(video, 'video') : null;
+
+        const result = await this.lessonService.create({
+            ...createLessonDto,
+            file: filePath,
+            video: videoPath,
+            user_id:req.user.id
+        });
+
+        return {
+            code: 200,
+            status: "success",
+            message: "Lesson created successfully",
+            data: result
+        };
     }
+
+    @Get(':id')
+    @ApiParam({
+      name: 'id',
+      description: 'enter the course Id',
+    })
+    async getbyId(@Param('id') id:string){
+      console.log("courseId",id);
+      if (!id || id.length !== 24 || !/^[0-9a-fA-F]{24}$/.test(id)) {
+          throw new BadRequestException('Invalid userId format. Must be a 24-character hex string.');
+        }
+      const result =await this.lessonService.getbyId(id);
+      if(!result || result==null){
+          return {
+              code:401,
+              status:"failed",
+              message:"No Data Found"
+            }; 
+      }
+  
+      return{
+          code:200,
+          status:"success",
+          message:"Lesson Fetched Successfully",
+          data:result
+      }
+    }
+
+    // @Delete(':id')
+    // @Roles(Role.TEACHER,Role.USER)
+    // @UseGuards(AuthGuard,RolesGuard)
+    // @ApiBearerAuth()
+    // async deleteCourse(@Param('id') id:string,@Request() req){
+       
+    //    const result= await this.lessonService.delete(id,req.user.id);
+    //    if(!result){
+    //     return {
+    //       code:403,
+    //       status:"failed",
+    //       message:"Error Occured Try Again"
+    //     };
+    //    }
+    //    return {
+    //     code:200,
+    //     status:"success",
+    //     message:"Course Deleted Successfully"
+    //    }
+    // }
+
 }

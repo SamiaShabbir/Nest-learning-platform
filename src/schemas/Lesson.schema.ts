@@ -18,7 +18,7 @@ export class Lesson {
   @Prop({ required:false ,default:null ,type: mongoose.Schema.Types.ObjectId, ref:'Course'})
   course: Course;
 
-  @Prop({required:true})
+  @Prop({required:false,default:0})
   LikeCount: number;
 
   }

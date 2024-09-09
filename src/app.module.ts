@@ -10,8 +10,14 @@ import { APP_GUARD } from '@nestjs/core';
 import { RolesGuard } from './shared/guards/roles.gaurd';
 import { LikeModule } from './like/like.module';
 import { CourseModule } from './course/course.module';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 @Module({
   imports: [
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'src', 'uploads'),
+      serveRoot: '/uploads',
+    }),
     MongooseModule.forRoot('mongodb://localhost:27017/learning_platform'),
     UserModule,
     AuthModule,

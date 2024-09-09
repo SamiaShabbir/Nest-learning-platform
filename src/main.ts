@@ -8,7 +8,7 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   useContainer(app.select(AppModule),{fallbackOnErrors:true});
-  const port = 3001;
+  const port = 3002;
   app.setGlobalPrefix('api');
 
   const options = new DocumentBuilder()
@@ -21,8 +21,11 @@ async function bootstrap() {
     .build();
      const document = SwaggerModule.createDocument(app, options);
      SwaggerModule.setup('api', app, document);
+       
+     const srcFolderPath = join(__dirname, '..', '..', 'src');
 
-     app.useStaticAssets(join(__dirname, '..', 'uploads')); // Serve uploaded files
+    //  console.log('Path to src folder:', srcFolderPath);
+     app.useStaticAssets(join(srcFolderPath,'uploads')); // Serve uploaded files
 
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
