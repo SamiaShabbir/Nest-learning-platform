@@ -60,6 +60,15 @@ export class LessonController {
             user_id:req.user.id
         });
 
+        if(!result && result==false){
+            return {
+                code: 401,
+                status: "failed",
+                message: "You Do not have permission to do this action",
+            };
+
+        }
+
         return {
             code: 200,
             status: "success",
@@ -95,25 +104,24 @@ export class LessonController {
       }
     }
 
-    // @Delete(':id')
-    // @Roles(Role.TEACHER,Role.USER)
-    // @UseGuards(AuthGuard,RolesGuard)
-    // @ApiBearerAuth()
-    // async deleteCourse(@Param('id') id:string,@Request() req){
-       
-    //    const result= await this.lessonService.delete(id,req.user.id);
-    //    if(!result){
-    //     return {
-    //       code:403,
-    //       status:"failed",
-    //       message:"Error Occured Try Again"
-    //     };
-    //    }
-    //    return {
-    //     code:200,
-    //     status:"success",
-    //     message:"Course Deleted Successfully"
-    //    }
-    // }
+    @Delete(':id')
+    @Roles(Role.TEACHER,Role.USER)
+    @UseGuards(AuthGuard,RolesGuard)
+    @ApiBearerAuth()
+    async deleteCourse(@Param('id') id:string,@Request() req){
+       const result= await this.lessonService.delete(id,req.user.id);
+       if(!result){
+        return {
+          code:403,
+          status:"failed",
+          message:"Error Occured Try Again"
+        };
+       }
+       return {
+        code:200,
+        status:"success",
+        message:"Course Deleted Successfully"
+       }
+    }
 
 }

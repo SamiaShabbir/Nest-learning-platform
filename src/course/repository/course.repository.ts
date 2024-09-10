@@ -53,9 +53,8 @@ export class CourseRepository{
       {new:true});
     }
 
-    async checkcourseuser(courseId:string,user_id:string):Promise<Course>{
-     const result=this.courseModel.findOne({user_id:user_id,id:courseId});
-
+    async checkcourseuser(courseId:any,user_id:string):Promise<Course>{
+     const result=await this.courseModel.findOne({user_id:user_id},{id:courseId});
      return result;
     }
 

@@ -12,7 +12,9 @@ import {
   Patch,
   Delete,
   UseGuards,
-  Query
+  Query,
+  UseInterceptors,
+  UploadedFiles
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/createUser.dto';
@@ -23,11 +25,15 @@ import { ApiTags,
          ApiBody,
          ApiParam,
          ApiBearerAuth,  
-         ApiQuery} from '@nestjs/swagger'
+         ApiQuery,
+         ApiConsumes} from '@nestjs/swagger'
 import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from 'src/shared/guards/roles.gaurd';
 import { Role } from 'src/enums/role.enum';
 import { Roles } from 'src/shared/acl/roles.decorator';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @ApiTags('User')
 @Controller('user')
@@ -41,11 +47,39 @@ export class UserController {
      type: CreateUserDto,
      description: 'Json structure for user object',
   })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'picture', maxCount: 1 },
+]))
   @ApiQuery({ name: 'role', enum: Role })
-  createUser(@Body() createUserDto: CreateUserDto,@Query('role') role: Role = Role.USER) {
+  createUser(@Body() createUserDto: CreateUserDto,
+            @Query('role') role: Role = Role.USER,
+            @UploadedFiles() files: { picture?: Express.Multer.File[] }
+          ) {
+            const projectRoot = path.resolve(__dirname, '../../');
+            const uploadDir = path.join(projectRoot, 'src/uploads');
+    
+            if (!fs.existsSync(uploadDir)) {
+                fs.mkdirSync(uploadDir, { recursive: true }); // Create the directory and any necessary parent directories
+            }
+    
+            const saveFile = (file: Express.Multer.File, fieldName: string) => {
+                const fileName = `${fieldName}-${Date.now()}-${file.originalname}`;
+    
+                const filePath = path.join(uploadDir, fileName);
+                fs.writeFileSync(filePath, file.buffer);
+                return path.join('uploads', fileName); // Return the relative path
+            };
+    
+            const file = files.picture ? files.picture[0] : null;
+    
+            const filePath = file ? saveFile(file, 'picture') : null;
+    
     console.log('this_role',role);
     console.log(createUserDto);
-    return this.userService.createUser(createUserDto,role);
+    return this.userService.createUser({...createUserDto,
+      picture:filePath
+    },role);
   }
   @Roles(Role.ADMIN)
   @UseGuards(AuthGuard,RolesGuard)

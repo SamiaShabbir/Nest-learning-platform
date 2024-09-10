@@ -27,5 +27,7 @@ export class User {
   IsloggedIn: boolean;
   @Prop({ required:false ,default:null ,type: mongoose.Schema.Types.ObjectId, ref: 'Token'})
   token_id: Token;
+  @Prop({required:false, default:null})
+  picture: string;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

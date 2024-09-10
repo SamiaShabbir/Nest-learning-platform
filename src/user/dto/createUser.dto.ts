@@ -9,7 +9,7 @@ import {
   IsString , Validate ,
 } from 'class-validator';
 import { IsUnique } from "../../shared/validation/is-unique";
-import { ApiProperty, ApiQuery } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional, ApiQuery } from '@nestjs/swagger';
 import { Role } from 'src/enums/role.enum';
 import { Query } from '@nestjs/common';
 const Model="User";
@@ -60,13 +60,12 @@ export class CreateUserDto {
     required: true
  })
   DoB: string;
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: '12',
     required: true
  })
-  @IsNotEmpty()
-  @IsNumber()
-  age: number;
+  @IsString()
+  age: string;
   // @ApiProperty({
   //   type: 'array',
   //   items: {
@@ -96,4 +95,10 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   description: string;
+
+  @ApiPropertyOptional({ description: 'Path to the profile pic file', type: 'string', format: 'binary' })
+  @IsString()
+  @IsOptional()
+  picture?: string;
+
 }

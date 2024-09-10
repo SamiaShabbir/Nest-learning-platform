@@ -19,4 +19,8 @@ export class LessonRepositpory{
       return await this.lessonModel.findById(lessonId);
     }
 
+    async delete(lessonId:string):Promise<Boolean>{
+      return await this.lessonModel.findByIdAndDelete(lessonId);
+    }
+
 }
