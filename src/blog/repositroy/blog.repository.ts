@@ -11,15 +11,28 @@ export class BlogRepository {
   
     async create(createblogDto:CreateBlog):Promise<Blog>
     {
+
       const createNew= await new this.blogModel(createblogDto);
-      return createNew.save();
-    }
+       createNew.save();
+
+      for (const subcategory of createblogDto.sub_category_ids) {
+       const data= await this.blogModel.findByIdAndUpdate(
+      createNew._id,
+      { $addToSet: { sub_category: subcategory } },
+      { new: true }
+      ).exec();
+
+  }
+  const result=await this.getById(createNew.id);
+  return result;
+
+      }
 
     async get(userId: string): Promise<Blog[]> {
       return await this.blogModel.find({ user_id:userId }).populate(['user_id','likes']);
     }
 
-    async getById(blogId: string): Promise<Blog[]> {
+    async getById(blogId: string): Promise<Blog> {
       return await this.blogModel.findById(blogId);
     }
 

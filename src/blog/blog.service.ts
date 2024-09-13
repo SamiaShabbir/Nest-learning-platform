@@ -2,14 +2,22 @@ import { Injectable } from '@nestjs/common';
 import { BlogRepository } from './repositroy/blog.repository';
 import { CreateBlog } from './dto/CreateBlog.dto';
 import { CreateLike } from 'src/like/dto/createLike.dto';
+import { CategoryRepository } from '../category/repository/category.repository';
+import { SubCategoryRepository } from 'src/category/repository/subcategory.repository';
 @Injectable()
 export class BlogService {
-    constructor(private blogRepository:BlogRepository){}
+    constructor(private blogRepository:BlogRepository,
+                private categoryRepository:CategoryRepository,
+                private subcategoryRepository:SubCategoryRepository
+    ){}
 
     async create(createblogDto:CreateBlog,userId:string)
     {
         createblogDto.user_id=userId;
-        return await this.blogRepository.create(createblogDto);
+        const createdBlog=await this.blogRepository.create(createblogDto);
+        await this.categoryRepository.updatePosts(createdBlog.category,createdBlog._id,'blog');
+        await this.subcategoryRepository.updatePosts(createdBlog.sub_category,createdBlog._id,'blog');
+        return createdBlog;
     }
 
     async get(userId: string)

@@ -18,9 +18,9 @@ export class CreateBlog {
   category: string;
 
   @ApiProperty({
-    example: 'category_id'})
+    example: ['category_id','another_id']})
   @IsNotEmpty()
-  sub_category: string;
+  sub_category_ids: string[];
 
   @IsString()
   @IsOptional()

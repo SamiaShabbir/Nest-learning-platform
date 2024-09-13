@@ -13,6 +13,16 @@ export class CreateCourseDto{
       @IsOptional()
       description:string;
 
+      @ApiProperty({
+        example: 'category_id'})
+      @IsNotEmpty()
+      category: string;
+    
+      @ApiProperty({
+        example: ['category_id','another_id']})
+      @IsNotEmpty()
+      sub_category_ids: string[];
+      
       @IsString()
       @IsOptional()
       user_id:string;

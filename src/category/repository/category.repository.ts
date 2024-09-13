@@ -10,12 +10,28 @@ export class CategoryRepository {
   
     async create(createcategoryDto:CreateCategory):Promise<Category>
     {
+      
       const createNew= await new this.categoryModel(createcategoryDto);
       return createNew.save();
     }
 
     async get():Promise<Category[]>{
         return await this.categoryModel.find().populate(['user_id','sub_categories']);
+    }
+
+    async updatePosts(catId:any,postId:string,type:string):Promise<Category>{
+      if(type=='lesson'){
+       return this.categoryModel.findByIdAndUpdate(catId,{
+        $addToSet: { lesson: postId}});
+      }else if(type=='blog'){
+        return this.categoryModel.findByIdAndUpdate(catId,{
+          $addToSet: { blog: postId}});
+      }else if(type=='course'){
+        return this.categoryModel.findByIdAndUpdate(catId,{
+          $addToSet: { course: postId}});
+      }else{
+        return null;
+      }
     }
 
     async getById(catId):Promise<Category>{

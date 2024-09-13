@@ -29,4 +29,30 @@ export class SubCategoryRepository {
     async update(catId:any,createsubcategoryDto:CreateSubCategory){
         return await this.subcategoryModel.findByIdAndUpdate(catId,createsubcategoryDto)
     }
+
+    async updatePosts(catId:any,postId:string,type:string):Promise<Boolean>{
+      if(type=='lesson'){
+        for (const subcategoryId of catId) {
+          await this.subcategoryModel.findByIdAndUpdate(catId,{
+            $addToSet: { lesson: postId}}).exec();
+        }
+       return true;
+      }else if(type=='blog'){
+        for (const subcategoryId of catId) {
+          const data=await this.subcategoryModel.findByIdAndUpdate(catId,{
+            $addToSet: { blog: postId}}).exec();
+            console.log("data:",data);
+
+          }
+       return true;
+      }else if(type=='course'){
+        for (const subcategoryId of catId) {
+          await this.subcategoryModel.findByIdAndUpdate(catId,{
+            $addToSet: { course: postId}}).exec();
+        }
+       return true;
+      }else{
+        return null;
+      }
+    }
 }

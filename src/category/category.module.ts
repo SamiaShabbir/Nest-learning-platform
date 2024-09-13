@@ -25,6 +25,7 @@ import { User, UserSchema } from 'src/schemas/User.schama';
     ]),
   ],
   controllers: [CategoryController,SubcategoryController],
-  providers: [CategoryService,SubcategoryService,CategoryRepository,SubCategoryRepository]
+  providers: [CategoryService,SubcategoryService,CategoryRepository,SubCategoryRepository],
+  exports:[CategoryRepository,SubCategoryRepository]
 })
 export class CategoryModule {}

@@ -9,11 +9,19 @@ export class LessonRepositpory{
     constructor(@InjectModel(Lesson.name) private lessonModel: Model<Lesson> ){}
     
     async create(createlessonDto:CreateLessonDto):Promise<Lesson>{
-      console.log(createlessonDto);
   
       const newLesson=new this.lessonModel(createlessonDto);
-      return await newLesson.save();
-    }
+       await newLesson.save();
+       for (const subcategory of createlessonDto.sub_category_ids) {
+        const data= await this.lessonModel.findByIdAndUpdate(
+          newLesson._id,
+       { $addToSet: { sub_category: subcategory } },
+       { new: true }
+       ).exec();
+   }
+   return newLesson;
+    
+      }
 
     async getbyId(lessonId:string):Promise<Lesson>{
       return await this.lessonModel.findById(lessonId);

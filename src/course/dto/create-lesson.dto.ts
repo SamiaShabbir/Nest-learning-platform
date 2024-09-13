@@ -37,7 +37,7 @@ export class CreateLessonDto {
   @ApiProperty({ description: 'sub category id' })
   @IsString()
   @IsNotEmpty()
-  sub_category: string[];
+  sub_category_ids: string[];
 
   course:any;
   user_id:string;

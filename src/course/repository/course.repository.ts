@@ -8,7 +8,16 @@ export class CourseRepository{
   
     async create(createcourseDto:CreateCourseDto):Promise<Course>{
       const createCourse=await new this.courseModel(createcourseDto);
-      return createCourse.save();
+       await createCourse.save();
+      for (const subcategory of createcourseDto.sub_category_ids) {
+        const data= await this.courseModel.findByIdAndUpdate(
+          createCourse._id,
+       { $addToSet: { sub_category: subcategory } },
+       { new: true }
+       ).exec();
+   }
+   return createCourse;
+  
     }
 
     async get():Promise<Course[]>{
