@@ -2,8 +2,15 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { User } from './User.schama';
 import { BlogLike } from './BlogLike.schema';
+import { Category } from './Category.schema';
+import { SubCategory } from './SubCategory';
 @Schema()
 export class Blog {
+  _id: string;  
+
+  @Prop({required:true})
+  title: string; 
+
   @Prop({required:true})
   body: string; 
 
@@ -19,5 +26,12 @@ export class Blog {
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'BlogLike' }]})
   likes: BlogLike[];
 
+  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Cateogory' }]})
+  category: Category;
+
+  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'SubCateogory' }]})
+  sub_category: SubCategory[];
+
 }
+
 export const BlogSchema = SchemaFactory.createForClass(Blog);

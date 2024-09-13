@@ -23,6 +23,7 @@ export class CategoryRepository {
     }
 
     async updateCategory(catId:any,subcatId:any):Promise<Category>{
+       console.log("subcatId",subcatId);     
         return await this.categoryModel.findByIdAndUpdate(catId,
             { $addToSet: { sub_categories: subcatId}})
     }

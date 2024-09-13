@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import { User } from './User.schama';
 import { CourseLike } from './CourseLike.schema';
 import { Lesson } from './Lesson.schema';
+import { Category } from './Category.schema';
+import { SubCategory } from './SubCategory';
 @Schema()
 export class Course {
   @Prop({required:true})
@@ -23,5 +25,11 @@ export class Course {
   @Prop({type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Lesson' }]})
   lessons:Lesson[];
 
-  }
+  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Cateogory' }]})
+  category: Category;
+
+  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'SubCateogory' }]})
+  sub_category: SubCategory[];
+
+}
 export const CourseSchema = SchemaFactory.createForClass(Course);

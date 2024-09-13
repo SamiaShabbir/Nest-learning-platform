@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
 import { Course } from './Course.schema';
+import { Category } from './Category.schema';
+import { SubCategory } from './SubCategory';
 @Schema()
 export class Lesson {
   @Prop({required:true})
@@ -21,5 +23,10 @@ export class Lesson {
   @Prop({required:false,default:0})
   LikeCount: number;
 
+  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Cateogory' }]})
+  category: Category;
+
+  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'SubCateogory' }]})
+  sub_category: SubCategory[];
   }
 export const LessonSchema = SchemaFactory.createForClass(Lesson);

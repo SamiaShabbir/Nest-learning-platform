@@ -6,7 +6,6 @@ import { Roles } from 'src/shared/acl/roles.decorator';
 import { RolesGuard } from 'src/shared/guards/roles.gaurd';
 import { CreateCategory } from './dto/create-category.dto';
 import { CategoryService } from './category.service';
-import { CreateBlog } from 'src/blog/dto/CreateBlog.dto';
 
 @Controller('category')
 @ApiTags('category')
@@ -42,8 +41,6 @@ export class CategoryController {
     }
 
     @Get('all')
-    @UseGuards(AuthGuard)
-    @ApiBearerAuth()
     async getCategory(){
      const result =await this.categoryService.get();
      if(!result || result==null || result.length === 0){
@@ -62,8 +59,6 @@ export class CategoryController {
     }
 
     @Get(':id')
-    @UseGuards(AuthGuard)
-    @ApiBearerAuth()
     async getById(@Param('id') id:string){
      const result =await this.categoryService.getById(id);
      if(!result || result==null){

@@ -12,5 +12,8 @@ export class CreateSubCategory {
   @IsString()
   @IsOptional()
   category_id:string;
-
+  
+  @IsString()
+  @IsOptional()
+  user_id:any;
 }

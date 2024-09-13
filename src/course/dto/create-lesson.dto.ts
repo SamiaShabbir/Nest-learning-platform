@@ -8,6 +8,7 @@ export class CreateLessonDto {
   @IsNotEmpty()
   title: string;
 
+
   @ApiPropertyOptional({ description: 'Description of the lesson' })
   @IsString()
   @IsOptional()
@@ -27,6 +28,16 @@ export class CreateLessonDto {
   @IsString()
   @IsOptional()
   course_id?: string; 
+
+  @ApiProperty({ description: 'category id' })
+  @IsString()
+  @IsNotEmpty()
+  category: string;
+
+  @ApiProperty({ description: 'sub category id' })
+  @IsString()
+  @IsNotEmpty()
+  sub_category: string[];
 
   course:any;
   user_id:string;

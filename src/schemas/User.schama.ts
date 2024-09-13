@@ -5,6 +5,7 @@ import {Token} from "./Token.schema";
 
 @Schema()
 export class User {
+  _id: string;
   @Prop({ required: true, unique: true })
   first_name: string;
   @Prop({ required: true, unique: true })
