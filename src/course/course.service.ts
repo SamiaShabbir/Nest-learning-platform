@@ -1,15 +1,21 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { CreateCourseDto } from './dto/createcourse.dto';
 import { CourseRepository } from './repository/course.repository';
+import { CategoryRepository } from 'src/category/repository/category.repository';
+import { SubCategoryRepository } from 'src/category/repository/subcategory.repository';
 
 @Injectable()
 export class CourseService {
-    constructor(private courseRepository:CourseRepository){}
+    constructor(private courseRepository:CourseRepository,
+        private categoryRepository:CategoryRepository,
+        private subcategoryRepository:SubCategoryRepository
+    ){}
 
     async create(createcourseDto:CreateCourseDto){
-        console.log(createcourseDto);
-        return await this.courseRepository.create(createcourseDto);
-       
+        const createdCourse= await this.courseRepository.create(createcourseDto);
+        await this.categoryRepository.updatePosts(createdCourse.category,createdCourse._id,'course');
+        await this.subcategoryRepository.updatePosts(createdCourse.sub_category,createdCourse._id,'course');
+        return createdCourse;
     }
 
     async get(){

@@ -21,7 +21,7 @@ import { User, UserSchema } from 'src/schemas/User.schama';
       { name: Role.name, schema: RoleSchema },
       { name: Token.name, schema:TokenSchema},
       { name: Category.name, schema:CategorySchema},
-      { name:SubCategory.name, schema:SubCategorySchema}
+      { name:SubCategory.name, schema:SubCategorySchema},
     ]),
   ],
   controllers: [CategoryController,SubcategoryController],

@@ -15,22 +15,27 @@ import { AuthRepository } from 'src/auth/repositories/auth.repository';
 import { AuthModule } from 'src/auth/auth.module';
 import { User, UserSchema } from 'src/schemas/User.schama';
 import { Token, TokenSchema } from 'src/schemas/Token.schema';
+import { CategoryModule } from 'src/category/category.module';
+import { CategoryRepository } from 'src/category/repository/category.repository';
+import { Category, CategorySchema } from 'src/schemas/Category.schema';
+import { SubCategory, SubCategorySchema } from 'src/schemas/SubCategory';
 
 @Module({
     imports:[
         AuthModule,
+        CategoryModule,
         MongooseModule.forFeature([
            { name: User.name, schema: UserSchema },
            { name:Token.name,schema:TokenSchema  },
             { name: Course.name, schema: CourseSchema },
             {name:Lesson.name,schema:LessonSchema},
+            { name: Category.name, schema:CategorySchema},
+            { name:SubCategory.name, schema:SubCategorySchema}
           ])
         ],
     providers: [CourseService,LessonService,LessonRepositpory,CourseRepository,  AuthService,
-      AuthRepository],
+      AuthRepository,CategoryRepository],
     controllers: [CourseController,LessonController],
     exports:[CourseRepository,CourseService]
 })
-export class CourseModule {
-    
-}
+export class CourseModule {}
