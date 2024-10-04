@@ -1,15 +1,17 @@
 /* eslint-disable prettier/prettier */
-import { Param,Body, Controller, Post, UseGuards,Request, Get,Put,Delete} from '@nestjs/common';
+import { Param,Body, Controller, Post, UseGuards,Request, Get,Put,Delete, UseInterceptors, UploadedFiles, UploadedFile} from '@nestjs/common';
 import { BlogService } from './blog.service';
 import { AuthGuard } from '../auth/auth.guard';
-import { ApiResponse, ApiBody, ApiBearerAuth, ApiTags, ApiOperation, ApiParam } from '@nestjs/swagger';
+import { ApiResponse, ApiBody, ApiBearerAuth, ApiTags, ApiOperation, ApiParam, ApiConsumes } from '@nestjs/swagger';
 import { CreateBlog } from './dto/CreateBlog.dto';
 import { Roles } from 'src/shared/acl/roles.decorator';
 import { Role } from 'src/enums/role.enum';
 import { RolesGuard } from 'src/shared/guards/roles.gaurd';
 import { CreateLike } from 'src/like/dto/createLike.dto';
 import { CreateBlogLike } from './dto/CreateLike.dto';
-
+import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
+import * as fs from 'fs';
+import * as path from 'path';
 @ApiTags('Blog')
 @Controller('blog')
 export class BlogController {
@@ -24,9 +26,30 @@ export class BlogController {
     description: 'Json structure for blog object',
   })
   @ApiBearerAuth()
-  async create(@Request() req,@Body() createBlogDto:CreateBlog): Promise<any> {
-   
-   const createdBlog= await this.blogService.create(createBlogDto,req.user.id);
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileInterceptor('image')) // 'file' is the name of the form field
+  async create(@Request() req,@Body() createBlogDto:CreateBlog,
+  @UploadedFile() image: Express.Multer.File
+): Promise<any> {
+  const projectRoot = path.resolve(__dirname, '../../');
+  const uploadDir = path.join(projectRoot, 'src/uploads');
+
+  if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true }); // Create the directory and any necessary parent directories
+  }
+
+  const saveFile = (file: Express.Multer.File, fieldName: string) => {
+      const fileName = `${fieldName}-${Date.now()}-${file.originalname}`;
+
+      const filePath = path.join(uploadDir, fileName);
+      fs.writeFileSync(filePath, file.buffer);
+      return path.join('uploads', fileName); // Return the relative path
+  };
+
+  const file = image;
+
+  const filePath = file ? saveFile(file, 'blogimage') : null;
+   const createdBlog= await this.blogService.create({...createBlogDto,image:filePath},req.user.id);
    if(!createdBlog){
       return {
          code:401,

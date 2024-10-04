@@ -9,6 +9,9 @@ export class LessonService{
                  private courseRepository:CourseRepository
     ){}
     async create(createLessonDto: CreateLessonDto) {
+      const subCategoryIdsString=createLessonDto.sub_category_ids;
+      const subCategoryIdsArray = subCategoryIdsString.split(',').map(id => id.trim());
+      createLessonDto.subArraycategory=subCategoryIdsArray;
       const course = new Types.ObjectId(createLessonDto.course_id);
        createLessonDto.course=course;
        const check=this.courseRepository.checkcourseuser(createLessonDto.course,createLessonDto.user_id);

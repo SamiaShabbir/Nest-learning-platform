@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 
 import { Model } from 'mongoose';
 import { CreateBlog } from '../dto/CreateBlog.dto';
+import { Types } from 'mongoose';
 
 export class BlogRepository {
   constructor(
@@ -15,10 +16,13 @@ export class BlogRepository {
       const createNew= await new this.blogModel(createblogDto);
        createNew.save();
 
-      for (const subcategory of createblogDto.sub_category_ids) {
+      for (const subcategory of createblogDto.subArraycategory) {
+        console.log('subcategory:',subcategory);
+
+        let newsubcategory=new Types.ObjectId(subcategory);
        const data= await this.blogModel.findByIdAndUpdate(
       createNew._id,
-      { $addToSet: { sub_category: subcategory } },
+      { $addToSet: { sub_category: newsubcategory } },
       { new: true }
       ).exec();
 
@@ -46,7 +50,6 @@ export class BlogRepository {
 
     async update(blogId:string,data:CreateBlog): Promise<Blog>{
       const updateblog=await this.blogModel.findByIdAndUpdate(blogId,data,{new:true});
-      // console.log("updateblog",updateblog);
       return updateblog;
     }
 

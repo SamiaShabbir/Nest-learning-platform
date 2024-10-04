@@ -3,12 +3,14 @@ import { CreateCourseDto } from './dto/createcourse.dto';
 import { CourseRepository } from './repository/course.repository';
 import { CategoryRepository } from 'src/category/repository/category.repository';
 import { SubCategoryRepository } from 'src/category/repository/subcategory.repository';
+import { EnrollmentRepository } from './repository/enrollment.respository';
 
 @Injectable()
 export class CourseService {
     constructor(private courseRepository:CourseRepository,
         private categoryRepository:CategoryRepository,
-        private subcategoryRepository:SubCategoryRepository
+        private subcategoryRepository:SubCategoryRepository,
+        private enrollmentRepository:EnrollmentRepository
     ){}
 
     async create(createcourseDto:CreateCourseDto){
@@ -37,6 +39,7 @@ export class CourseService {
     }
 
     async GetById(courseId:string){
+
         return await this.courseRepository.getById(courseId);
     }
 

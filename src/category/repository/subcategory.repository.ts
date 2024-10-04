@@ -31,15 +31,18 @@ export class SubCategoryRepository {
     }
 
     async updatePosts(catId:any,postId:string,type:string):Promise<Boolean>{
+      console.log('here');
+
       if(type=='lesson'){
         for (const subcategoryId of catId) {
-          await this.subcategoryModel.findByIdAndUpdate(catId,{
+          await this.subcategoryModel.findByIdAndUpdate(subcategoryId,{
             $addToSet: { lesson: postId}}).exec();
         }
        return true;
       }else if(type=='blog'){
+        console.log('ijdskjff');
         for (const subcategoryId of catId) {
-          const data=await this.subcategoryModel.findByIdAndUpdate(catId,{
+          const data=await this.subcategoryModel.findByIdAndUpdate(subcategoryId,{
             $addToSet: { blog: postId}}).exec();
             console.log("data:",data);
 
@@ -47,7 +50,7 @@ export class SubCategoryRepository {
        return true;
       }else if(type=='course'){
         for (const subcategoryId of catId) {
-          await this.subcategoryModel.findByIdAndUpdate(catId,{
+          await this.subcategoryModel.findByIdAndUpdate(subcategoryId,{
             $addToSet: { course: postId}}).exec();
         }
        return true;

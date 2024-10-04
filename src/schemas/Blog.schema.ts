@@ -14,15 +14,15 @@ export class Blog {
   @Prop({required:true})
   body: string; 
 
-  @Prop({ required:false ,default:null ,type: mongoose.Schema.Types.ObjectId, ref: 'User'})
-  user_id: User;
-
   @Prop({ default: 0 })
   viewCount: number;
 
   @Prop({ default: 0 })
   likeCount: number;
   
+  @Prop({required:false})
+  image: string;
+
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'BlogLike' }]})
   likes: BlogLike[];
 
@@ -32,6 +32,8 @@ export class Blog {
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'SubCateogory' }]})
   sub_category: SubCategory[];
 
+  @Prop({ required:false ,default:null ,type: mongoose.Schema.Types.ObjectId, ref: 'User'})
+  user_id: User;
 }
 
 export const BlogSchema = SchemaFactory.createForClass(Blog);

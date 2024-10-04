@@ -12,7 +12,7 @@ export class LessonRepositpory{
   
       const newLesson=new this.lessonModel(createlessonDto);
        await newLesson.save();
-       for (const subcategory of createlessonDto.sub_category_ids) {
+       for (const subcategory of createlessonDto.subArraycategory) {
         const data= await this.lessonModel.findByIdAndUpdate(
           newLesson._id,
        { $addToSet: { sub_category: subcategory } },

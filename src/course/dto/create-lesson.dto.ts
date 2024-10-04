@@ -34,12 +34,14 @@ export class CreateLessonDto {
   @IsNotEmpty()
   category: string;
 
-  @ApiProperty({ description: 'sub category id' })
+  @ApiProperty({ description: 'sub category id', example: ['category_id','another_id'] })
   @IsString()
   @IsNotEmpty()
-  sub_category_ids: string[];
+  sub_category_ids: string;
 
   course:any;
   user_id:string;
+  subArraycategory:string[];
+
 
 }

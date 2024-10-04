@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 export class CreateCourseDto{
     @ApiProperty({
@@ -26,4 +26,22 @@ export class CreateCourseDto{
       @IsString()
       @IsOptional()
       user_id:string;
+
+      @IsNumber()
+      @ApiProperty({
+        example: '10'})
+      no_of_lesson:number;
+
+      @IsString()
+      @ApiProperty({
+        example:"this is course for kids",
+      })
+      key_points:string;
+
+      @IsString()
+      @ApiProperty({
+        example:"beginner|intermediate|expert",
+      })
+      level:string;
+
 }

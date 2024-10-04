@@ -5,6 +5,7 @@ import { CourseLike } from './CourseLike.schema';
 import { Lesson } from './Lesson.schema';
 import { Category } from './Category.schema';
 import { SubCategory } from './SubCategory';
+import { Enrollment } from './Enrollement.schema';
 @Schema()
 export class Course {
   _id: string;  
@@ -21,6 +22,15 @@ export class Course {
   @Prop({default:0})
   likeCount: number;
 
+  @Prop({required:false})
+  level:string;
+  
+  @Prop({required:true})
+  no_of_lesson:number;
+
+  @Prop({required:false})
+  key_points:string;
+
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'CourseLike' }]})
   likes: CourseLike[];
 
@@ -32,6 +42,9 @@ export class Course {
 
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'SubCateogory' }]})
   sub_category: SubCategory[];
+
+  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Enrollment' }]})
+  enrollments: Enrollment[];
 
 }
 export const CourseSchema = SchemaFactory.createForClass(Course);
