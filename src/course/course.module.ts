@@ -21,14 +21,15 @@ import { EnrollmentController } from './enrollment.controller';
 import { EnrollmentRepository } from './repository/enrollment.respository';
 import { EnrollmentService } from './enrollment.service';
 import { Enrollment, EnrollmentSchema } from 'src/schemas/Enrollement.schema';
+import { SubCategoryRepository } from 'src/category/repository/subcategory.repository';
 
 @Module({
     imports:[
         AuthModule,
         CategoryModule,
         MongooseModule.forFeature([
-           { name: User.name, schema: UserSchema },
-           { name:Token.name,schema:TokenSchema  },
+            { name: User.name, schema: UserSchema },
+            { name:Token.name,schema:TokenSchema  },
             { name: Course.name, schema: CourseSchema },
             {name:Lesson.name,schema:LessonSchema},
             { name: Category.name, schema:CategorySchema},
@@ -37,8 +38,8 @@ import { Enrollment, EnrollmentSchema } from 'src/schemas/Enrollement.schema';
           ])
         ],
     providers: [CourseService,LessonService,LessonRepositpory,CourseRepository,EnrollmentRepository,EnrollmentService,AuthService,
-      AuthRepository,CategoryRepository],
+      AuthRepository,CategoryRepository,SubCategoryRepository],
     controllers: [CourseController,LessonController,EnrollmentController],
-    exports:[CourseRepository,CourseService]
+    exports:[CourseRepository,CourseService,EnrollmentRepository]
 })
 export class CourseModule {}

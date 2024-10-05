@@ -34,6 +34,12 @@ export class CreateLessonDto {
   @IsNotEmpty()
   category: string;
 
+
+  @ApiProperty({ description: '1|0' })
+  @IsNumber()
+  @IsNotEmpty()
+  status: number;
+
   @ApiProperty({ description: 'sub category id', example: ['category_id','another_id'] })
   @IsString()
   @IsNotEmpty()
@@ -42,6 +48,5 @@ export class CreateLessonDto {
   course:any;
   user_id:string;
   subArraycategory:string[];
-
-
+  lesson_no:number;
 }

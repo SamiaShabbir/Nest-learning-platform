@@ -44,4 +44,9 @@ export class CreateCourseDto{
       })
       level:string;
 
+      @ApiProperty({ description: '1|0' })
+      @IsNumber()
+      @IsNotEmpty()
+      status: number;
+
 }

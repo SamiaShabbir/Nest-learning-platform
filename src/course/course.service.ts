@@ -39,8 +39,11 @@ export class CourseService {
     }
 
     async GetById(courseId:string){
-
-        return await this.courseRepository.getById(courseId);
+         const course=await this.courseRepository.getById(courseId);
+         return{
+            course,
+            lessonCount:course.lessons.length
+         }    
     }
 
     async delete(courseId:string,userId:any){

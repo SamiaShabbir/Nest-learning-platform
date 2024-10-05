@@ -17,11 +17,17 @@ export class Lesson {
   @Prop({required:false})
   video:string;
 
+  @Prop({required:true,default:1})
+  lesson_no:number;
+
   @Prop({ required:false ,default:null ,type: mongoose.Schema.Types.ObjectId, ref:'Course'})
   course: Course;
 
   @Prop({required:false,default:0})
   LikeCount: number;
+
+  @Prop({required:false,default:1})
+  status: number;
 
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Cateogory' }]})
   category: Category;

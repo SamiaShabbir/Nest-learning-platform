@@ -21,11 +21,21 @@ export class CourseRepository{
     }
 
     async get():Promise<Course[]>{
-      return await this.courseModel.find().populate(['lessons','user_id']).populate({path: 'likes',
+       const courses =await this.courseModel.find().populate(['user_id']).populate({path: 'likes',
         populate: {
           path: 'userId',
           select: 'first_name last_name username email', // Adjust fields as needed
-        },});
+        },
+      });
+      const enrichCourses = (courses) => {
+        const enrichedCourses = courses.map(course => ({
+          ...course,
+          lessonsCount: course.lessons.length
+        }));
+        return enrichedCourses;
+      };
+      const enrichedCourses = enrichCourses(courses);
+      return enrichedCourses;
     }
 
     async getByUserId(userId:string):Promise<Course[]>{
@@ -38,7 +48,7 @@ export class CourseRepository{
     }
 
     async getById(courseId:string):Promise<Course>{
-      return await this.courseModel.findById(courseId).populate('lessons');
+      return await this.courseModel.findById(courseId);
     }
 
     async delete(courseId:string):Promise<Boolean>{

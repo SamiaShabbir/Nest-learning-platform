@@ -11,11 +11,16 @@ export class EnrollmentRepository{
     async create(createEnrollmentDto:CreateEnrollmentDto):Promise<Enrollment>{
   
       const newEnrollment=new this.enrollmentModel(createEnrollmentDto);
-   
+
         return  await newEnrollment.save();
       }
       async getBycourseId(course_id:string):Promise<Enrollment[]>{
         return await this.enrollmentModel.find({course:course_id});
       }
+
+      async getByuserId(user_id:string):Promise<Enrollment[]>{
+        return await this.enrollmentModel.find({student:user_id}).populate('course');
+      }
+
 
 }

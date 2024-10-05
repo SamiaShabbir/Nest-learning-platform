@@ -9,6 +9,13 @@ export class LessonService{
                  private courseRepository:CourseRepository
     ){}
     async create(createLessonDto: CreateLessonDto) {
+      const data=await this.countLesson(createLessonDto.course_id);
+      const courseData= await this.courseRepository.getById(createLessonDto.course_id);
+      console.log("lesson data:",data.no_of_lessons,"course data:",courseData.no_of_lesson);
+      if(data.no_of_lessons==courseData.no_of_lesson){
+        throw new ForbiddenException("U can Not create more lessons");
+      }
+      createLessonDto.lesson_no=data.no_of_lessons+1;
       const subCategoryIdsString=createLessonDto.sub_category_ids;
       const subCategoryIdsArray = subCategoryIdsString.split(',').map(id => id.trim());
       createLessonDto.subArraycategory=subCategoryIdsArray;
@@ -38,6 +45,9 @@ export class LessonService{
       return await this.lessonRepository.delete(lessonId);
     }
 
+    async countLesson(course_id:string){
+     return this.lessonRepository.countLesson(course_id);
+    }
 
 
 }

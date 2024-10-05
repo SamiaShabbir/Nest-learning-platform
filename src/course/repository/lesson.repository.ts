@@ -3,6 +3,7 @@ import { CreateLessonDto } from "../dto/create-lesson.dto";
 import { Lesson } from "src/schemas/Lesson.schema";
 import { Model } from "mongoose";
 import { Injectable } from "@nestjs/common";
+
 @Injectable()
 export class LessonRepositpory{
 
@@ -29,6 +30,16 @@ export class LessonRepositpory{
 
     async delete(lessonId:string):Promise<Boolean>{
       return await this.lessonModel.findByIdAndDelete(lessonId);
+    }
+
+    async countLesson(course_id:string){
+      const lesson= await this.lessonModel.find({course:course_id}).populate("course");
+      const count= await this.lessonModel.countDocuments({course:course_id});
+      return{
+        lessons:lesson,
+        no_of_lessons:count
+      }
+
     }
 
 }

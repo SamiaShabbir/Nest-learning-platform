@@ -41,10 +41,10 @@ export class BlogRepository {
     }
 
     async getAll():Promise<Blog[]>{
-      return await this.blogModel.find().populate('user_id').populate({path: 'likes',
+      return await this.blogModel.find({status:1}).populate('user_id').populate({path: 'likes',
         populate: {
           path: 'userId',
-          select: 'first_name last_name username email', // Adjust fields as needed
+          select: 'first_name last_name username email',
         },});
     }
 

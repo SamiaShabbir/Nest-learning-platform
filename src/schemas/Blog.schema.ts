@@ -22,6 +22,9 @@ export class Blog {
   
   @Prop({required:false})
   image: string;
+  
+  @Prop({required:false,default:1})
+  status: number;
 
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'BlogLike' }]})
   likes: BlogLike[];

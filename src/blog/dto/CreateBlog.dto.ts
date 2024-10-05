@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 export class CreateBlog {
 
@@ -27,6 +27,11 @@ export class CreateBlog {
   @IsString()
   @IsOptional()
   image?: string;
+
+  @ApiProperty({ description: '1|0' })
+  @IsNumber()
+  @IsNotEmpty()
+  status: number;
 
   @IsString()
   @IsOptional()
