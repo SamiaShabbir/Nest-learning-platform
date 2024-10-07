@@ -15,11 +15,11 @@ export class BlogService {
     async create(createblogDto:CreateBlog,userId:string)
     {
         console.log(createblogDto);
-        const subCategoryIdsString=createblogDto.sub_category_ids;
-        const subCategoryIdsArray = subCategoryIdsString.split(',').map(id => id.trim());
+        // const subCategoryIdsString=createblogDto.sub_category_ids;
+        // const subCategoryIdsArray = subCategoryIdsString.split(',').map(id => id.trim());
 
         createblogDto.user_id=userId;
-        createblogDto.subArraycategory=subCategoryIdsArray;
+        // createblogDto.subArraycategory=subCategoryIdsArray;
         const createdBlog=await this.blogRepository.create(createblogDto);
         await this.categoryRepository.updatePosts(createdBlog.category,createdBlog._id,'blog');
         await this.subcategoryRepository.updatePosts(createdBlog.sub_category,createdBlog._id,'blog');

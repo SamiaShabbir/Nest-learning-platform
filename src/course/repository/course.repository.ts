@@ -9,38 +9,52 @@ export class CourseRepository{
     async create(createcourseDto:CreateCourseDto):Promise<Course>{
       const createCourse=await new this.courseModel(createcourseDto);
        await createCourse.save();
-      for (const subcategory of createcourseDto.sub_category_ids) {
-        const data= await this.courseModel.findByIdAndUpdate(
-          createCourse._id,
-       { $addToSet: { sub_category: subcategory } },
-       { new: true }
-       ).exec();
-   }
+  //     for (const subcategory of createcourseDto.sub_category_ids) {
+  //       const data= await this.courseModel.findByIdAndUpdate(
+  //         createCourse._id,
+  //      { $addToSet: { sub_category: subcategory } },
+  //      { new: true }
+  //      ).exec();
+  //  }
    return createCourse;
   
     }
 
     async get():Promise<Course[]>{
-       const courses =await this.courseModel.find().populate(['user_id']).populate({path: 'likes',
-        populate: {
-          path: 'userId',
-          select: 'first_name last_name username email', // Adjust fields as needed
-        },
-      });
-      const enrichCourses = (courses) => {
-        const enrichedCourses = courses.map(course => ({
-          ...course,
-          lessonsCount: course.lessons.length
-        }));
+      const courses = await this.courseModel.find()
+                      .populate('user_id')
+                      .populate({
+                        path: 'likes',
+                        populate: {
+                          path: 'userId',
+                          select: 'first_name last_name username email', 
+                        },
+                      });
+
+     const enrichCourses = (courses) => {
+       return courses.map(course => ({
+         ...course.toObject(), 
+         lessonsCount: course.lessons.length,
+       }));
+     };
+
+    const enrichedCourses = enrichCourses(courses);
         return enrichedCourses;
-      };
-      const enrichedCourses = enrichCourses(courses);
-      return enrichedCourses;
     }
 
     async getByUserId(userId:string):Promise<Course[]>{
       const objectId = new Types.ObjectId(userId);
-      return await this.courseModel.find({user_id:objectId});
+      const courses= await this.courseModel.find({user_id:objectId});
+      const enrichCourses = (courses) => {
+        return courses.map(course => ({
+          ...course.toObject(), 
+          lessonsCount: course.lessons.length,
+        }));
+      };
+ 
+     const enrichedCourses = enrichCourses(courses);
+         return enrichedCourses;
+     
     }
 
     async update(id:string,createcourseDto:CreateCourseDto):Promise<Boolean>{

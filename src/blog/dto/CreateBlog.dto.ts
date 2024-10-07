@@ -17,10 +17,10 @@ export class CreateBlog {
   @IsNotEmpty()
   category: string;
 
-  @ApiProperty({
-    example: ['category_id','another_id']})
-  @IsNotEmpty()
-  sub_category_ids:string;
+  // @ApiProperty({
+  //   example: ['category_id','another_id']})
+  // @IsNotEmpty()
+  // sub_category_ids:string;
 
 
   @ApiPropertyOptional({ description: 'Path to the profile pic file', type: 'string', format: 'binary' })

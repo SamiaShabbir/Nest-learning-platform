@@ -101,4 +101,28 @@ export class CreateUserDto {
   @IsOptional()
   picture?: string;
 
+  @ApiPropertyOptional({ description: 'Path to the cv file', type: 'string', format: 'binary' })
+  @IsString()
+  @IsOptional()
+  cv?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  gender?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  education_level?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  specialization?: string;
+
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  confirm_password?: string;
 }

@@ -3,6 +3,7 @@ import { Model } from "mongoose";
 import { Injectable } from "@nestjs/common";
 import { Enrollment } from "src/schemas/Enrollement.schema";
 import { CreateEnrollmentDto } from "../dto/create-enrollment.dto";
+import { CreateProgressDto } from "../dto/create-progress.dto";
 @Injectable()
 export class EnrollmentRepository{
 
@@ -20,6 +21,21 @@ export class EnrollmentRepository{
 
       async getByuserId(user_id:string):Promise<Enrollment[]>{
         return await this.enrollmentModel.find({student:user_id}).populate('course');
+      }
+
+      async getById(id:string):Promise<any>{
+        const data= await this.enrollmentModel.findById(id).populate('course');
+        return {
+         Enrollment:data,
+         Course:data.course
+        }
+      }
+
+      async updateProgress(createProgressDto:CreateProgressDto):Promise<Enrollment>{
+        return this.enrollmentModel.findByIdAndUpdate(createProgressDto.enrollment_id,{
+          current_lesson:createProgressDto.lesson_id,
+          progress:createProgressDto.progress
+        },{new:true});
       }
 
 

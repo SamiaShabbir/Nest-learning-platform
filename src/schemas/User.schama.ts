@@ -30,5 +30,13 @@ export class User {
   token_id: Token;
   @Prop({required:false, default:null})
   picture: string;
+  @Prop({required:false, default:null})
+  cv: string;
+  @Prop({required:false, default:null})
+  gender: string;
+  @Prop({required:false, default:null})
+  education_level: string;
+  @Prop({required:false, default:null})
+  specialization: string;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

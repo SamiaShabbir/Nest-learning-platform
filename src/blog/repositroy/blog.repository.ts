@@ -16,17 +16,17 @@ export class BlogRepository {
       const createNew= await new this.blogModel(createblogDto);
        createNew.save();
 
-      for (const subcategory of createblogDto.subArraycategory) {
-        console.log('subcategory:',subcategory);
+  //     for (const subcategory of createblogDto.subArraycategory) {
+  //       console.log('subcategory:',subcategory);
 
-        let newsubcategory=new Types.ObjectId(subcategory);
-       const data= await this.blogModel.findByIdAndUpdate(
-      createNew._id,
-      { $addToSet: { sub_category: newsubcategory } },
-      { new: true }
-      ).exec();
+  //       let newsubcategory=new Types.ObjectId(subcategory);
+  //      const data= await this.blogModel.findByIdAndUpdate(
+  //     createNew._id,
+  //     { $addToSet: { sub_category: newsubcategory } },
+  //     { new: true }
+  //     ).exec();
 
-  }
+  // }
   const result=await this.getById(createNew.id);
   return result;
 

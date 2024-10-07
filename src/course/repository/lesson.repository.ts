@@ -13,13 +13,13 @@ export class LessonRepositpory{
   
       const newLesson=new this.lessonModel(createlessonDto);
        await newLesson.save();
-       for (const subcategory of createlessonDto.subArraycategory) {
-        const data= await this.lessonModel.findByIdAndUpdate(
-          newLesson._id,
-       { $addToSet: { sub_category: subcategory } },
-       { new: true }
-       ).exec();
-   }
+  //      for (const subcategory of createlessonDto.subArraycategory) {
+  //       const data= await this.lessonModel.findByIdAndUpdate(
+  //         newLesson._id,
+  //      { $addToSet: { sub_category: subcategory } },
+  //      { new: true }
+  //      ).exec();
+  //  }
    return newLesson;
     
       }
@@ -41,5 +41,7 @@ export class LessonRepositpory{
       }
 
     }
-
+    async nextLesson(course_id:string,lesson_no:string):Promise<any>{
+      return await this.lessonModel.find({course:course_id,lesson_no:lesson_no});
+    }
 }

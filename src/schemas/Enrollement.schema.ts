@@ -13,6 +13,9 @@ export class Enrollment {
   @Prop({default:0})
   progress:number;
   
+  @Prop({default:0})
+  lesson_no:number;
+
   @Prop({default: Date.now})
   enrollmentDate:Date;
 
@@ -21,5 +24,6 @@ export class Enrollment {
 
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Lesson' }]})
   current_lesson: Lesson;
+
 }
 export const EnrollmentSchema = SchemaFactory.createForClass(Enrollment);

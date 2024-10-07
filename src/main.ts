@@ -26,7 +26,7 @@ async function bootstrap() {
 
     //  console.log('Path to src folder:', srcFolderPath);
      app.useStaticAssets(join(srcFolderPath,'uploads')); // Serve uploaded files
-
+     app.enableCors();
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
 

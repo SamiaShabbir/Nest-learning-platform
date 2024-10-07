@@ -16,7 +16,7 @@ export class CourseService {
     async create(createcourseDto:CreateCourseDto){
         const createdCourse= await this.courseRepository.create(createcourseDto);
         await this.categoryRepository.updatePosts(createdCourse.category,createdCourse._id,'course');
-        await this.subcategoryRepository.updatePosts(createdCourse.sub_category,createdCourse._id,'course');
+        // await this.subcategoryRepository.updatePosts(createdCourse.sub_category,createdCourse._id,'course');
         return createdCourse;
     }
 

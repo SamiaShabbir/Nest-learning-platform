@@ -16,9 +16,9 @@ export class LessonService{
         throw new ForbiddenException("U can Not create more lessons");
       }
       createLessonDto.lesson_no=data.no_of_lessons+1;
-      const subCategoryIdsString=createLessonDto.sub_category_ids;
-      const subCategoryIdsArray = subCategoryIdsString.split(',').map(id => id.trim());
-      createLessonDto.subArraycategory=subCategoryIdsArray;
+      // const subCategoryIdsString=createLessonDto.sub_category_ids;
+      // const subCategoryIdsArray = subCategoryIdsString.split(',').map(id => id.trim());
+      // createLessonDto.subArraycategory=subCategoryIdsArray;
       const course = new Types.ObjectId(createLessonDto.course_id);
        createLessonDto.course=course;
        const check=this.courseRepository.checkcourseuser(createLessonDto.course,createLessonDto.user_id);
@@ -47,6 +47,10 @@ export class LessonService{
 
     async countLesson(course_id:string){
      return this.lessonRepository.countLesson(course_id);
+    }
+
+    async nextlesson(course_id:string,lesson_no){
+      return await this.lessonRepository.nextLesson(course_id,lesson_no);
     }
 
 

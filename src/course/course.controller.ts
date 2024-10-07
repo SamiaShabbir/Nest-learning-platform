@@ -132,7 +132,7 @@ export class CourseController {
               code:401,
               status:"failed",
               message:"No Data Found"
-            }; 
+            };
       }
 
       return{

@@ -50,12 +50,14 @@ export class UserController {
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileFieldsInterceptor([
     { name: 'picture', maxCount: 1 },
+    { name:'cv',maxCount:1 }
 ]))
   @ApiQuery({ name: 'role', enum: Role })
   createUser(@Body() createUserDto: CreateUserDto,
             @Query('role') role: Role = Role.USER,
-            @UploadedFiles() files: { picture?: Express.Multer.File[] }
+            @UploadedFiles() files: { picture?: Express.Multer.File[], cv?: Express.Multer.File[]}
           ) {
+            console.log(createUserDto);
             const projectRoot = path.resolve(__dirname, '../../');
             const uploadDir = path.join(projectRoot, 'src/uploads');
     
@@ -74,12 +76,24 @@ export class UserController {
             const file = files.picture ? files.picture[0] : null;
     
             const filePath = file ? saveFile(file, 'picture') : null;
+
+            const cv=files.cv ? files.cv[0] : null;
+
+            const cvfilePath = cv ? saveFile(cv, 'cv') : null;
     
     console.log('this_role',role);
     console.log(createUserDto);
-    return this.userService.createUser({...createUserDto,
-      picture:filePath
+    const data=this.userService.createUser({...createUserDto,
+      picture:filePath,
+      cv:cvfilePath
     },role);
+
+    return {
+      code:200,
+      status:"success",
+      message:"User Created Successfully",
+      data:data
+     }
   }
   @Roles(Role.ADMIN)
   @UseGuards(AuthGuard,RolesGuard)
@@ -96,7 +110,20 @@ export class UserController {
   @ApiResponse({ status: 200, description: 'Role Data'})
   async getRoles()
   {
-    return await this.userService.getRole();
+    const result= await this.userService.getRole();
+     if(!result){
+      return {
+        code:403,
+        status:"failed",
+        message:"Error Occured Try Again"
+      };
+     }
+     return {
+      code:200,
+      status:"success",
+      message:"User Fetched Successfully",
+      data:result
+     }
   }
   
   @Get(':id')
@@ -111,7 +138,13 @@ export class UserController {
     const findUser = this.userService.GetUserById(id);
     if (!findUser)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-    return findUser;
+   
+     return {
+      code:200,
+      status:"success",
+      message:"User Fetched Successfully",
+      data:findUser
+     }
   }
   @Roles(Role.ADMIN,Role.USER,Role.TEACHER)
   @UseGuards(AuthGuard,RolesGuard)
@@ -133,7 +166,13 @@ export class UserController {
     const updateUser = await this.userService.UpdateUser(id, updateUserDto);
     if (!updateUser)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
-    return updateUser;
+    return {
+      code:200,
+      status:"success",
+      message:"User Fetched Successfully",
+      data:updateUser
+     }
+    
   }
   @Roles(Role.ADMIN,Role.USER,Role.TEACHER)
   @UseGuards(AuthGuard,RolesGuard)

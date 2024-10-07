@@ -20,7 +20,12 @@ import { SubcategoryController } from './category/subcategory.controller';
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'src', 'uploads'),
       serveRoot: '/uploads',
-    }),
+    },
+    {
+      rootPath: join(__dirname, '..', 'src', 'admin'),
+      serveRoot: '/admin',
+    },),
+    
     MongooseModule.forRoot('mongodb://localhost:27017/learning_platform'),
     UserModule,
     AuthModule,
