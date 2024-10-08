@@ -6,7 +6,7 @@ import { Category } from './Category.schema';
 import { SubCategory } from './SubCategory';
 @Schema()
 export class Blog {
-  _id: string;  
+  _id: string;
 
   @Prop({required:true})
   title: string; 

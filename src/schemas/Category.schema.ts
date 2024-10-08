@@ -13,8 +13,8 @@ export class Category {
   @Prop({ required:false ,default:null ,type: mongoose.Schema.Types.ObjectId, ref: 'User'})
   user_id: User;
 
-  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'SubCategory' }]})
-  sub_categories: SubCategory[];
+  @Prop({default:"pending"})
+  status:string;
 
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Blog' }]})
   blog: Blog[];

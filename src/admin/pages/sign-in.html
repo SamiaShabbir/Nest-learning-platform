@@ -20,9 +20,9 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <!-- CSS Files -->
   <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.1.0" rel="stylesheet" />
-  <!-- Nepcha Analytics (nepcha.com) -->
-  <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
-  <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+
+  <script src="../assets/js/global.js" defer></script>
+
 </head>
 
 <body class="bg-gray-200">
@@ -157,12 +157,13 @@
   
           if (response.ok) {
             const data = await response.json();
-            // Handle successful login (e.g., redirect, show a success message)
             console.log("Login successful:", data);
-            // Redirect or update UI accordingly
+
+            localStorage.setItem("accessToken", data.accessToken);
+        
+            window.location.href = "dashboard.html";
           } else {
             const errorData = await response.json();
-            // Handle errors (e.g., show error message)
             console.error("Login failed:", errorData);
           }
         } catch (error) {

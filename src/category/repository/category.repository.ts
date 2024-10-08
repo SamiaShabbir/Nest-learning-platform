@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateCategory } from '../dto/create-category.dto';
 import { Category } from 'src/schemas/Category.schema';
+import { UpdateCategory } from '../dto/update-category.dto';
 
 export class CategoryRepository {
   constructor(
@@ -16,8 +17,12 @@ export class CategoryRepository {
     }
 
     async get():Promise<Category[]>{
-        return await this.categoryModel.find().populate(['user_id','sub_categories']);
+        return await this.categoryModel.find({status:"approved"}).populate(['user_id']);
     }
+
+   async getForAdmin():Promise<Category[]>{
+      return await this.categoryModel.find().populate(['user_id']);
+   }
 
     async updatePosts(catId:any,postId:string,type:string):Promise<Category>{
       if(type=='lesson'){
@@ -44,7 +49,11 @@ export class CategoryRepository {
             { $addToSet: { sub_categories: subcatId}})
     }
 
-    async update(catId:any,createcategoryDto:CreateCategory){
+    async update(catId:any,createcategoryDto:UpdateCategory){
         return await this.categoryModel.findByIdAndUpdate(catId,createcategoryDto)
+    }
+
+    async delete(catId:string):Promise<Boolean>{
+      return await this.categoryModel.findByIdAndDelete(catId);
     }
 }

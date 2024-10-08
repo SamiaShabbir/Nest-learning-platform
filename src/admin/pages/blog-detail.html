@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <title>Blog Detail</title>
+  <link rel="stylesheet" href="../assets/css/material-dashboard.css?v=3.1.0" />
+  <script src="../assets/js/global.js" defer></script>
+</head>
+
+<body class="g-sidenav-show bg-gray-200">
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <div class="container-fluid py-4">
+      <div id="post-detail" class="card my-4">
+        <!-- Post details will be injected here -->
+      </div>
+    </div>
+  </main>
+
+  <script>
+    async function fetchPostDetail() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const postId = urlParams.get('id');
+      
+      if (!postId) {
+        document.getElementById('post-detail').innerHTML = '<p>No post found.</p>';
+        return;
+      }
+
+      try {
+        const token = localStorage.getItem("accessToken"); // Retrieve the token from local storage
+    const response = await fetch(`http://localhost:3002/api/blog/${postId}`, {
+      method: 'GET', // Specify the method
+      headers: {
+        'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
+        'Content-Type': 'application/json', // Specify the content type
+      },
+    });
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        const post = data.data; // Assuming data structure is the same as before
+
+        document.getElementById('post-detail').innerHTML = `
+          <div class="card-header">
+            <img src="http://localhost:3002/${post.image}" class="img-fluid"  style="max-width: 300px; height: auto;" />
+            <h3>${post.title}</h3>
+          </div>
+          <div class="card-body">
+            <p>${post.body}</p>
+            <p><strong>Author:</strong> ${post.user_id.first_name} ${post.user_id.last_name}</p>
+          </div>
+        `;
+      } catch (error) {
+        document.getElementById('post-detail').innerHTML = '<p>Error fetching post details.</p>';
+        console.error('Error fetching post:', error);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', fetchPostDetail);
+  </script>
+</body>
+
+</html>

@@ -1,4 +1,4 @@
-import { Request,Controller, Post, UseGuards, Body, Get, Param, Put } from '@nestjs/common';
+import { Request,Controller, Post, UseGuards, Body, Get, Param, Put, Delete } from '@nestjs/common';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Role } from '../enums/role.enum';
@@ -6,6 +6,7 @@ import { Roles } from 'src/shared/acl/roles.decorator';
 import { RolesGuard } from 'src/shared/guards/roles.gaurd';
 import { CreateCategory } from './dto/create-category.dto';
 import { CategoryService } from './category.service';
+import { UpdateCategory } from './dto/update-category.dto';
 
 @Controller('category')
 @ApiTags('category')
@@ -24,6 +25,10 @@ export class CategoryController {
         @Body()   createcategoryDto:CreateCategory
     ){
         createcategoryDto.user_id=req.user.id;
+        if(req.user.role_id.name=="admin"){
+         createcategoryDto.status="approved";
+        }        
+        console.log(req.user.role_id.name);
      const result =await this.categoryService.create(createcategoryDto);
      if(!result || result==null){
         return{
@@ -58,6 +63,48 @@ export class CategoryController {
      }
     }
 
+    @Get('admin')
+    @Roles(Role.ADMIN)
+    @UseGuards(AuthGuard,RolesGuard)
+    @ApiBearerAuth()
+    async getForAdmin(){
+     const result =await this.categoryService.getforAdmin();
+     if(!result || result==null || result.length === 0){
+        return{
+            code:401,
+            status:"failed",
+            message:"Something Went Wrong Try Again"
+        }        
+     }
+     return {
+        code:200,
+        status:"success",
+        message:"Category Fetched Sucessfully",
+        data:result
+     }
+    }
+    
+    @Get('/admin/:cat_id')
+    @Roles(Role.ADMIN)
+    @UseGuards(AuthGuard,RolesGuard)
+    @ApiBearerAuth()
+    async ApproveReject(){
+     const result =await this.categoryService.getforAdmin();
+     if(!result || result==null || result.length === 0){
+        return{
+            code:401,
+            status:"failed",
+            message:"Something Went Wrong Try Again"
+        }        
+     }
+     return {
+        code:200,
+        status:"success",
+        message:"Category Fetched Sucessfully",
+        data:result
+     }
+    }
+
     @Get(':id')
     async getById(@Param('id') id:string){
      const result =await this.categoryService.getById(id);
@@ -77,7 +124,7 @@ export class CategoryController {
     }
 
     @Put(':id')
-    @Roles(Role.TEACHER)
+    @Roles(Role.TEACHER,Role.ADMIN)
     @UseGuards(AuthGuard,RolesGuard)
     @ApiBearerAuth()
     @ApiParam({
@@ -85,10 +132,10 @@ export class CategoryController {
       description: 'Enter the blogId'
     })
     @ApiBody({
-      type: CreateCategory,
+      type: UpdateCategory,
     })
     async update (@Param('id') id:string,
-    @Body() createcreateDto:CreateCategory){
+    @Body() createcreateDto:UpdateCategory){
       
       const result= await this.categoryService.update(id,createcreateDto);
       console.log(result);
@@ -106,6 +153,27 @@ export class CategoryController {
         message:"Category updated successfully",
         data:result
       }
+    }
+
+    @Delete(':id')
+    @Roles(Role.ADMIN)
+    @UseGuards(AuthGuard,RolesGuard)
+    @ApiBearerAuth()
+    async deleteCourse(@Param('id') id:string){
+       
+       const result= await this.categoryService.delete(id);
+       if(!result){
+        return {
+          code:403,
+          status:"failed",
+          message:"Error Occured Try Again"
+        };
+       }
+       return {
+        code:200,
+        status:"success",
+        message:"Category Deleted Successfully"
+       }
     }
 
 }

@@ -83,16 +83,22 @@ export class UserController {
     
     console.log('this_role',role);
     console.log(createUserDto);
-    const data=this.userService.createUser({...createUserDto,
+    const result=this.userService.createUser({...createUserDto,
       picture:filePath,
       cv:cvfilePath
     },role);
-
+    if(!result || result==null){
+      return {
+          code:401,
+          status:"failed",
+          message:"Something Went Wrong"
+        }; 
+  }
     return {
       code:200,
       status:"success",
       message:"User Created Successfully",
-      data:data
+      data: result
      }
   }
   @Roles(Role.ADMIN)

@@ -22300,32 +22300,32 @@ body.dark-version {
 
 .input-group.input-group-dynamic.is-focused label,
 .input-group.input-group-static.is-focused label {
-  color: #e91e63;
+  color: #9f35f2;
 }
 
 .input-group.input-group-dynamic.is-focused.is-valid label,
 .input-group.input-group-static.is-focused.is-valid label {
-  color: #4CAF50;
+  color: #9f35f2;
 }
 
 .input-group.input-group-dynamic.is-focused.is-valid .form-control,
 .input-group.input-group-dynamic.is-focused.is-valid .form-control:focus,
 .input-group.input-group-static.is-focused.is-valid .form-control,
 .input-group.input-group-static.is-focused.is-valid .form-control:focus {
-  background-image: linear-gradient(0deg, #4CAF50 2px, rgba(156, 39, 176, 0) 0), linear-gradient(0deg, #d2d2d2 1px, rgba(209, 209, 209, 0) 0);
+  background-image: linear-gradient(0deg, #9f35f2 2px, rgba(156, 39, 176, 0) 0), linear-gradient(0deg, #9f35f2 1px, rgba(209, 209, 209, 0) 0);
   border-radius: 0 !important;
 }
 
 .input-group.input-group-dynamic.is-focused.is-invalid label,
 .input-group.input-group-static.is-focused.is-invalid label {
-  color: #F44335;
+  color: #9f35f2;
 }
 
 .input-group.input-group-dynamic.is-focused.is-invalid .form-control,
 .input-group.input-group-dynamic.is-focused.is-invalid .form-control:focus,
 .input-group.input-group-static.is-focused.is-invalid .form-control,
 .input-group.input-group-static.is-focused.is-invalid .form-control:focus {
-  background-image: linear-gradient(0deg, #F44335 2px, rgba(156, 39, 176, 0) 0), linear-gradient(0deg, #d2d2d2 1px, rgba(209, 209, 209, 0) 0);
+  background-image: linear-gradient(0deg, #9f35f2 2px, rgba(156, 39, 176, 0) 0), linear-gradient(0deg, #9f35f2 1px, rgba(209, 209, 209, 0) 0);
   border-radius: 0 !important;
 }
 
@@ -22333,7 +22333,7 @@ body.dark-version {
 .input-group.input-group-dynamic.is-valid .form-control:focus,
 .input-group.input-group-static.is-valid .form-control,
 .input-group.input-group-static.is-valid .form-control:focus {
-  background-image: linear-gradient(0deg, #4CAF50 2px, rgba(156, 39, 176, 0) 0), linear-gradient(0deg, #d2d2d2 1px, rgba(209, 209, 209, 0) 0);
+  background-image: linear-gradient(0deg, #9f35f2 2px, rgba(156, 39, 176, 0) 0), linear-gradient(0deg, #9f35f2 1px, rgba(209, 209, 209, 0) 0);
   border-radius: 0 !important;
 }
 
@@ -22414,9 +22414,9 @@ body.dark-version {
 
 .input-group.input-group-outline.is-focused .form-label+.form-control,
 .input-group.input-group-outline.is-filled .form-label+.form-control {
-  border-color: #e91e63 !important;
+  border-color: #9f35f2 !important;
   border-top-color: transparent !important;
-  box-shadow: inset 1px 0 #e91e63, inset -1px 0 #e91e63, inset 0 -1px #e91e63;
+  box-shadow: inset 1px 0 #9f35f2, inset -1px 0 #9f35f2, inset 0 -1px #9f35f2;
 }
 
 .input-group.input-group-outline.is-focused .form-label,
@@ -22424,7 +22424,7 @@ body.dark-version {
   width: 100%;
   height: 100%;
   font-size: 0.6875rem !important;
-  color: #e91e63;
+  color: #9f35f2;
   display: flex;
   line-height: 1.25 !important;
 }
@@ -22440,8 +22440,8 @@ body.dark-version {
 .input-group.input-group-outline.is-focused .form-label:after,
 .input-group.input-group-outline.is-filled .form-label:before,
 .input-group.input-group-outline.is-filled .form-label:after {
-  border-top-color: #e91e63;
-  box-shadow: inset 0 1px #e91e63;
+  border-top-color: #9f35f2;
+  box-shadow: inset 0 1px #9f35f2;
 }
 
 .input-group.input-group-outline.is-valid .form-control {
@@ -22453,22 +22453,22 @@ body.dark-version {
 
 .input-group.input-group-outline.is-valid.is-focused .form-label+.form-control,
 .input-group.input-group-outline.is-valid.is-filled .form-label+.form-control {
-  border-color: #4CAF50 !important;
-  box-shadow: inset 1px 0 #4CAF50, inset -1px 0 #4CAF50, inset 0 -1px #4CAF50;
+  border-color: #9f35f2 !important;
+  box-shadow: inset 1px 0 #9f35f2, inset -1px 0 #9f35f2, inset 0 -1px #9f35f2;
   border-top-color: transparent !important;
 }
 
 .input-group.input-group-outline.is-valid.is-focused .form-label,
 .input-group.input-group-outline.is-valid.is-filled .form-label {
-  color: #4CAF50;
+  color: #9f35f2;
 }
 
 .input-group.input-group-outline.is-valid.is-focused .form-label:before,
 .input-group.input-group-outline.is-valid.is-focused .form-label:after,
 .input-group.input-group-outline.is-valid.is-filled .form-label:before,
 .input-group.input-group-outline.is-valid.is-filled .form-label:after {
-  border-top-color: #4CAF50;
-  box-shadow: inset 0 1px #4CAF50;
+  border-top-color: #9f35f2;
+  box-shadow: inset 0 1px #9f35f2;
 }
 
 .input-group.input-group-outline.is-invalid .form-control {
@@ -22480,22 +22480,22 @@ body.dark-version {
 
 .input-group.input-group-outline.is-invalid.is-focused .form-label+.form-control,
 .input-group.input-group-outline.is-invalid.is-filled .form-label+.form-control {
-  border-color: #F44335 !important;
-  box-shadow: inset 1px 0 #F44335, inset -1px 0 #F44335, inset 0 -1px #F44335;
+  border-color: #9f35f2 !important;
+  box-shadow: inset 1px 0 #9f35f2, inset -1px 0 #9f35f2, inset 0 -1px #9f35f2;
   border-top-color: transparent !important;
 }
 
 .input-group.input-group-outline.is-invalid.is-focused .form-label,
 .input-group.input-group-outline.is-invalid.is-filled .form-label {
-  color: #F44335;
+  color: #9f35f2;
 }
 
 .input-group.input-group-outline.is-invalid.is-focused .form-label:before,
 .input-group.input-group-outline.is-invalid.is-focused .form-label:after,
 .input-group.input-group-outline.is-invalid.is-filled .form-label:before,
 .input-group.input-group-outline.is-invalid.is-filled .form-label:after {
-  border-top-color: #F44335;
-  box-shadow: inset 0 1px #F44335;
+  border-top-color: #9f35f2;
+  box-shadow: inset 0 1px #9f35f2;
 }
 
 .input-group.input-group-outline.input-group-sm .form-label,

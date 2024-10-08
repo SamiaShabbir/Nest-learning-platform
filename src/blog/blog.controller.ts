@@ -112,6 +112,29 @@ export class BlogController {
     }
   }
 
+  @Get('admin')
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard,RolesGuard)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 200, description: 'All Blog Data' })
+  @ApiOperation({ summary: 'Api to show the all blogs to any viewer' })
+  async GetAllForAdmin(){
+    const result=await this.blogService.Get();
+    if(!result){
+      return {
+        code:401,
+        status:"failed",
+        message:"No Data Found"
+     }  
+    }
+    return {
+      code:200,
+      status:"success",
+      message:"Data Fetched Successfully",
+      data:result
+    }
+  }
+
   @Get(':id')
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
@@ -170,7 +193,7 @@ export class BlogController {
   }
 
   @Delete(':id')
-  @Roles(Role.TEACHER,Role.USER)
+  @Roles(Role.TEACHER,Role.ADMIN)
   @UseGuards(AuthGuard,RolesGuard)
   @ApiBearerAuth()
   async deleteBlog(@Param('id') id:string){

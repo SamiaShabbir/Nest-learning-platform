@@ -37,17 +37,31 @@ export class UserService {
     const { password, ...userDetails } = createUserDto;
     const hashedPassword = await this.hashPassword(password);
 
-    const newUser = new this.userModel({
+    const newUser = await new this.userModel({
       ...userDetails,
       password: hashedPassword,
       token_id:null,
       role_id:Role.id
     });
 
-    return newUser.save();
+    return await newUser.save();
   }
-  GetUsers() {
-    return this.userModel.find().populate('role_id');
+  async GetUsers() {
+    try {
+      const users = await this.userModel.find().populate('role_id');
+  
+      // Categorizing users into students and teachers
+      const students = users.filter(user => user.role_id.name === 'user');
+      const teachers = users.filter(user => user.role_id.name === 'teacher');
+  
+      return {
+        students,
+        teachers
+      };
+    } catch (error) {
+      console.error("Error fetching users:", error);
+      throw new Error("Could not fetch users");
+    }
   }
   GetUserById(id: string) {
     return this.userModel.findById(id);

@@ -14,7 +14,7 @@ export class BlogRepository {
     {
 
       const createNew= await new this.blogModel(createblogDto);
-       createNew.save();
+       
 
   //     for (const subcategory of createblogDto.subArraycategory) {
   //       console.log('subcategory:',subcategory);
@@ -27,8 +27,7 @@ export class BlogRepository {
   //     ).exec();
 
   // }
-  const result=await this.getById(createNew.id);
-  return result;
+  return await createNew.save();;
 
       }
 
@@ -37,7 +36,7 @@ export class BlogRepository {
     }
 
     async getById(blogId: string): Promise<Blog> {
-      return await this.blogModel.findById(blogId);
+      return await this.blogModel.findById(blogId).populate(['user_id','likes']);
     }
 
     async getAll():Promise<Blog[]>{
@@ -64,5 +63,9 @@ export class BlogRepository {
         },  
         { new: true }
       )
+    }
+
+    async all():Promise<Blog[]>{
+      return await this.blogModel.find().populate(['user_id','likes']);
     }
 }
