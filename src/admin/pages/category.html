@@ -145,7 +145,13 @@
         'Content-Type': 'application/json',
       },
     });
-
+    if (response.status === 401) {
+      // Unauthorized - remove token and redirect
+      localStorage.removeItem("accessToken");
+      alert("Your session has expired. Please log in again.");
+      window.location.href = '../login.html'; // Change this to your login page
+      return;
+    }
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -278,7 +284,7 @@ function attachEventListeners() {
               'Content-Type': 'application/json',
             },
           });
-
+          
           if (deleteResponse.ok) {
             alert("Category deleted successfully.");
             fetchCategories(); // Refresh the list of categories

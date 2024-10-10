@@ -20,7 +20,7 @@ export class EnrollmentRepository{
       }
 
       async getByuserId(user_id:string):Promise<Enrollment[]>{
-        return await this.enrollmentModel.find({student:user_id}).populate('course');
+        return await this.enrollmentModel.find({student:user_id}).populate(['course','student']);
       }
 
       async getById(id:string):Promise<any>{

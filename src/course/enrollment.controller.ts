@@ -80,10 +80,10 @@ export class EnrollmentController {
 
     @Get('user/:user_id')
     @ApiParam({name: 'user_id'})
-    @Roles(Role.USER)
+    @Roles(Role.USER,Role.ADMIN)
     @ApiBearerAuth()
     @UseGuards(AuthGuard, RolesGuard)
-    @ApiOperation({ summary: 'For Teacher to get Enrollments' })
+    @ApiOperation({ summary: 'For student and admin to get Enrollments' })
     async GetEnrollmentByUserId(@Param('user_id') id: string){
         if (!id || id.length !== 24 || !/^[0-9a-fA-F]{24}$/.test(id)) {
             throw new BadRequestException('Invalid userId format. Must be a 24-character hex string.');

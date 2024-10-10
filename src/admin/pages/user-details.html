@@ -2,18 +2,28 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
-  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
-  <title>Admin Panel-Blogs</title>
-  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
-  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
-  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
-  <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.1.0" rel="stylesheet" />
-  <script src="../assets/js/global.js" defer></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+    <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+    <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+    <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.1.0" rel="stylesheet" />
+  <title>Admin Panel - User Details</title>
+  <style>
+  
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      margin-left: 6%;
+    }
+  </style>
 </head>
 
 <body class="g-sidenav-show bg-gray-200">
@@ -36,7 +46,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/courses.html">
+          <a class="nav-link text-white" href="../pages/courses.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
             </div>
@@ -44,7 +54,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/blogs.html">
+          <a class="nav-link text-white" href="../pages/blogs.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">receipt_long</i>
             </div>
@@ -52,7 +62,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/instructor.html">
+          <a class="nav-link text-white" href="../pages/instructor.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">view_in_ar</i>
             </div>
@@ -60,7 +70,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/category.html">
+          <a class="nav-link text-white" href="../pages/category.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">notifications</i>
             </div>
@@ -71,7 +81,7 @@
           <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white " href="../pages/profile.html">
+          <a class="nav-link text-white" href="../pages/profile.html">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">person</i>
             </div>
@@ -81,72 +91,97 @@
       </ul>
     </div>
   </aside>
+  
   <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
     <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
       <div class="container-fluid py-1 px-3">
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Blog Detail</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">User Details</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0">Blog Detail</h6>
+          <h6 class="font-weight-bolder mb-0">User Details</h6>
         </nav>
       </div>
     </nav>
+    
     <div class="container-fluid py-4">
       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
         <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
-          <h6 class="text-white text-capitalize ps-3">Blog Detail Page</h6>
+          <h6 class="text-white text-capitalize ps-3">User Enrollment Details</h6>
         </div>
       </div>
-      <div id="post-detail" class="card my-4">
-        <!-- Post details will be injected here -->
+      <div id="user-detail" class="card my-4" style="width: 96%;  margin-left: 2%;">
+        <!-- User details will be injected here -->
       </div>
     </div>
   </main>
 
   <script>
-    async function fetchPostDetail() {
+    async function fetchUserDetails() {
       const urlParams = new URLSearchParams(window.location.search);
-      const postId = urlParams.get('id');
+      const userId = urlParams.get('id');
       
-      if (!postId) {
-        document.getElementById('post-detail').innerHTML = '<p>No post found.</p>';
+      if (!userId) {
+        document.getElementById('user-detail').innerHTML = '<p>No user found.</p>';
         return;
       }
 
       try {
         const token = localStorage.getItem("accessToken"); // Retrieve the token from local storage
-    const response = await fetch(`http://localhost:3002/api/blog/${postId}`, {
-      method: 'GET', // Specify the method
-      headers: {
-        'Authorization': `Bearer ${token}`, // Include the token in the Authorization header
-        'Content-Type': 'application/json', // Specify the content type
-      },
-    });
+        const response = await fetch(`http://localhost:3002/api/enrollment/user/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.status === 401) {
+      // Unauthorized - remove token and redirect
+      localStorage.removeItem("accessToken");
+    }
+
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        const data = await response.json();
-        const post = data.data; // Assuming data structure is the same as before
 
-        document.getElementById('post-detail').innerHTML = `
-          <div class="card-header" style="text-align: center;">
-            <h3 class="align-middle">${post.title}</h3>
-            <img src="http://localhost:3002/${post.image}" class="img-fluid"  style="max-width: 300px; height: auto;" />
-          </div>
+        const data = await response.json();
+        const user = data.data[0].student; // Assuming the first enrollment contains user details
+        const enrollment = data.data;
+
+        // Display user details
+        document.getElementById('user-detail').innerHTML = `
+          <div class="card-header" style="display: flex; align-items: center;">
+            <img src="http://localhost:3002/${user.picture || '../assets/img/default-profile.png'}" alt="Profile Picture" class="profile-pic">
+            <div style="    margin-left: auto; text-align: left; margin-right: 54%;">
+            <p><strong>Name:</strong>                    ${user.first_name} ${user.last_name}</p>
+            <p><strong>Email:</strong>                   ${user.email}</p>
+            <p><strong>Username:</strong>                ${user.username}</p>
+            <p><strong>Age:</strong>                     ${user.age}</p>
+            <p><strong>Enrollment Date:</strong>         ${new Date(enrollment[0].enrollmentDate).toLocaleDateString()}</p>
+            </div>
+            </div>
           <div class="card-body">
-            <p>${post.body}</p>
-            <p><strong>Author:</strong> ${post.user_id.first_name} ${post.user_id.last_name}</p>
+            <h5>Enrollments:</h5>
+            <ul class="enrollment-list">
+              ${enrollment.map(e => `
+                <li>
+                  <strong>Course Title:</strong> ${e.course[0].title} <br>
+                  <strong>Progress:</strong> ${e.progress}% <br>
+                  <strong>Enrollment Date:</strong> ${new Date(e.enrollmentDate).toLocaleDateString()}
+                </li>
+              `).join('')}
+            </ul>
           </div>
         `;
       } catch (error) {
-        document.getElementById('post-detail').innerHTML = '<p>Error fetching post details.</p>';
-        console.error('Error fetching post:', error);
+        document.getElementById('user-detail').innerHTML = '<p class="text-center text-black" style="margin-top:3%">No Enrollment Found</p>';
+        console.error('Error fetching user:', error);
       }
     }
 
-    document.addEventListener('DOMContentLoaded', fetchPostDetail);
+    document.addEventListener('DOMContentLoaded', fetchUserDetails);
   </script>
 </body>
 

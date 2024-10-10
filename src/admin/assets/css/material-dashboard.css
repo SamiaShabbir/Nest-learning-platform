@@ -22770,7 +22770,7 @@ label,
 }
 
 .bg-gradient-dark {
-  background-image: linear-gradient( 85.2deg,  rgba(33,3,40,1) 7.5%, rgba(65,5,72,1) 88.7% );
+  background-image: linear-gradient(85.2deg, #763bf9 7.5%, #9853ee 88.7%);
 }
 
 .bg-gradient-faded-primary {

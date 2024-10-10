@@ -146,6 +146,11 @@
             'Content-Type': 'application/json',
           },
         });
+           if (response.status === 401) {
+      // Unauthorized - remove token and redirect
+      localStorage.removeItem("accessToken");
+    }
+    
         if (!response.ok) {
           console.log(response);
           throw new Error("Network response was not ok");
