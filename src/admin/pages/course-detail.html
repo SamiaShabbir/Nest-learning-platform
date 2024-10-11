@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="../assets/img/apple-icon.png">
+  <link rel="icon" type="image/png" href="../assets/img/favicon.png">
+  <title>Admin Panel-Course Detail</title>
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+  <link href="../assets/css/nucleo-icons.css" rel="stylesheet" />
+  <link href="../assets/css/nucleo-svg.css" rel="stylesheet" />
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+  <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.1.0" rel="stylesheet" />
+  <script src="../assets/js/global.js" defer></script>
+</head>
+
+<body class="g-sidenav-show bg-gray-200">
+   <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-gradient-dark" id="sidenav-main">
+    <div class="sidenav-header">
+      <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+      <a class="navbar-brand m-0" href="https://demos.creative-tim.com/material-dashboard/pages/dashboard" target="_blank">
+        <img src="../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
+        <span class="ms-1 font-weight-bold text-white"> Admin Panel </span>
+      </a>
+    </div>
+    <hr class="horizontal light mt-0 mb-2">
+    <div class="collapse navbar-collapse w-auto " id="sidenav-collapse-main">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link text-white active bg-gradient-primary" href="../pages/users.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">dashboard</i>
+            </div>
+            <span class="nav-link-text ms-1">Users</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/courses.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">table_view</i>
+            </div>
+            <span class="nav-link-text ms-1">Courses</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/blogs.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">receipt_long</i>
+            </div>
+            <span class="nav-link-text ms-1">Blogs</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/instructor.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">view_in_ar</i>
+            </div>
+            <span class="nav-link-text ms-1">Instructor</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="../pages/category.html">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">notifications</i>
+            </div>
+            <span class="nav-link-text ms-1">Category</span>
+          </a>
+        </li>
+        <li class="nav-item mt-3">
+          <h6 class="ps-4 ms-2 text-uppercase text-xs text-white font-weight-bolder opacity-8">Account pages</h6>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-white " href="javascript:void(0);" onclick="logout()">
+            <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
+              <i class="material-icons opacity-10">person</i>
+            </div>
+            <span class="nav-link-text ms-1">Logout</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+    <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur" data-scroll="true">
+      <div class="container-fluid py-1 px-3">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+            <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Course Detail</li>
+          </ol>
+          <h6 class="font-weight-bolder mb-0">Course Detail</h6>
+        </nav>
+      </div>
+    </nav>
+
+    <div class="container-fluid py-4">
+      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+        <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+          <h6 class="text-white text-capitalize ps-3">Course Detail Page</h6>
+        </div>
+      </div>
+      <div id="post-detail" class="card my-4">
+        <!-- Post details will be injected here -->
+      </div>
+    </div>
+  </main>
+  <script src="../assets/js/logout.js"></script>
+
+  <script>
+async function fetchPostDetail() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const postId = urlParams.get('id');
+
+  if (!postId) {
+    document.getElementById('post-detail').innerHTML = '<p>No course found.</p>';
+    return;
+  }
+
+  try {
+    const token = localStorage.getItem("accessToken");
+    const response = await fetch(`http://localhost:3002/api/course/${postId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data = await response.json();
+    const course = data.data.course; // Adjusted based on your JSON structure
+
+    // Constructing the HTML for course details
+    let lessonsHtml = '';
+    if (course.lessons && course.lessons.length > 0) {
+      lessonsHtml = '<h5>Lessons:</h5><ul>';
+      course.lessons.forEach(lesson => {
+        lessonsHtml += `
+          <li>
+            <strong>${lesson.title}</strong>: ${lesson.description}
+            <br>
+            <a href="http://localhost:3002/${lesson.file}" target="_blank">Download PDF</a>
+            <br>
+            <a href="http://localhost:3002/${lesson.video}" target="_blank">Watch Video</a>
+          </li>
+        `;
+      });
+      lessonsHtml += '</ul>';
+    } else {
+      lessonsHtml = '<p>No lessons available for this course.</p>';
+    }
+
+    document.getElementById('post-detail').innerHTML = `
+      <div class="card-header" style="text-align: center;">
+        <h3 class="align-middle">${course.title}</h3>
+        <img src="http://localhost:3002/${course.image}" class="img-fluid" style="max-width: 300px; height: auto;" />
+      </div>
+      <div class="card-body">
+        <p><strong>Description:</strong> ${course.description}</p>
+        <p><strong>Author:</strong> <a href="instructor-detail.html?id=${course.user_id._id}">${course.user_id.first_name} ${course.user_id.last_name}</p></a>
+        <p><strong>Level:</strong> ${course.level}</p>
+        <p><strong>Key Points:</strong> ${course.key_points}</p>
+        <p><strong>Likes:</strong> ${course.likeCount}</p>
+        ${lessonsHtml}
+      </div>
+    `;
+  } catch (error) {
+    document.getElementById('post-detail').innerHTML = '<p>Error fetching course details.</p>';
+    console.error('Error fetching course:', error);
+  }
+}
+
+    document.addEventListener('DOMContentLoaded', fetchPostDetail);
+  </script>
+</body>
+
+</html>

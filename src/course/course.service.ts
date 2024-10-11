@@ -48,15 +48,23 @@ export class CourseService {
 
     async delete(courseId:string,userId:any){
         const checkuser=await this.courseRepository.getById(courseId);
-        if(checkuser.user_id==userId){
+        // if(checkuser.user_id==userId){
             return await this.courseRepository.delete(courseId);
 
-        }
-        throw new ForbiddenException("you don't have permission to do this action");
+        // }
+        // throw new ForbiddenException("you don't have permission to do this action");
     }
 
     async updateLike(courseId:string,likeId:string){
         
         return await this.courseRepository.updateLike(courseId,likeId);
+    }
+
+    async getforAdmin(){
+        return await this.courseRepository.getforAdmin();
+    }
+
+    async verifyCourse(id:string){
+        return await this.courseRepository.verifycourse(id);
     }
 }

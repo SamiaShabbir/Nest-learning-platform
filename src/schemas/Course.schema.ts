@@ -19,6 +19,9 @@ export class Course {
   @Prop({required:false,default:1})
   status: number;
 
+  @Prop({required:false,default:false})
+  is_verified: boolean;
+
   @Prop({ required:false ,default:null ,type: mongoose.Schema.Types.ObjectId, ref: 'User'})
   user_id: User;
 
@@ -34,6 +37,12 @@ export class Course {
   @Prop({required:false})
   key_points:string;
 
+  @Prop({required:false})
+  image:string;
+
+  @Prop({required:false})
+  sub_category:string;
+
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'CourseLike' }]})
   likes: CourseLike[];
 
@@ -42,10 +51,5 @@ export class Course {
 
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Cateogory' }]})
   category: Category;
-
-  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'SubCateogory' }]})
-  sub_category: SubCategory[];
-
-
 }
 export const CourseSchema = SchemaFactory.createForClass(Course);

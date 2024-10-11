@@ -53,7 +53,7 @@ export class UserController {
     { name:'cv',maxCount:1 }
 ]))
   @ApiQuery({ name: 'role', enum: Role })
-  createUser(@Body() createUserDto: CreateUserDto,
+  async createUser(@Body() createUserDto: CreateUserDto,
             @Query('role') role: Role = Role.USER,
             @UploadedFiles() files: { picture?: Express.Multer.File[], cv?: Express.Multer.File[]}
           ) {
@@ -83,7 +83,7 @@ export class UserController {
     
     console.log('this_role',role);
     console.log(createUserDto);
-    const result=this.userService.createUser({...createUserDto,
+    const result=await this.userService.createUser({...createUserDto,
       picture:filePath,
       cv:cvfilePath
     },role);
@@ -106,8 +106,8 @@ export class UserController {
   @ApiBearerAuth()
   @Get()
   @ApiResponse({ status: 201, description: 'User Data'})
-  GetUser() {
-    return this.userService.GetUsers();
+ async GetUser() {
+    return await this.userService.GetUsers();
   }
   @Roles(Role.ADMIN)
   @UseGuards(AuthGuard)
@@ -138,10 +138,10 @@ export class UserController {
   @UseGuards(AuthGuard)
   @ApiParam({name:'id'})
   @ApiBearerAuth()
-  getUserbyId(@Param('id') id: string) {
+  async getUserbyId(@Param('id') id: string) {
     const isValid = mongoose.Types.ObjectId.isValid(id);
     if (!isValid) throw new BadRequestException('Please enter a valid id');
-    const findUser = this.userService.GetUserById(id);
+    const findUser = await this.userService.GetUserById(id);
     if (!findUser)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
    
@@ -207,4 +207,34 @@ export class UserController {
     return this.userService.createRole();
   } 
 
+  @Patch('verify/:id')
+  @Roles(Role.ADMIN)
+  @ApiBearerAuth()
+  @ApiResponse({ status: 201, description: 'User Data'})
+  @UseGuards(AuthGuard,RolesGuard)
+  @ApiParam({name:'id'})
+  @ApiBearerAuth()
+  async verifyTeacher(@Param('id') id: string) {
+    const isValid = mongoose.Types.ObjectId.isValid(id);
+    if (!isValid) throw new BadRequestException('Please enter a valid id');
+    const findUser=await this.userService.GetUserById(id);
+    if(!findUser){
+      throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+    }
+    if(findUser.is_verified==true){
+      return {
+        code:401,
+        status:"failed",
+        message:"User is already verified",
+       }
+    }
+    const updateUser = await this.userService.verifyTeacher(id);
+    if (!updateUser)
+     return {
+      code:200,
+      status:"success",
+      message:"User verified successfully Successfully",
+      data:updateUser
+     }
+  }
 }

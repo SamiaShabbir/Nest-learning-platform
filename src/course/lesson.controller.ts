@@ -123,5 +123,22 @@ export class LessonController {
         message:"Course Deleted Successfully"
        }
     }
-
+    
+    @Get('bycourse/:id')
+    async getlessonbyCourseId(@Param('id') id:string){
+       const result= await this.lessonService.lessonbyCourseId(id);
+       if(!result){
+        return {
+          code:403,
+          status:"failed",
+          message:"Error Occured Try Again"
+        };
+       }
+       return {
+        code:200,
+        status:"success",
+        message:"Course Fetched Successfully",
+        data:result
+       }
+    }
 }

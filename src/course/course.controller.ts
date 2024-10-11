@@ -1,11 +1,14 @@
-import { Request, Body, Controller, Post, UseGuards, Get, Param, BadRequestException, Put, Delete } from '@nestjs/common';
+import { Request, Body, Controller, Post, UseGuards, Get, Param, BadRequestException, Put, Delete, UploadedFile, UseInterceptors, Patch } from '@nestjs/common';
 import { CourseService } from './course.service';
-import { ApiBearerAuth, ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { Role } from 'src/enums/role.enum';
 import { Roles } from 'src/shared/acl/roles.decorator';
 import { RolesGuard } from 'src/shared/guards/roles.gaurd';
 import { CreateCourseDto } from './dto/createcourse.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import * as path from 'path';
+import * as fs from 'fs';
 
 @Controller('course')
 @ApiTags('course')
@@ -13,6 +16,7 @@ export class CourseController {
     constructor(private courseService: CourseService) {}
 
     @Post('create')
+    @ApiConsumes('multipart/form-data')
     @Roles(Role.TEACHER)
     @UseGuards(AuthGuard,RolesGuard)
     @ApiOperation({ summary: 'Api to create course' })
@@ -22,9 +26,30 @@ export class CourseController {
       description: 'Json structure for blog object',
     })
     @ApiBearerAuth()
-    async CreateCourse(@Request() req,@Body() createcourseDto:CreateCourseDto) {
+    @UseInterceptors(FileInterceptor('image')) // 'file' is the name of the form field
+    async CreateCourse(@Request() req,@Body() createcourseDto:CreateCourseDto,
+    @UploadedFile() image: Express.Multer.File
+) {
+      const projectRoot = path.resolve(__dirname, '../../');
+      const uploadDir = path.join(projectRoot, 'src/uploads');
+    
+      if (!fs.existsSync(uploadDir)) {
+          fs.mkdirSync(uploadDir, { recursive: true }); // Create the directory and any necessary parent directories
+      }
+    
+      const saveFile = (file: Express.Multer.File, fieldName: string) => {
+          const fileName = `${fieldName}-${Date.now()}-${file.originalname}`;
+    
+          const filePath = path.join(uploadDir, fileName);
+          fs.writeFileSync(filePath, file.buffer);
+          return path.join('uploads', fileName); // Return the relative path
+      };
+    
+      const file = image;
+    
+      const filePath = file ? saveFile(file, 'courseimage') : null;
       createcourseDto.user_id=req.user.id;
-      const result=await this.courseService.create(createcourseDto);
+      const result=await this.courseService.create({...createcourseDto,image:filePath});
       if(!result || result==null){
         return {
            code:401,
@@ -40,6 +65,29 @@ export class CourseController {
      }
     }
 
+
+    @Get('admin')
+    @Roles(Role.ADMIN)
+    @UseGuards(AuthGuard,RolesGuard)
+    @ApiBearerAuth()
+    async GetForAdmin(){
+        const result =await this.courseService.getforAdmin();
+        console.log(result);
+        if(!result || result==null || result.length===0){
+            return {
+                code:401,
+                status:"failed",
+                message:"No Data Found"
+              };
+        }
+  
+        return{
+            code:200,
+            status:"success",
+            message:"Courses Fetched Successfully",
+            data:result
+        }
+    }
     @Get('all-course')
     async GetAll(){
         const result =await this.courseService.get();
@@ -119,10 +167,38 @@ export class CourseController {
         data:result
     }
   }
+  @Patch('admin/:id')
+  @ApiParam({
+    name: 'id',
+    description: 'enter the course Id',
+  })
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard,RolesGuard)
+  @ApiBearerAuth()
+  async verifycourse(@Param('id') id:string){
+    console.log("courseId",id);
+    if (!id || id.length !== 24 || !/^[0-9a-fA-F]{24}$/.test(id)) {
+        throw new BadRequestException('Invalid userId format. Must be a 24-character hex string.');
+      }
+    const result =await this.courseService.verifyCourse(id);
+    if(!result || result==null){
+        return {
+            code:401,
+            status:"failed",
+            message:"No Data Found"
+          }; 
+    }
+
+    return{
+        code:200,
+        status:"success",
+        message:"Courses updated successfully",
+        data:result
+    }
+  }
   @Get('user/:id')
   @ApiParam({name: 'id'})
   async GetCourseByUserId(@Param('id') id: string){
-      console.log("userId",id);
       if (!id || id.length !== 24 || !/^[0-9a-fA-F]{24}$/.test(id)) {
           throw new BadRequestException('Invalid userId format. Must be a 24-character hex string.');
         }
@@ -144,7 +220,7 @@ export class CourseController {
   }
 
   @Delete(':id')
-  @Roles(Role.TEACHER,Role.USER)
+  @Roles(Role.TEACHER,Role.ADMIN)
   @UseGuards(AuthGuard,RolesGuard)
   @ApiBearerAuth()
   async deleteCourse(@Param('id') id:string,@Request() req){

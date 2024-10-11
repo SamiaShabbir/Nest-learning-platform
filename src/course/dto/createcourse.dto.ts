@@ -1,5 +1,5 @@
 import { IsEmail, IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 export class CreateCourseDto{
     @ApiProperty({
         example: 'course title'})
@@ -48,5 +48,10 @@ export class CreateCourseDto{
       @IsNumber()
       @IsNotEmpty()
       status: number;
+
+      @ApiPropertyOptional({ description: 'Path to the profile pic file', type: 'string', format: 'binary' })
+      @IsString()
+      @IsOptional()
+      image?: string;
 
 }

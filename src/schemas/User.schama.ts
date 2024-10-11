@@ -38,5 +38,8 @@ export class User {
   education_level: string;
   @Prop({required:false, default:null})
   specialization: string;
+  @Prop({required:false, default:false})
+  is_verified: boolean;
+  
 }
 export const UserSchema = SchemaFactory.createForClass(User);

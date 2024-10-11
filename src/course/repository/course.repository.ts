@@ -22,7 +22,7 @@ export class CourseRepository{
 
     async get():Promise<Course[]>{
       const courses = await this.courseModel.find()
-                      .populate('user_id')
+                      .populate(['user_id','lessons'])
                       .populate({
                         path: 'likes',
                         populate: {
@@ -44,10 +44,10 @@ export class CourseRepository{
 
     async getByUserId(userId:string):Promise<Course[]>{
       const objectId = new Types.ObjectId(userId);
-      const courses= await this.courseModel.find({user_id:objectId});
+      const courses= await this.courseModel.find({user_id:objectId,is_verified:true,status:1});
       const enrichCourses = (courses) => {
         return courses.map(course => ({
-          ...course.toObject(), 
+          ...course.toObject(),
           lessonsCount: course.lessons.length,
         }));
       };
@@ -62,7 +62,7 @@ export class CourseRepository{
     }
 
     async getById(courseId:string):Promise<Course>{
-      return await this.courseModel.findById(courseId);
+      return await this.courseModel.findById(courseId).populate(['user_id','lessons']);
     }
 
     async delete(courseId:string):Promise<Boolean>{
@@ -91,4 +91,12 @@ export class CourseRepository{
      return result;
     }
 
-}
+    async getforAdmin():Promise<Course[]>{
+      return await this.courseModel.find({ status:1 }).populate('user_id');
+    }
+
+    async verifycourse(id:string):Promise<Course>{
+      return await this.courseModel.findByIdAndUpdate(id,{is_verified:true});
+    }
+
+} 

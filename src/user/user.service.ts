@@ -75,6 +75,9 @@ export class UserService {
   FindByEmail(email: string) {
     return this.userModel.findOne({ email: email });
   }
+  async verifyTeacher(id){
+    return this.userModel.findByIdAndUpdate(id,{is_verified:true},{new:true});
+  }
   private async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(10);
     return bcrypt.hash(password, salt);

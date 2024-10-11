@@ -15,6 +15,8 @@ import { join } from 'path';
 import { CategoryModule } from './category/category.module';
 import { SubcategoryService } from './category/subcategory.service';
 import { SubcategoryController } from './category/subcategory.controller';
+import { MailerModule } from './mailer/mailer.module';
+import { ConfigModule } from '@nestjs/config';
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -33,6 +35,8 @@ import { SubcategoryController } from './category/subcategory.controller';
     LikeModule,
     CourseModule,
     CategoryModule,
+    MailerModule,
+    ConfigModule.forRoot()
   ],
   controllers: [AppController],
   providers: [AppService,IsUniqueConstraint],

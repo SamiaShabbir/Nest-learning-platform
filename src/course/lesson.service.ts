@@ -53,5 +53,7 @@ export class LessonService{
       return await this.lessonRepository.nextLesson(course_id,lesson_no);
     }
 
-
+    async lessonbyCourseId(id:string){
+      return await this.lessonRepository.lessonbyCourseId(id);
+    }
 }

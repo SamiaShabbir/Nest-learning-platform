@@ -44,4 +44,9 @@ export class LessonRepositpory{
     async nextLesson(course_id:string,lesson_no:string):Promise<any>{
       return await this.lessonModel.find({course:course_id,lesson_no:lesson_no});
     }
+
+    async lessonbyCourseId(id:string):Promise<Lesson[]>{
+      return await this.lessonModel.find({course:id});
+
+    }
 }
