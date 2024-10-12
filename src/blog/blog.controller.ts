@@ -169,9 +169,34 @@ export class BlogController {
   @ApiBody({
     type: CreateBlog,
   })
+  @ApiConsumes('multipart/form-data')
+
+  @UseInterceptors(FileInterceptor('image')) // 'file' is the name of the form field
   async update (@Param('id') id:string,
-  @Body() createblogDto:CreateBlog){
-    
+  @Body() createblogDto:CreateBlog,
+  @UploadedFile() image: Express.Multer.File
+){
+    const projectRoot = path.resolve(__dirname, '../../');
+  const uploadDir = path.join(projectRoot, 'src/uploads');
+
+  if (!fs.existsSync(uploadDir)) {
+      fs.mkdirSync(uploadDir, { recursive: true }); // Create the directory and any necessary parent directories
+  }
+
+  const saveFile = (file: Express.Multer.File, fieldName: string) => {
+      const fileName = `${fieldName}-${Date.now()}-${file.originalname}`;
+
+      const filePath = path.join(uploadDir, fileName);
+      fs.writeFileSync(filePath, file.buffer);
+      return path.join('uploads', fileName); // Return the relative path
+  };
+
+  const file = image;
+
+  const filePath = file ? saveFile(file, 'blogimage') : null;
+    if(file && filePath!==null){
+      createblogDto.image=filePath;
+    }
     const result= await this.blogService.update(id,createblogDto);
     console.log(result);
     if(!result || result==null){

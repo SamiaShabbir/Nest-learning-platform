@@ -182,9 +182,13 @@ export class LessonController {
 
     const filePath = file ? saveFile(file, 'file') : null;
     const videoPath = video ? saveFile(video, 'video') : null;
-    
-    const result= await this.lessonService.update(id,{...createcourseDto, file: filePath,
-        video: videoPath},req.user.id);
+    if(file && filePath!==null){
+        createcourseDto.file=filePath;
+      }
+      if(video && videoPath!==null){
+        createcourseDto.video=videoPath;
+      }
+    const result= await this.lessonService.update(id,createcourseDto,req.user.id);
     console.log(result);
     if(!result || result==null){
       return {
