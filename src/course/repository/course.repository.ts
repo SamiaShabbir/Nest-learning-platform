@@ -99,4 +99,5 @@ export class CourseRepository{
       return await this.courseModel.findByIdAndUpdate(id,{is_verified:true}).populate('user_id');
     }
 
+
 } 

@@ -32,7 +32,7 @@ export class CourseService {
 
     async update(id:string,createcourseDto:CreateCourseDto,userId:any){
         const checkuser=await this.courseRepository.getById(id);
-        if(checkuser.user_id==userId){
+        if(checkuser.user_id._id==userId){
             return await this.courseRepository.update(id,createcourseDto);
         }
 
