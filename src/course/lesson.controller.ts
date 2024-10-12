@@ -154,10 +154,37 @@ export class LessonController {
   @ApiBody({
     type: UpdateLessonDto,
   })
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileFieldsInterceptor([
+      { name: 'file', maxCount: 1 },
+      { name: 'video', maxCount: 1 }
+  ]))
   async update (@Param('id') id:string,
-  @Body() createcourseDto:UpdateLessonDto,@Request() req){
+  @Body() createcourseDto:UpdateLessonDto,@Request() req,
+  @UploadedFiles() files: { file?: Express.Multer.File[], video?: Express.Multer.File[]}){
+    const projectRoot = path.resolve(__dirname, '../../');
+    const uploadDir = path.join(projectRoot, 'src/uploads');
+
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true }); // Create the directory and any necessary parent directories
+    }
+
+    const saveFile = (file: Express.Multer.File, fieldName: string) => {
+        const fileName = `${fieldName}-${Date.now()}-${file.originalname}`;
+
+        const filePath = path.join(uploadDir, fileName);
+        fs.writeFileSync(filePath, file.buffer);
+        return path.join('uploads', fileName); // Return the relative path
+    };
+
+    const file = files.file ? files.file[0] : null;
+    const video = files.video ? files.video[0] : null;
+
+    const filePath = file ? saveFile(file, 'file') : null;
+    const videoPath = video ? saveFile(video, 'video') : null;
     
-    const result= await this.lessonService.update(id,createcourseDto,req.user.id);
+    const result= await this.lessonService.update(id,{...createcourseDto, file: filePath,
+        video: videoPath},req.user.id);
     console.log(result);
     if(!result || result==null){
       return {
