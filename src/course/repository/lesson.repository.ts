@@ -3,6 +3,7 @@ import { CreateLessonDto } from "../dto/create-lesson.dto";
 import { Lesson } from "src/schemas/Lesson.schema";
 import { Model } from "mongoose";
 import { Injectable } from "@nestjs/common";
+import { UpdateLessonDto } from "../dto/update-course.dto";
 
 @Injectable()
 export class LessonRepositpory{
@@ -49,4 +50,27 @@ export class LessonRepositpory{
       return await this.lessonModel.find({course:id});
 
     }
+
+    async lessonDelete(courseIds: string[]) {
+      courseIds.forEach(async (courseId) => {
+          try {
+              const result = await this.lessonModel.deleteMany({ course_id: courseId });
+  
+              if (result.deletedCount > 0) {
+                  console.log(`Deleted ${result.deletedCount} lessons for course ID: ${courseId}`);
+              } else {
+                  console.log(`No lessons found for course ID: ${courseId}`);
+              }
+          } catch (error) {
+              console.error(`Error deleting lessons for course ID: ${courseId}`, error);
+          }
+      });
+  
+      return { message: `Lesson deletion process completed.` };
+  }
+
+  async update(id:string,createcourseDto:UpdateLessonDto):Promise<Boolean>{
+    return await this.lessonModel.findByIdAndUpdate(id,createcourseDto,{new:true});
+  }
+  
 }

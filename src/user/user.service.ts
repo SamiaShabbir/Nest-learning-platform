@@ -7,13 +7,15 @@ import { UpdateUserDto } from './dto/UpdateUser.dto';
 import { Role } from '../schemas/Role.schema';
 import * as bcrypt from 'bcrypt';
 import { EmailService } from 'src/email/email.service';
+import { CourseService } from 'src/course/course.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Role.name) private roleModel: Model<Role>,
-    private emailService:EmailService
+    private emailService:EmailService,
+    private courseService:CourseService
   ) {}
 
   private rolesarray = [
@@ -77,9 +79,10 @@ export class UserService {
   UpdateUser(id: string, updateUserDto: UpdateUserDto) {
     return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
   }
-  DeleteUser(id: string) {
-    return this.userModel.findByIdAndDelete(id);
-    
+  async DeleteUser(id: string) {
+     await this.courseService.getByUserId(id);
+    return await this.userModel.findByIdAndDelete(id);
+
   }
   FindByEmail(email: string) {
     return this.userModel.findOne({ email: email });

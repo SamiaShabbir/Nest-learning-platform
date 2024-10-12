@@ -3,6 +3,7 @@ import { CreateLessonDto } from "./dto/create-lesson.dto";
 import { LessonRepositpory } from "./repository/lesson.repository";
 import { Types } from "mongoose";
 import { CourseRepository } from "./repository/course.repository";
+import { UpdateLessonDto } from "./dto/update-course.dto";
 @Injectable()
 export class LessonService{
     constructor( private lessonRepository:LessonRepositpory,
@@ -56,4 +57,11 @@ export class LessonService{
     async lessonbyCourseId(id:string){
       return await this.lessonRepository.lessonbyCourseId(id);
     }
+
+    async update(id:string,createcourseDto:UpdateLessonDto,userId:any){
+     
+        return await this.lessonRepository.update(id,createcourseDto);
+    }
+
+   
 }

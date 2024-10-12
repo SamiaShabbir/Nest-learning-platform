@@ -12,18 +12,31 @@ import { Like, LikeSchema } from 'src/schemas/Like.schema';
 import { BlogLike, BlogLikeSchema } from 'src/schemas/BlogLike.schema';
 import { EmailModule } from 'src/email/email.module';
 import { EmailService } from '../email/email.service';
+import { CourseService } from 'src/course/course.service';
+import { CourseModule } from 'src/course/course.module';
+import { CategoryModule } from 'src/category/category.module';
+import { CategoryRepository } from 'src/category/repository/category.repository';
+import { LessonRepositpory } from 'src/course/repository/lesson.repository';
+import { Category, CategorySchema } from 'src/schemas/Category.schema';
+import { Lesson, LessonSchema } from 'src/schemas/Lesson.schema';
+import { LikeModule } from 'src/like/like.module';
 
 @Module({
   imports: [
     AuthModule,
     EmailModule,
+    CourseModule,
+    CategoryModule,
+    LikeModule,
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Role.name, schema: RoleSchema },
       { name: Token.name, schema:TokenSchema},
+      { name: Category.name, schema:CategorySchema},
+      { name: Lesson.name, schema:LessonSchema}
     ]),
   ],
-  providers: [UserService,AuthService,AuthRepository,EmailService],
+  providers: [UserService,AuthService,AuthRepository,EmailService,CourseService,CategoryRepository,LessonRepositpory],
   controllers: [UserController],
   exports:[UserService]
 })

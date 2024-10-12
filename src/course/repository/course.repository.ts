@@ -99,5 +99,7 @@ export class CourseRepository{
       return await this.courseModel.findByIdAndUpdate(id,{is_verified:true}).populate('user_id');
     }
 
-
+    async deletebyUserId(userId:string):Promise<any>{
+     return await this.courseModel.deleteMany({user_id:userId});
+    }
 } 

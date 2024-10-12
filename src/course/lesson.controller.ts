@@ -1,6 +1,6 @@
-import { Request,BadRequestException, Body, Controller, Delete, Get, Param, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Request,BadRequestException, Body, Controller, Delete, Get, Param, Post, UploadedFiles, UseGuards, UseInterceptors, Put } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { ApiOperation, ApiResponse, ApiConsumes, ApiTags, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
+import { ApiOperation, ApiResponse, ApiConsumes, ApiTags, ApiBearerAuth, ApiParam, ApiBody } from '@nestjs/swagger';
 import { CreateLessonDto } from './dto/create-lesson.dto';
 import { LessonService } from './lesson.service';
 import { Role } from 'src/enums/role.enum';
@@ -9,6 +9,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from '../shared/guards/roles.gaurd';
 import * as fs from 'fs';
 import * as path from 'path';
+import { UpdateLessonDto } from './dto/update-course.dto';
 
 @ApiTags('lesson')
 @Controller('lesson')
@@ -141,4 +142,37 @@ export class LessonController {
         data:result
        }
     }
+
+  @Put(':id')
+  @Roles(Role.TEACHER)
+  @UseGuards(AuthGuard,RolesGuard)
+  @ApiBearerAuth()
+  @ApiParam({
+    name: 'id',
+    description: 'Enter the lessonid'
+  })
+  @ApiBody({
+    type: UpdateLessonDto,
+  })
+  async update (@Param('id') id:string,
+  @Body() createcourseDto:UpdateLessonDto,@Request() req){
+    
+    const result= await this.lessonService.update(id,createcourseDto,req.user.id);
+    console.log(result);
+    if(!result || result==null){
+      return {
+        code:401,
+        status:"failed",
+        message:"Course not found"
+      }
+    }
+
+    return {
+      code:200,
+      status:"success",
+      message:"Course updated successfully",
+      data:result
+    }
+  }
+
 }

@@ -38,5 +38,21 @@ export class EnrollmentRepository{
         },{new:true});
       }
 
-
+      async  deletebyCourseIdre(courseIds:string[]){
+        courseIds.forEach(async (courseId) => {
+          try {
+              const result = await this.enrollmentModel.deleteMany({ course: courseId });
+  
+              if (result.deletedCount > 0) {
+                  console.log(`Deleted ${result.deletedCount} lessons for course ID: ${courseId}`);
+              } else {
+                  console.log(`No lessons found for course ID: ${courseId}`);
+              }
+          } catch (error) {
+              console.error(`Error deleting lessons for course ID: ${courseId}`, error);
+          }
+      });
+  
+      return { message: `Lesson deletion process completed.` };
+      }
 }

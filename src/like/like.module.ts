@@ -24,6 +24,8 @@ import { CategoryRepository } from 'src/category/repository/category.repository'
 import { CategoryModule } from 'src/category/category.module';
 import { EmailModule } from 'src/email/email.module';
 import { EmailService } from 'src/email/email.service';
+import { LessonRepositpory } from 'src/course/repository/lesson.repository';
+import { Lesson, LessonSchema } from 'src/schemas/Lesson.schema';
 
 @Module({
   imports: [
@@ -47,7 +49,8 @@ import { EmailService } from 'src/email/email.service';
         ],
       },
       { name: Category.name, schema:CategorySchema},
-      { name:SubCategory.name, schema:SubCategorySchema}
+      { name:SubCategory.name, schema:SubCategorySchema},
+      { name:Lesson.name,schema:LessonSchema  }
     ]),
   ],
   providers: [ LikeService,
@@ -57,7 +60,8 @@ import { EmailService } from 'src/email/email.service';
                CourseService,
                CourseRepository,
                CategoryRepository,
-               EmailService
+               EmailService,
+               LessonRepositpory
              ],
   exports:[LikeService,LikeRepository],
   controllers: [LikeController]
