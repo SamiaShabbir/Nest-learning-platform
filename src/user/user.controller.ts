@@ -14,7 +14,8 @@ import {
   UseGuards,
   Query,
   UseInterceptors,
-  UploadedFiles
+  UploadedFiles,
+  Put
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/createUser.dto';
@@ -155,20 +156,46 @@ export class UserController {
   @Roles(Role.ADMIN,Role.USER,Role.TEACHER)
   @UseGuards(AuthGuard,RolesGuard)
   @ApiBearerAuth()
-  @Patch(':id')
+  @Put(':id')
   @ApiResponse({ status: 201, description: 'User Data'})
   @ApiBody({
      type:UpdateUserDto,
      description: 'Json structure for user object',
   })
   @ApiParam({name:'id'})
+  @ApiConsumes('multipart/form-data')
+  @UseInterceptors(FileFieldsInterceptor([
+    { name: 'picture', maxCount: 1 },
+  ]))
   @UsePipes(new ValidationPipe())
   async updateUser(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
+    @UploadedFiles() files: { picture?: Express.Multer.File[]}
   ) {
     const isValid = mongoose.Types.ObjectId.isValid(id);
     if (!isValid) throw new BadRequestException('Please enter a valid id');
+    const projectRoot = path.resolve(__dirname, '../../');
+    const uploadDir = path.join(projectRoot, 'src/uploads');
+
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true }); // Create the directory and any necessary parent directories
+    }
+
+    const saveFile = (file: Express.Multer.File, fieldName: string) => {
+        const fileName = `${fieldName}-${Date.now()}-${file.originalname}`;
+
+        const filePath = path.join(uploadDir, fileName);
+        fs.writeFileSync(filePath, file.buffer);
+        return path.join('uploads', fileName); // Return the relative path
+    };
+
+    const file = files.picture ? files.picture[0] : null;
+
+    const filePath = file ? saveFile(file, 'picture') : null;
+    if(file && filePath!==null){
+      updateUserDto.picture=filePath;
+    }
     const updateUser = await this.userService.UpdateUser(id, updateUserDto);
     if (!updateUser)
       throw new HttpException('User not found', HttpStatus.NOT_FOUND);
