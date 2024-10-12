@@ -40,6 +40,8 @@ export class User {
   specialization: string;
   @Prop({required:false, default:false})
   is_verified: boolean;
+  @Prop({required:false, default:null})
+  contact_number: number;
   
 }
 export const UserSchema = SchemaFactory.createForClass(User);

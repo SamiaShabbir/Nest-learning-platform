@@ -22,11 +22,14 @@ import { EnrollmentRepository } from './repository/enrollment.respository';
 import { EnrollmentService } from './enrollment.service';
 import { Enrollment, EnrollmentSchema } from 'src/schemas/Enrollement.schema';
 import { SubCategoryRepository } from 'src/category/repository/subcategory.repository';
+import { EmailModule } from 'src/email/email.module';
+import { EmailService } from 'src/email/email.service';
 
 @Module({
     imports:[
         AuthModule,
         CategoryModule,
+        EmailModule,
         MongooseModule.forFeature([
             { name: User.name, schema: UserSchema },
             { name:Token.name,schema:TokenSchema  },
@@ -38,7 +41,7 @@ import { SubCategoryRepository } from 'src/category/repository/subcategory.repos
           ])
         ],
     providers: [CourseService,LessonService,LessonRepositpory,CourseRepository,EnrollmentRepository,EnrollmentService,AuthService,
-      AuthRepository,CategoryRepository,SubCategoryRepository],
+      AuthRepository,CategoryRepository,SubCategoryRepository,EmailService],
     controllers: [CourseController,LessonController,EnrollmentController],
     exports:[CourseRepository,CourseService,EnrollmentRepository]
 })

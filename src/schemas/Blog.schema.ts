@@ -32,8 +32,8 @@ export class Blog {
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Cateogory' }]})
   category: Category;
 
-  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'SubCateogory' }]})
-  sub_category: SubCategory[];
+  @Prop({required:false})
+  sub_category: [];
 
   @Prop({ required:false ,default:null ,type: mongoose.Schema.Types.ObjectId, ref: 'User'})
   user_id: User;

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Approved - Next Steps!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #555;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff; /* Blue button color */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Congratulations, <%= name %>!</h1>
+        <p>Your course titled "<%= courseTitle %>" has been successfully verified and approved by our admin team. You are now ready to add lessons and enrich your course content.</p>
+        <p>To start adding lessons, click the button below:</p>
+        <a href="<%= Link %>" class="button">Add Lessons to Your Course</a>
+        <p>If you have any questions or need assistance, please feel free to reach out to our support team.</p>
+        <div class="footer">
+            <p>Best regards,<br>Learning Platform Team</p>
+            <p>If you did not submit this course, please contact our support team.</p>
+        </div>
+    </div>
+</body>
+
+</html>

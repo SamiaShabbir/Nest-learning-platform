@@ -18,10 +18,10 @@ export class CreateCourseDto{
       @IsNotEmpty()
       category: string;
     
-      // @ApiProperty({
-      //   example: ['category_id','another_id']})
-      // @IsNotEmpty()
-      // sub_category_ids: string[];
+      @ApiProperty({
+        example: ['category_id','another_id']})
+      @IsNotEmpty()
+      sub_category:[];
       
       @IsString()
       @IsOptional()

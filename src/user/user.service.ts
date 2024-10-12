@@ -6,12 +6,14 @@ import { CreateUserDto } from './dto/createUser.dto';
 import { UpdateUserDto } from './dto/UpdateUser.dto';
 import { Role } from '../schemas/Role.schema';
 import * as bcrypt from 'bcrypt';
+import { EmailService } from 'src/email/email.service';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Role.name) private roleModel: Model<Role>,
+    private emailService:EmailService
   ) {}
 
   private rolesarray = [
@@ -34,6 +36,7 @@ export class UserService {
   async createUser(createUserDto: CreateUserDto,role:string): Promise<User> {
     const Role=await this.roleModel.findOne({name:role});
     console.log('role:',role);
+    
     const { password, ...userDetails } = createUserDto;
     const hashedPassword = await this.hashPassword(password);
 
@@ -43,7 +46,12 @@ export class UserService {
       token_id:null,
       role_id:Role.id
     });
+    if(Role.name=='teacher'){
+      await this.emailService.welcomeEmail({email:newUser.email,name:newUser.first_name,type:"teacherwelcome"});
+    }else if(Role.name=='user'){
+      await this.emailService.welcomeEmail({email:newUser.email,name:newUser.first_name,type:"studentwelcome"});
 
+    }
     return await newUser.save();
   }
   async GetUsers() {
@@ -51,8 +59,8 @@ export class UserService {
       const users = await this.userModel.find().populate('role_id');
   
       // Categorizing users into students and teachers
-      const students = users.filter(user => user.role_id.name === 'user');
-      const teachers = users.filter(user => user.role_id.name === 'teacher');
+      const students = users.filter(user => user.role_id.name === 'user') || [];
+      const teachers = users.filter(user => user.role_id.name === 'teacher') || [];
   
       return {
         students,
@@ -71,12 +79,15 @@ export class UserService {
   }
   DeleteUser(id: string) {
     return this.userModel.findByIdAndDelete(id);
+    
   }
   FindByEmail(email: string) {
     return this.userModel.findOne({ email: email });
   }
   async verifyTeacher(id){
-    return this.userModel.findByIdAndUpdate(id,{is_verified:true},{new:true});
+    const data=await this.userModel.findByIdAndUpdate(id,{is_verified:true},{new:true});
+    await this.emailService.welcomeEmail({email:data.email,name:data.first_name,type:"verificationsucessfull"});
+    return data;
   }
   private async hashPassword(password: string): Promise<string> {
     const salt = await bcrypt.genSalt(10);

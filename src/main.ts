@@ -4,7 +4,7 @@ import { useContainer } from "class-validator";
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
-
+import * as express from 'express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   useContainer(app.select(AppModule),{fallbackOnErrors:true});
@@ -24,7 +24,8 @@ async function bootstrap() {
        
      const srcFolderPath = join(__dirname, '..', '..', 'src');
 
-    //  console.log('Path to src folder:', srcFolderPath);
+     app.use(express.json({ limit: '10mb' })); // Change limit as needed
+     app.use(express.urlencoded({ limit: '10mb', extended: true }));
      app.useStaticAssets(join(srcFolderPath,'uploads')); // Serve uploaded files
      app.enableCors();
   await app.listen(port);

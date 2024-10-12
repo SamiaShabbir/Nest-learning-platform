@@ -136,8 +136,6 @@ export class BlogController {
   }
 
   @Get(':id')
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard)
   @ApiParam({
     name: 'id'
   })

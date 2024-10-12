@@ -15,8 +15,14 @@ import { join } from 'path';
 import { CategoryModule } from './category/category.module';
 import { SubcategoryService } from './category/subcategory.service';
 import { SubcategoryController } from './category/subcategory.controller';
-import { MailerModule } from './mailer/mailer.module';
 import { ConfigModule } from '@nestjs/config';
+import { EmailModule } from './email/email.module';
+import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
+import { MailerModule } from '@nestjs-modules/mailer';
+
+
+console.log(join(__dirname, '..', 'src', 'templates'));
+
 @Module({
   imports: [
     ServeStaticModule.forRoot({
@@ -35,8 +41,29 @@ import { ConfigModule } from '@nestjs/config';
     LikeModule,
     CourseModule,
     CategoryModule,
-    MailerModule,
-    ConfigModule.forRoot()
+    ConfigModule.forRoot(),
+    EmailModule,
+    MailerModule.forRoot({  
+      transport: {  
+        host: 'smtp.gmail.com',  
+        port: Number('587'),  
+        secure: false,  
+        auth: {  
+          user: 'saamieeego1122@gmail.com',  
+          pass: 'tzpbmedskifcpfku',  
+        },  
+      },  
+      defaults: {  
+        from: '"Learning platform" <info@leaningplaform.com>',  
+      },  
+      template: {  
+        dir: join(__dirname, '..', 'src', 'templates'),
+        adapter: new EjsAdapter(),  
+        options: {  
+          strict: false,  
+        },  
+      },  
+    }),  
   ],
   controllers: [AppController],
   providers: [AppService,IsUniqueConstraint],

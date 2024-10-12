@@ -125,4 +125,9 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   confirm_password?: string;
+  
+  @ApiPropertyOptional()
+  @IsString()
+  @IsOptional()
+  contact_number:number;
 }

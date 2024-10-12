@@ -72,7 +72,7 @@ export class CourseController {
     @ApiBearerAuth()
     async GetForAdmin(){
         const result =await this.courseService.getforAdmin();
-        console.log(result);
+        console.log('result:',result);
         if(!result || result==null || result.length===0){
             return {
                 code:401,
@@ -196,6 +196,7 @@ export class CourseController {
         data:result
     }
   }
+
   @Get('user/:id')
   @ApiParam({name: 'id'})
   async GetCourseByUserId(@Param('id') id: string){

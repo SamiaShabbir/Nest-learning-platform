@@ -22,6 +22,8 @@ import { Category, CategorySchema } from 'src/schemas/Category.schema';
 import { SubCategory, SubCategorySchema } from 'src/schemas/SubCategory';
 import { CategoryRepository } from 'src/category/repository/category.repository';
 import { CategoryModule } from 'src/category/category.module';
+import { EmailModule } from 'src/email/email.module';
+import { EmailService } from 'src/email/email.service';
 
 @Module({
   imports: [
@@ -29,6 +31,7 @@ import { CategoryModule } from 'src/category/category.module';
     BlogModule,
     CourseModule,
     CategoryModule,
+    EmailModule,
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Role.name, schema: RoleSchema },
@@ -53,7 +56,8 @@ import { CategoryModule } from 'src/category/category.module';
                BlogService,
                CourseService,
                CourseRepository,
-               CategoryRepository
+               CategoryRepository,
+               EmailService
              ],
   exports:[LikeService,LikeRepository],
   controllers: [LikeController]

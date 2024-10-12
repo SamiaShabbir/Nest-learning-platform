@@ -21,7 +21,7 @@ export class CourseRepository{
     }
 
     async get():Promise<Course[]>{
-      const courses = await this.courseModel.find()
+      const courses = await this.courseModel.find({status:1,is_verified:true})
                       .populate(['user_id','lessons'])
                       .populate({
                         path: 'likes',
@@ -92,11 +92,11 @@ export class CourseRepository{
     }
 
     async getforAdmin():Promise<Course[]>{
-      return await this.courseModel.find({ status:1 }).populate('user_id');
+      return await this.courseModel.find({status:1}).populate('user_id');
     }
 
     async verifycourse(id:string):Promise<Course>{
-      return await this.courseModel.findByIdAndUpdate(id,{is_verified:true});
+      return await this.courseModel.findByIdAndUpdate(id,{is_verified:true}).populate('user_id');
     }
 
 } 

@@ -41,7 +41,7 @@ export class Course {
   image:string;
 
   @Prop({required:false})
-  sub_category:string;
+  sub_category:[];
 
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'CourseLike' }]})
   likes: CourseLike[];
