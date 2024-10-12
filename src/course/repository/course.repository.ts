@@ -44,7 +44,7 @@ export class CourseRepository{
 
     async getByUserId(userId:string):Promise<Course[]>{
       const objectId = new Types.ObjectId(userId);
-      const courses= await this.courseModel.find({user_id:objectId,is_verified:true,status:1});
+      const courses= await this.courseModel.find({user_id:objectId,is_verified:true,status:1}).populate('lessons');
       const enrichCourses = (courses) => {
         return courses.map(course => ({
           ...course.toObject(),
