@@ -72,5 +72,7 @@ export class LessonRepositpory{
   async update(id:string,createcourseDto:UpdateLessonDto):Promise<Boolean>{
     return await this.lessonModel.findByIdAndUpdate(id,createcourseDto,{new:true});
   }
-  
+   async getbyLessonNo(courseId:string,lesson_no:string):Promise<Lesson>{
+    return await this.lessonModel.findOne({course:courseId,lesson_no:lesson_no});
+   }
 }

@@ -105,6 +105,33 @@
       <div id="post-detail" class="card my-4">
         <!-- Post details will be injected here -->
       </div>
+      <div class="row">
+        <div class="col-12">
+          <div class="card my-4">
+            <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
+              <div class="bg-gradient-primary shadow-primary border-radius-lg pt-4 pb-3">
+                <h6 class="text-white text-capitalize ps-3">Enrollments</h6>
+              </div>
+            </div>
+            <div class="card-body px-0 pb-2">
+              <div class="table-responsive p-0">
+                <table class="table align-items-center justify-content-center mb-0" id="enrollment-table">
+                  <thead>
+                    <tr>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Student</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2 text-center">progress</th>
+                      <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Enrollment Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="enrollment-body">
+                    <!-- Enrollment data will be injected here -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>      
     </div>
   </main>
   <script src="../assets/js/logout.js"></script>
@@ -168,6 +195,86 @@ async function fetchPostDetail() {
         ${lessonsHtml}
       </div>
     `;
+
+    
+    document.getElementById('post-detail').innerHTML = `
+      <div class="card-header" style="text-align: center;">
+        <h3 class="align-middle">${course.title}</h3>
+        <img src="http://localhost:3002/${course.image}" class="img-fluid" style="max-width: 300px; height: auto;" />
+      </div>
+      <div class="card-body">
+        <p><strong>Description:</strong> ${course.description}</p>
+        <p><strong>Author:</strong> <a href="instructor-detail.html?id=${course.user_id._id}">${course.user_id.first_name} ${course.user_id.last_name}</a></p>
+        <p><strong>Level:</strong> ${course.level}</p>
+        <p><strong>Key Points:</strong> ${course.key_points}</p>
+        <p><strong>Likes:</strong> ${course.likeCount}</p>
+        ${lessonsHtml}
+      </div>
+    `;
+
+    // Fetch enrollment data
+    const enrollmentResponse = await fetch(`http://localhost:3002/api/enrollment/${postId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!enrollmentResponse.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    function getRandomColor() {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+}
+
+    const enrollmentData = await enrollmentResponse.json();
+    const enrollments = enrollmentData.data; // Adjust based on your JSON structure
+
+    // Constructing the HTML for enrollments
+    let enrollmentHtml = '';
+    if (enrollments && enrollments.length > 0) {
+      enrollments.forEach(enrollment => {
+        const progressColor = getRandomColor(); // Get a random color for each progress bar
+        enrollmentHtml += `
+          <tr>
+            <td>
+                  <div class="d-flex px-2 py-1">
+                  <div>
+                    <img src="http://localhost:3002/${enrollment.student.picture}" class="avatar avatar-sm me-3 border-radius-lg" alt="user">
+                  </div>
+                  <div class="d-flex flex-column justify-content-center">
+                    <h6 class="mb-0 text-sm">${enrollment.student.first_name} ${enrollment.student.last_name}</h6>
+                    <p class="text-xs text-secondary mb-0">${enrollment.student.email}</p>
+                  </div>
+                </div>
+              </td>
+               <td class="align-middle text-center">
+                        <div class="d-flex align-items-center justify-content-center">
+                          <span class="me-2 text-xs font-weight-bold">${enrollment.progress}%</span>
+                          <div>
+                            <div class="progress">
+                              <div class="progress-bar" role="progressbar" aria-valuenow="${enrollment.progress}" aria-valuemin="0" aria-valuemax="100" style="width: ${enrollment.progress}%; background-color: ${progressColor};"></div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+            <td>${new Date(enrollment.enrollmentDate).toLocaleDateString()}</td>
+          </tr>
+        `;
+      });
+    } else {
+      enrollmentHtml = '<tr><td colspan="3">No enrollments found.</td></tr>';
+    }
+
+    document.getElementById('enrollment-body').innerHTML = enrollmentHtml;
+
   } catch (error) {
     document.getElementById('post-detail').innerHTML = '<p>Error fetching course details.</p>';
     console.error('Error fetching course:', error);

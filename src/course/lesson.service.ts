@@ -63,5 +63,9 @@ export class LessonService{
         return await this.lessonRepository.update(id,createcourseDto);
     }
 
+    async getbyLessonNo(courseId:string,lesson_no:string){
+        return await this.lessonRepository.getbyLessonNo(courseId,lesson_no);
+    }
+
    
 }

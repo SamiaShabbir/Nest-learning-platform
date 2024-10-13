@@ -16,7 +16,7 @@ export class EnrollmentRepository{
         return  await newEnrollment.save();
       }
       async getBycourseId(course_id:string):Promise<Enrollment[]>{
-        return await this.enrollmentModel.find({course:course_id});
+        return await this.enrollmentModel.find({course:course_id}).populate(['student']);
       }
 
       async getByuserId(user_id:string):Promise<Enrollment[]>{
@@ -34,7 +34,8 @@ export class EnrollmentRepository{
       async updateProgress(createProgressDto:CreateProgressDto):Promise<Enrollment>{
         return this.enrollmentModel.findByIdAndUpdate(createProgressDto.enrollment_id,{
           current_lesson:createProgressDto.lesson_id,
-          progress:createProgressDto.progress
+          progress:createProgressDto.progress,
+          lesson_no:createProgressDto.lesson_no
         },{new:true});
       }
 
@@ -58,5 +59,9 @@ export class EnrollmentRepository{
 
       async Delete(enrollId:string):Promise<Enrollment>{
         return await this.enrollmentModel.findByIdAndDelete(enrollId);
+      }
+
+      async CheckForCreate(courseId:string,userId:string):Promise<Enrollment>{
+        return await this.enrollmentModel.findOne({course:courseId,student:userId});
       }
 }

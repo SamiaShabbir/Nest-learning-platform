@@ -53,7 +53,7 @@ export class EnrollmentController {
 
     @Get(':course_id')
     @ApiParam({name: 'course_id'})
-    @Roles(Role.TEACHER)
+    @Roles(Role.TEACHER,Role.ADMIN)
     @ApiBearerAuth()
     @UseGuards(AuthGuard, RolesGuard)
     @ApiOperation({ summary: 'For Teacher to get Enrollments' })
@@ -142,6 +142,42 @@ export class EnrollmentController {
             code: 200,
             status: "success",
             message: "The student progess saved successfully",
+            data: result
+        };
+    }
+
+    @Get('lesson/prev/:course_id/:lesson_no')
+    @ApiParam({name: 'course_id'})
+    @ApiParam({name: 'lesson_no'})
+    @Roles(Role.USER)
+    @UseGuards(AuthGuard, RolesGuard)
+    @ApiBearerAuth()
+    @ApiOperation({ summary: 'To get prev lesson' })
+    @ApiResponse({ status: 201, description: 'The student progess saved successfully.' })
+    @ApiResponse({ status: 400, description: 'Invalid input' })
+    async prevLesson(
+        @Param('course_id') course_id: string,
+        @Param('lesson_no') lesson_no: string
+    ) {
+        if (!course_id || course_id.length !== 24 || !/^[0-9a-fA-F]{24}$/.test(course_id)) {
+            throw new BadRequestException('Invalid course_id format. Must be a 24-character hex string.');
+          }
+        const result = await this.enrollmentService.getbyLessonNo(course_id,lesson_no);
+       
+
+        if(!result){
+            return {
+                code: 401,
+                status: "failed",
+                message: "You Do not have permission to do this action",
+            };
+
+        }
+
+        return {
+            code: 200,
+            status: "success",
+            message: "next lesson fetched successfully",
             data: result
         };
     }

@@ -84,7 +84,6 @@ export class LessonController {
       description: 'enter the course Id',
     })
     async getbyId(@Param('id') id:string){
-      console.log("courseId",id);
       if (!id || id.length !== 24 || !/^[0-9a-fA-F]{24}$/.test(id)) {
           throw new BadRequestException('Invalid userId format. Must be a 24-character hex string.');
         }

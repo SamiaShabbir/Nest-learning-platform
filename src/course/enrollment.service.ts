@@ -13,7 +13,11 @@ export class EnrollmentService{
                  private lessonService:LessonService
     ){}
     async create(createEnrollmentDto: CreateEnrollmentDto) {
-       return await this.enrollmentRepository.create(createEnrollmentDto);
+        const check=await this.enrollmentRepository.CheckForCreate(createEnrollmentDto.course,createEnrollmentDto.student);
+        if(check){
+            throw new ForbiddenException("You have already enrolled in this course");
+        }
+        return await this.enrollmentRepository.create(createEnrollmentDto);
     }
 
     async getByCourseId(course_id:string){
@@ -42,6 +46,10 @@ export class EnrollmentService{
         const lesson=await this.lessonService.getbyId(lessonId);
         const nextlesson=await this.lessonService.nextlesson(courseId,lesson.lesson_no+1);
         return nextlesson;
+    }
+
+    async getbyLessonNo(courseId:string,lesson_no:string){
+        return await this.lessonService.getbyLessonNo(courseId,lesson_no);
     }
 
     async Delete(enrollId:string){
