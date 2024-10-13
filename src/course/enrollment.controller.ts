@@ -1,4 +1,4 @@
-import { Request,BadRequestException, Body, Controller, Delete, Get, Param, Post, UploadedFiles, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Request,BadRequestException, Body, Controller, Delete, Get, Param, Post, UploadedFiles, UseGuards, UseInterceptors, HttpException, HttpStatus } from '@nestjs/common';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { ApiOperation, ApiResponse, ApiConsumes, ApiTags, ApiBearerAuth, ApiParam } from '@nestjs/swagger';
 import { Role } from 'src/enums/role.enum';
@@ -10,6 +10,7 @@ import * as path from 'path';
 import { EnrollmentService } from './enrollment.service';
 import { CreateEnrollmentDto } from "./dto/create-enrollment.dto";
 import { CreateProgressDto } from './dto/create-progress.dto';
+import mongoose from 'mongoose';
 
 @ApiTags('enrollment')
 @Controller('enrollment')
@@ -184,4 +185,22 @@ export class EnrollmentController {
             data: result
         };
     }
+
+    @Roles(Role.USER)
+    @UseGuards(AuthGuard,RolesGuard)
+    @UseGuards(AuthGuard)
+    @ApiBearerAuth()
+    @Delete(':id')
+    @ApiResponse({ status: 201, description: 'User Data'})
+    @ApiParam({name:'id'})
+    async deleteUser(@Param('id') id: string) {
+      const isValid = mongoose.Types.ObjectId.isValid(id);
+      if (!isValid) throw new BadRequestException('Please enter a valid id');
+      const DeleteUser = await this.enrollmentService.Delete(id);
+      if (!DeleteUser)
+      {
+        throw new HttpException('User not found', HttpStatus.NOT_FOUND);
+      }
+      return DeleteUser;
+    }    
 }

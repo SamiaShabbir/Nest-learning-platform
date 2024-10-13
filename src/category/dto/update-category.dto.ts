@@ -1,9 +1,10 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty,ApiPropertyOptional } from '@nestjs/swagger';
 export class UpdateCategory {
-  @ApiProperty({
+  @ApiPropertyOptional({
     example: 'approve|reject'})
-  @IsNotEmpty()
-  @IsEmail()
   status:string;
+  @ApiPropertyOptional({
+    example: 'cars'})
+  title:string;
 }

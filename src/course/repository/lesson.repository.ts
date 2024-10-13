@@ -3,7 +3,7 @@ import { CreateLessonDto } from "../dto/create-lesson.dto";
 import { Lesson } from "src/schemas/Lesson.schema";
 import { Model } from "mongoose";
 import { Injectable } from "@nestjs/common";
-import { UpdateLessonDto } from "../dto/update-course.dto";
+import { UpdateLessonDto } from "../dto/update-lesson.dto";
 
 @Injectable()
 export class LessonRepositpory{

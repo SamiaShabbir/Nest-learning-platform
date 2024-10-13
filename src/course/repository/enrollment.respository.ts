@@ -55,4 +55,8 @@ export class EnrollmentRepository{
   
       return { message: `Lesson deletion process completed.` };
       }
+
+      async Delete(enrollId:string):Promise<Enrollment>{
+        return await this.enrollmentModel.findByIdAndDelete(enrollId);
+      }
 }

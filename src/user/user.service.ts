@@ -8,6 +8,7 @@ import { Role } from '../schemas/Role.schema';
 import * as bcrypt from 'bcrypt';
 import { EmailService } from 'src/email/email.service';
 import { CourseService } from 'src/course/course.service';
+import { BlogService } from 'src/blog/blog.service';
 
 @Injectable()
 export class UserService {
@@ -15,7 +16,8 @@ export class UserService {
     @InjectModel(User.name) private userModel: Model<User>,
     @InjectModel(Role.name) private roleModel: Model<Role>,
     private emailService:EmailService,
-    private courseService:CourseService
+    private courseService:CourseService,
+    private blogService:BlogService
   ) {}
 
   private rolesarray = [
@@ -80,7 +82,8 @@ export class UserService {
     return this.userModel.findByIdAndUpdate(id, updateUserDto, { new: true });
   }
   async DeleteUser(id: string) {
-     await this.courseService.getByUserId(id);
+     await this.courseService.deletecourseuser(id);
+     await this.blogService.deletebloguser(id);
     return await this.userModel.findByIdAndDelete(id);
 
   }

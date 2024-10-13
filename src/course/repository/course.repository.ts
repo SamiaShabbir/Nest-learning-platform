@@ -2,6 +2,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Course } from 'src/schemas/Course.schema';
 import { CreateCourseDto } from '../dto/createcourse.dto';
+import { UpdateCourse } from '../dto/update-course.dto';
 export class CourseRepository{
     constructor(
         @InjectModel(Course.name) private courseModel: Model<Course>) {}
@@ -22,7 +23,7 @@ export class CourseRepository{
 
     async get():Promise<Course[]>{
       const courses = await this.courseModel.find({status:1,is_verified:true})
-                      .populate(['user_id','lessons'])
+                      .populate(['user_id','lessons','category'])
                       .populate({
                         path: 'likes',
                         populate: {
@@ -57,7 +58,7 @@ export class CourseRepository{
      
     }
 
-    async update(id:string,createcourseDto:CreateCourseDto):Promise<Boolean>{
+    async update(id:string,createcourseDto:UpdateCourse):Promise<Boolean>{
         return await this.courseModel.findByIdAndUpdate(id,createcourseDto,{new:true});
     }
 

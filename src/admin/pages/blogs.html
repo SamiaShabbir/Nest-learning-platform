@@ -158,10 +158,16 @@
         }
         const data = await response.json();
         const posts = data.data;
-
+        console.log(data);
         const postsContainer = document.getElementById("blog-posts");
         postsContainer.innerHTML = ""; // Clear existing content
 
+        if (!posts || posts.length === 0) {
+          postsContainer.innerHTML = `
+        <tr>
+          <td colspan="5" style="text-align: center; padding: 20px;">No blog found.</td>
+        </tr>
+      `;        } else {
         posts.forEach(post => {
           const postRow = `
             <tr>
@@ -195,7 +201,7 @@
           `;
           postsContainer.innerHTML += postRow;
         });
-        
+      }
         // Add delete functionality
         const deleteButtons = document.querySelectorAll(".delete-post");
         deleteButtons.forEach(button => {

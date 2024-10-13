@@ -6,6 +6,7 @@ import { SubCategoryRepository } from 'src/category/repository/subcategory.repos
 import { EnrollmentRepository } from './repository/enrollment.respository';
 import { EmailService } from 'src/email/email.service';
 import { LessonRepositpory } from './repository/lesson.repository';
+import { UpdateCourse } from './dto/update-course.dto';
 
 @Injectable()
 export class CourseService {
@@ -32,7 +33,7 @@ export class CourseService {
         return await this.courseRepository.getByUserId(userId);        
     }
 
-    async update(id:string,createcourseDto:CreateCourseDto,userId:any){
+    async update(id:string,createcourseDto:UpdateCourse,userId:any){
         const checkuser=await this.courseRepository.getById(id);
         if(checkuser.user_id._id==userId){
             return await this.courseRepository.update(id,createcourseDto);
@@ -78,10 +79,16 @@ export class CourseService {
     }
 
     async deletecourseuser(userid:string){
+        const userdata=await this.getByUserId(userid);
+        console.log('userdata:',userdata);
         const data=await this.courseRepository.deletebyUserId(userid);
-        const courseIds = data.map(course => course._id);
-        await this.lessonRepository.lessonbyCourseId(courseIds);
-        await this.enrollmentRepository.deletebyCourseIdre(courseIds);
+        console.log('data',data);
+        if(data.length>0){
+            const courseIds = data.map(course => course._id);
+            await this.lessonRepository.lessonbyCourseId(courseIds);
+            await this.enrollmentRepository.deletebyCourseIdre(courseIds);
+        }
+     
         return data;
     }
 }

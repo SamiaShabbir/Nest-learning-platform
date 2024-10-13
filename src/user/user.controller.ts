@@ -213,10 +213,6 @@ export class UserController {
   @ApiBearerAuth()
   @Delete(':id')
   @ApiResponse({ status: 201, description: 'User Data'})
-  @ApiBody({
-     type:UpdateUserDto,
-     description: 'Json structure for user object',
-  })
   @ApiParam({name:'id'})
   async deleteUser(@Param('id') id: string) {
     const isValid = mongoose.Types.ObjectId.isValid(id);

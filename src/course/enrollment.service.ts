@@ -43,4 +43,8 @@ export class EnrollmentService{
         const nextlesson=await this.lessonService.nextlesson(courseId,lesson.lesson_no+1);
         return nextlesson;
     }
+
+    async Delete(enrollId:string){
+      return await this.enrollmentRepository.Delete(enrollId);
+    }
 }

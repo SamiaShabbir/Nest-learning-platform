@@ -12,6 +12,7 @@ import { CreateBlogLike } from './dto/CreateLike.dto';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import * as fs from 'fs';
 import * as path from 'path';
+import { UpdateBlog } from './dto/UpdateBlog.dto';
 @ApiTags('Blog')
 @Controller('blog')
 export class BlogController {
@@ -167,13 +168,13 @@ export class BlogController {
     description: 'Enter the blogId'
   })
   @ApiBody({
-    type: CreateBlog,
+    type: UpdateBlog,
   })
   @ApiConsumes('multipart/form-data')
 
   @UseInterceptors(FileInterceptor('image')) // 'file' is the name of the form field
   async update (@Param('id') id:string,
-  @Body() createblogDto:CreateBlog,
+  @Body() createblogDto:UpdateBlog,
   @UploadedFile() image: Express.Multer.File
 ){
     const projectRoot = path.resolve(__dirname, '../../');

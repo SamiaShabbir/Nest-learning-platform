@@ -9,6 +9,7 @@ import { CreateCourseDto } from './dto/createcourse.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import * as path from 'path';
 import * as fs from 'fs';
+import { UpdateCourse } from './dto/update-course.dto';
 
 @Controller('course')
 @ApiTags('course')
@@ -118,12 +119,12 @@ export class CourseController {
     description: 'Enter the CourseId'
   })
   @ApiBody({
-    type: CreateCourseDto,
+    type: UpdateCourse,
   })
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(FileInterceptor('image'))
   async update (@Param('id') id:string,
-  @Body() createcourseDto:CreateCourseDto,@Request() req,
+  @Body() createcourseDto:UpdateCourse,@Request() req,
   @UploadedFile() image: Express.Multer.File
 ){
     const projectRoot = path.resolve(__dirname, '../../');

@@ -9,7 +9,7 @@ import { AuthGuard } from 'src/auth/auth.guard';
 import { RolesGuard } from '../shared/guards/roles.gaurd';
 import * as fs from 'fs';
 import * as path from 'path';
-import { UpdateLessonDto } from './dto/update-course.dto';
+import { UpdateLessonDto } from './dto/update-lesson.dto';
 
 @ApiTags('lesson')
 @Controller('lesson')

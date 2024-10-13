@@ -13,6 +13,10 @@
   <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <link id="pagestyle" href="../assets/css/material-dashboard.css?v=3.1.0" rel="stylesheet" />
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="../assets/js/global.js" defer></script>
 </head>
 
@@ -95,7 +99,12 @@
         </nav>
       </div>
     </nav>
-    
+    <div class="row">
+      <div class="col text-end" style="margin-right: 4%;">
+        <a href="#" class="btn btn-md btn-primary" data-toggle="modal" data-target="#smallModal">Add Category</a>
+      </div>
+    </div>
+  </div>
     <div class="container-fluid py-4">
       <div class="row">
         <div class="col-12">
@@ -126,6 +135,55 @@
         </div>
       </div>
     </div>
+
+    <div class="modal fade" id="smallModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+      <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" id="myModalLabel">Create Category</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form id="createCategoryForm">
+              <div class="form-group">
+                <label for="title" class="col-form-label">Title:</label>
+                <input type="text" class="form-control" id="title">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="saveCategoryBtn">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Edit Category Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="editModalLabel">Edit Category</h4>
+      </div>
+      <div class="modal-body">
+        <form id="editCategoryForm">
+          <div class="form-group">
+            <label for="editTitle" class="col-form-label">Title:</label>
+            <input type="text" class="form-control" id="editTitle">
+            <input type="hidden" id="editCategoryId"> <!-- Hidden field for category ID -->
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button"  id="close-button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveEditBtn">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   </main>
 
   <!-- Core JS Files -->
@@ -170,8 +228,14 @@
           <td>
             <div class="d-flex px-2 py-1">
               <div class="d-flex flex-column justify-content-center">
-                <h6 class="mb-0 text-sm">${category.user_id.first_name} ${category.user_id.last_name}</h6>
-                <p class="text-xs text-secondary mb-0">${category.user_id.email}</p>
+                <h6 class="mb-0 text-sm">
+    ${category.user_id && category.user_id.first_name && category.user_id.last_name 
+      ? `${category.user_id.first_name} ${category.user_id.last_name}` 
+      : "Anonymous"}
+  </h6>
+  <p class="text-xs text-secondary mb-0">
+    ${category.user_id && category.user_id.email ? category.user_id.email : "No email available"}
+  </p>
               </div>
             </div>
           </td>
@@ -193,6 +257,7 @@
             <button class="btn btn-danger btn-sm reject-category" data-id="${category._id}" ${category.status === 'rejected' ? 'disabled' : ''}>
               Reject
             </button>
+            <button class="btn btn-info btn-sm edit-category" data-id="${category._id}" data-title="${category.title}">Edit</button>
           </td>
           <td class="align-middle">
             <a href="javascript:;" class="text-secondary font-weight-bold text-xs delete-category" data-id="${category._id}" data-toggle="tooltip" data-original-title="Delete category">
@@ -271,6 +336,7 @@ function attachEventListeners() {
     });
   });
 
+
   // Add delete functionality
   const deleteButtons = document.querySelectorAll(".delete-category");
   deleteButtons.forEach(button => {
@@ -300,10 +366,90 @@ function attachEventListeners() {
       }
     });
   });
+
+  const editButtons = document.querySelectorAll(".edit-category");
+  editButtons.forEach(button => {
+    button.addEventListener("click", (event) => {
+      const categoryId = event.target.getAttribute("data-id");
+      const title = event.target.getAttribute("data-title");
+      document.getElementById('editTitle').value = title; // Populate the title
+      document.getElementById('editCategoryId').value = categoryId; // Set category ID
+      $('#editModal').modal('show');
+      // Show the edit modal
+    });
+  });
 }
+
+
 
 document.addEventListener("DOMContentLoaded", fetchCategories);
 
+
+document.getElementById('saveCategoryBtn').addEventListener('click', async () => {
+  const title = document.getElementById('title').value;
+  const token = localStorage.getItem("accessToken");
+
+  // Create the category object
+  const categoryData = { title };
+
+  try {
+    const response = await fetch("http://localhost:3002/api/category/create", {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(categoryData),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to create category");
+    }
+
+    const data = await response.json();
+    console.log(data);
+    alert("Category created successfully!");
+    document.getElementById('createCategoryForm').reset(); // Reset the form
+    $('#smallModal').modal('hide'); // Hide the modal
+    fetchCategories(); // Refresh the categories list
+
+  } catch (error) {
+    console.error('Error creating category:', error);
+    alert("Error creating category.");
+  }
+});
+
+document.getElementById('saveEditBtn').addEventListener('click', async () => {
+  const title = document.getElementById('editTitle').value;
+  const categoryId = document.getElementById('editCategoryId').value;
+  const token = localStorage.getItem("accessToken");
+
+  try {
+    const response = await fetch(`http://localhost:3002/api/category/${categoryId}`, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ title }), // Only send the title
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update category");
+    }
+
+    const data = await response.json();
+    console.log(data);
+    alert("Category updated successfully!");
+    document.getElementById('editCategoryForm').reset(); // Reset the form
+    $('#editModal').modal('hide'); // Hide the modal
+    fetchCategories(); // Refresh the categories list
+
+  } catch (error) {
+    console.error('Error updating category:', error);
+    alert("Error updating category.");
+  }
+});
   </script>
 </body>
 

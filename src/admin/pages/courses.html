@@ -164,9 +164,13 @@ async function fetchCourses() {
 
     const data = await response.json();
     const courses = data.data;
-    console.log('courses', courses);
+    console.log('courses', data);
     const courseContainer = document.getElementById("course-posts");
     courseContainer.innerHTML = "";
+    if (data.code === 401) {
+      courseContainer.innerHTML = `<p class="text-center">No courses found.</p>`;
+    } else {
+
 
     courses.forEach(course => {
       const verificationStatus = course.is_verified ? 
@@ -196,7 +200,7 @@ async function fetchCourses() {
       `;
       courseContainer.innerHTML += postRow;
     });
-
+  }
     // Add delete functionality
     const deleteButtons = document.querySelectorAll(".delete-post");
     deleteButtons.forEach(button => {

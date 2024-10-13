@@ -32,15 +32,15 @@ export class BlogRepository {
       }
 
     async get(userId: string): Promise<Blog[]> {
-      return await this.blogModel.find({ user_id:userId }).populate(['user_id','likes']);
+      return await this.blogModel.find({ user_id:userId }).populate(['user_id','likes','category']);
     }
 
     async getById(blogId: string): Promise<Blog> {
-      return await this.blogModel.findById(blogId).populate(['user_id','likes']);
+      return await this.blogModel.findById(blogId).populate(['user_id','likes','category']);
     }
 
     async getAll():Promise<Blog[]>{
-      return await this.blogModel.find({status:1}).populate('user_id').populate({path: 'likes',
+      return await this.blogModel.find({status:1}).populate(['user_id','category']).populate({path: 'likes',
         populate: {
           path: 'userId',
           select: 'first_name last_name username email',
@@ -66,6 +66,10 @@ export class BlogRepository {
     }
 
     async all():Promise<Blog[]>{
-      return await this.blogModel.find().populate(['user_id','likes']);
+      return await this.blogModel.find().populate(['user_id','likes','category']);
+    }
+
+    async deletebyUserId(userId:string):Promise<any>{
+      return await this.blogModel.deleteMany({user_id:userId});
     }
 }

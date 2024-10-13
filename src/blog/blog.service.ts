@@ -5,6 +5,7 @@ import { CreateLike } from 'src/like/dto/createLike.dto';
 import { CategoryRepository } from '../category/repository/category.repository';
 import { SubCategoryRepository } from 'src/category/repository/subcategory.repository';
 import { convertStringsToObjectIds } from 'src/shared/utils/objectId.util';
+import { UpdateBlog } from './dto/UpdateBlog.dto';
 @Injectable()
 export class BlogService {
     constructor(private blogRepository:BlogRepository,
@@ -41,7 +42,7 @@ export class BlogService {
         return await this.blogRepository.getAll();
     }
 
-    async update(blogId:string,data:CreateBlog){
+    async update(blogId:string,data:UpdateBlog){
        return await this.blogRepository.update(blogId,data);
     }
 
@@ -56,5 +57,10 @@ export class BlogService {
 
     async Get(){
         return await this.blogRepository.all();
+    }
+
+    async deletebloguser(userid:string){
+        const data=await this.blogRepository.deletebyUserId(userid);     
+        return data;
     }
 }

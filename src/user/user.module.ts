@@ -20,6 +20,9 @@ import { LessonRepositpory } from 'src/course/repository/lesson.repository';
 import { Category, CategorySchema } from 'src/schemas/Category.schema';
 import { Lesson, LessonSchema } from 'src/schemas/Lesson.schema';
 import { LikeModule } from 'src/like/like.module';
+import { BlogModule } from 'src/blog/blog.module';
+import { Blog, BlogSchema } from 'src/schemas/Blog.schema';
+import { BlogService } from 'src/blog/blog.service';
 
 @Module({
   imports: [
@@ -28,15 +31,17 @@ import { LikeModule } from 'src/like/like.module';
     CourseModule,
     CategoryModule,
     LikeModule,
+    BlogModule,
     MongooseModule.forFeature([
       { name: User.name, schema: UserSchema },
       { name: Role.name, schema: RoleSchema },
       { name: Token.name, schema:TokenSchema},
       { name: Category.name, schema:CategorySchema},
-      { name: Lesson.name, schema:LessonSchema}
+      { name: Lesson.name, schema:LessonSchema},
+      { name:Blog.name,schema:BlogSchema}
     ]),
   ],
-  providers: [UserService,AuthService,AuthRepository,EmailService,CourseService,CategoryRepository,LessonRepositpory],
+  providers: [UserService,AuthService,AuthRepository,EmailService,CourseService,CategoryRepository,LessonRepositpory,BlogService],
   controllers: [UserController],
   exports:[UserService]
 })
