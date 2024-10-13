@@ -42,6 +42,8 @@ export class User {
   is_verified: boolean;
   @Prop({required:false, default:null})
   contact_number: number;
+  @Prop({default: Date.now})
+  created_at:Date
   
 }
 export const UserSchema = SchemaFactory.createForClass(User);

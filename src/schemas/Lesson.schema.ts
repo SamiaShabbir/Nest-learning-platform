@@ -34,5 +34,8 @@ export class Lesson {
 
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'SubCateogory' }]})
   sub_category: SubCategory[];
+
+  @Prop({default: Date.now})
+  created_at:Date
   }
 export const LessonSchema = SchemaFactory.createForClass(Lesson);

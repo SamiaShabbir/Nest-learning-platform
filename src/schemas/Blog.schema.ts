@@ -37,6 +37,9 @@ export class Blog {
 
   @Prop({ required:false ,default:null ,type: mongoose.Schema.Types.ObjectId, ref: 'User'})
   user_id: User;
+
+  @Prop({default: Date.now})
+  created_at:Date;
 }
 
 export const BlogSchema = SchemaFactory.createForClass(Blog);

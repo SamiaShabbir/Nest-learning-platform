@@ -24,5 +24,8 @@ export class Category {
 
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Lesson' }]})
   lesson: Lesson[];
+
+  @Prop({default: Date.now})
+  created_at:Date
 }
 export const CategorySchema = SchemaFactory.createForClass(Category);
