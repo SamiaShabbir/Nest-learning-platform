@@ -29,7 +29,7 @@ export class Blog {
   @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'BlogLike' }]})
   likes: BlogLike[];
 
-  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Cateogory' }]})
+  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }]})
   category: Category;
 
   @Prop({required:false})

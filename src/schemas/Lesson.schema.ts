@@ -29,11 +29,8 @@ export class Lesson {
   @Prop({required:false,default:1})
   status: number;
 
-  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Cateogory' }]})
+  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }]})
   category: Category;
-
-  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'SubCateogory' }]})
-  sub_category: SubCategory[];
 
   @Prop({default: Date.now})
   created_at:Date
