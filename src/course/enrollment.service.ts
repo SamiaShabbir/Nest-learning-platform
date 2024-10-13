@@ -1,4 +1,4 @@
-import { ForbiddenException, Injectable, NotAcceptableException, NotFoundException } from "@nestjs/common";
+import { BadGatewayException, ForbiddenException, Injectable, NotAcceptableException, NotFoundException } from "@nestjs/common";
 import { Enrollment } from '../schemas/Enrollement.schema';
 import { CreateEnrollmentDto } from "./dto/create-enrollment.dto";
 import { EnrollmentRepository } from "./repository/enrollment.respository";
@@ -35,12 +35,17 @@ export class EnrollmentService{
        const enrolldata=await this.getEnrollmentById(createProgressDto.enrollment_id);
        const total_lesson=enrolldata.Course[0].no_of_lesson;
        const lesson=await this.lessonService.getbyId(createProgressDto.lesson_id);
-       if(lesson.lesson_no<=enrolldata.lesson_no){
-        throw new NotAcceptableException('Progress can not be saved');
+       const currentlessonNo=enrolldata.Enrollment.lesson_no+1;
+       console.log(lesson.lesson_no,currentlessonNo);
+
+       if(currentlessonNo==lesson.lesson_no){
+        createProgressDto.progress=(lesson.lesson_no/total_lesson)*100;
+        createProgressDto.lesson_no=lesson.lesson_no;
+        return await this.enrollmentRepository.updateProgress(createProgressDto);
+
+       }else{
+        throw new BadGatewayException('You can not save this progress');
        }
-       createProgressDto.progress=(lesson.lesson_no/total_lesson)*100;
-       createProgressDto.lesson_no=lesson.lesson_no;
-       return await this.enrollmentRepository.updateProgress(createProgressDto);
     }
     async getLesson(courseId:string,lessonId:string){
         const lesson=await this.lessonService.getbyId(lessonId);

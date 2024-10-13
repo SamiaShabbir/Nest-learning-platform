@@ -49,7 +49,7 @@ export class Course {
   @Prop({type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Lesson' }]})
   lessons:Lesson[];
 
-  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Cateogory' }]})
+  @Prop({ type:[{ type: mongoose.Schema.Types.ObjectId, ref: 'Category' }]})
   category: Category;
 
   @Prop({default: Date.now})
