@@ -12,6 +12,10 @@ import { IsUnique } from "../../shared/validation/is-unique";
 import { ApiProperty, ApiPropertyOptional, ApiQuery } from '@nestjs/swagger';
 import { Role } from 'src/enums/role.enum';
 import { Query } from '@nestjs/common';
+import * as moment from 'moment';
+import { IsAtLeastFiveYearsOld } from 'src/shared/validation/date-validate-constraint';
+import { IsAtLeastFiveYearsOldDecorator } from 'src/shared/validation/date-validate';
+
 const Model="User";
 export class CreateUserDto {
   @ApiProperty({
@@ -57,6 +61,7 @@ export class CreateUserDto {
     example: '12/3/2000',
     required: true
  })
+ @IsAtLeastFiveYearsOldDecorator()
   DoB: string;
   @ApiPropertyOptional({
     example: '12',

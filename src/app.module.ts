@@ -19,6 +19,7 @@ import { ConfigModule } from '@nestjs/config';
 import { EmailModule } from './email/email.module';
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
 import { MailerModule } from '@nestjs-modules/mailer';
+import { IsAtLeastFiveYearsOld } from './shared/validation/date-validate-constraint';
 
 
 console.log(join(__dirname, '..', 'src', 'templates'));
@@ -66,6 +67,6 @@ console.log(join(__dirname, '..', 'src', 'templates'));
     }),  
   ],
   controllers: [AppController],
-  providers: [AppService,IsUniqueConstraint],
+  providers: [AppService,IsUniqueConstraint,IsAtLeastFiveYearsOld],
 })
 export class AppModule {}

@@ -8,9 +8,9 @@ export class User {
   _id: string;
   @Prop({ required: true, unique: true })
   first_name: string;
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true})
   last_name: string;
-  @Prop({ required: true, unique: true })
+  @Prop({ required: true})
   username: string;
   @Prop({ required: true, unique: true })
   email: string;

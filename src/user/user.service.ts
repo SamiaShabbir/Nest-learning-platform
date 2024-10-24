@@ -9,6 +9,7 @@ import * as bcrypt from 'bcrypt';
 import { EmailService } from 'src/email/email.service';
 import { CourseService } from 'src/course/course.service';
 import { BlogService } from 'src/blog/blog.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class UserService {
@@ -40,15 +41,16 @@ export class UserService {
   async createUser(createUserDto: CreateUserDto,role:string): Promise<User> {
     const Role=await this.roleModel.findOne({name:role});
     console.log('role:',role);
-    
-    const { password, ...userDetails } = createUserDto;
+    const realage = this.calculateAge(createUserDto.DoB);
+    const { age,password, ...userDetails } = createUserDto;
     const hashedPassword = await this.hashPassword(password);
-
+    console.log(createUserDto.DoB,realage);
     const newUser = await new this.userModel({
       ...userDetails,
       password: hashedPassword,
       token_id:null,
-      role_id:Role.id
+      role_id:Role.id,
+      age:realage
     });
     if(Role.name=='teacher'){
       await this.emailService.welcomeEmail({email:newUser.email,name:newUser.first_name,type:"teacherwelcome"});
@@ -102,5 +104,10 @@ export class UserService {
 
   async getRole():Promise<any>{
    return await this.roleModel.find();
+  }
+
+  private calculateAge(dateOfBirth: string): number {
+    const birthDate = moment(dateOfBirth);
+    return moment().diff(birthDate, 'years');
   }
 }
