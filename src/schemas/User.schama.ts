@@ -44,6 +44,5 @@ export class User {
   contact_number: number;
   @Prop({default: Date.now})
   created_at:Date
-  
 }
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -107,7 +107,7 @@ export class UserController {
   @ApiBearerAuth()
   @Get()
   @ApiResponse({ status: 201, description: 'User Data'})
- async GetUser() {
+  async GetUser() {
     return await this.userService.GetUsers();
   }
   @Roles(Role.ADMIN)
@@ -153,6 +153,7 @@ export class UserController {
       data:findUser
      }
   }
+
   @Roles(Role.ADMIN,Role.USER,Role.TEACHER)
   @UseGuards(AuthGuard,RolesGuard)
   @ApiBearerAuth()
@@ -207,6 +208,7 @@ export class UserController {
      }
     
   }
+
   @Roles(Role.ADMIN,Role.USER,Role.TEACHER)
   @UseGuards(AuthGuard,RolesGuard)
   @UseGuards(AuthGuard)

@@ -35,7 +35,6 @@ export class CreateUserDto {
     example: 'example.user@gmail.com',
     required: true
  })
-  // @Validate(IsUniqueConstraint)
   @IsUnique({tableName:Model})
   email: string;
   @IsNotEmpty()
@@ -48,7 +47,6 @@ export class CreateUserDto {
   first_name: string;
   @IsNotEmpty()
   @IsString()
-  @IsUnique({tableName:Model})
   @ApiProperty({
     example: 'Meeks',
     required: true
