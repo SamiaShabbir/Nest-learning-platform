@@ -1,6 +1,6 @@
 # project files
-uploads
-src/uploads
+uploads/
+src/uploads/
 # Logs
 logs
 *.log
