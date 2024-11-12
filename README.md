@@ -1,7 +1,9 @@
 ## Nest Learning Platform
+
 Welcome to the Nest Learning Platform! This project is a feature-rich Learning Management System (LMS) built with the Nest.js framework. It provides educators and learners with tools for interactive courses, user management, blogging, and more.
 
 # Table of Contents
+
 - **Features**
 - **Installation**
 - **Usage**
@@ -15,7 +17,9 @@ Welcome to the Nest Learning Platform! This project is a feature-rich Learning M
 ***Enrollment***: Allows students to enroll and track progress in courses.
 ***Progress Tracking***: Tracks user progress and generates reports.
 ***Admin Dashboard***: Manage users, courses, and platform settings.
+
 # Installation
+
 ***Clone the Repository***:
 
 ```bash
@@ -45,10 +49,13 @@ Access the Application: Open your browser and go to http://localhost:3000.
 ```
 
 # Usage
+
 **Students**: Sign up, enroll in courses, and access course materials.
 **Instructors**: Create and manage courses, quizzes, and assignments.
 **Admins**: Manage users, courses, and system settings.
+
 # API Documentation
+
 API documentation is available at /api. You can use tools like Postman and swaager to test API endpoints, which cover user management, course content, and progress tracking.
 
 # Project Structure
@@ -57,15 +64,15 @@ nest-learning-platform/
 
 ├── src/
 
-│   ├── auth/         # Authentication and authorization
+│├── auth/         # Authentication and authorization
 
-│   ├── courses/      # Course management
+│├── courses/      # Course management
 
-│   ├── users/        # User profiles and management
+│├── users/        # User profiles and management
 
-│   ├── common/       # Shared modules and utilities
+│├── common/       # Shared modules and utilities
 
-│   └── main.ts       # Application entry point
+│└── main.ts       # Application entry point
 
 ├── test/             # Test files
 
@@ -78,8 +85,10 @@ Contributing
 
 We welcome contributions! Please follow these steps:
 
-# Fork the Project.
+# Fork the Project
+
 **Create a New Branch**:
+
 ```bash
 git checkout -b feature-branch
 Commit Your Changes:
@@ -97,4 +106,3 @@ git push origin feature-branch
 Open a Pull Request.
 
 ```
-
