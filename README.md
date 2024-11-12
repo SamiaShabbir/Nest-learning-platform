@@ -9,9 +9,9 @@ Welcome to the Nest Learning Platform! This project is a feature-rich Learning M
 - **Usage**
 - **API Documentation**
 - **Project Structure**
--**Contributing**
--**License**
--**Features**
+- **Contributing**
+- **License**
+- **Features**
 
 ***User Authentication and Authorization***: Roles for students, instructors, and admins with secure registration and login.
 
