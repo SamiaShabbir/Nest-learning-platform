@@ -91,18 +91,22 @@ We welcome contributions! Please follow these steps:
 
 ```bash
 git checkout -b feature-branch
-Commit Your Changes:
 
 ```
+
+Commit Your Changes:
 
 ```bash
 git commit -m "Add feature"
-Push to the Branch:
 
 ```
+
+Push to the Branch:
+
 
 ```bash
 git push origin feature-branch
-Open a Pull Request.
 
 ```
+
+Open a Pull Request.
