@@ -12,10 +12,19 @@ Welcome to the Nest Learning Platform! This project is a feature-rich Learning M
 -**Contributing**
 -**License**
 -**Features**
+
 ***User Authentication and Authorization***: Roles for students, instructors, and admins with secure registration and login.
+
+
 ***Course Management***: Create, edit, and delete courses with multimedia content.
+
+
 ***Enrollment***: Allows students to enroll and track progress in courses.
+
+
 ***Progress Tracking***: Tracks user progress and generates reports.
+
+
 ***Admin Dashboard***: Manage users, courses, and platform settings.
 
 # Installation
@@ -51,7 +60,11 @@ Access the Application: Open your browser and go to http://localhost:3000.
 # Usage
 
 **Students**: Sign up, enroll in courses, and access course materials.
+
+
 **Instructors**: Create and manage courses, quizzes, and assignments.
+
+
 **Admins**: Manage users, courses, and system settings.
 
 # API Documentation
