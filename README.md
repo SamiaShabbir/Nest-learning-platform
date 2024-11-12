@@ -54,17 +54,28 @@ API documentation is available at /api. You can use tools like Postman and swaag
 # Project Structure
 
 nest-learning-platform/
+
 ├── src/
+
 │   ├── auth/         # Authentication and authorization
+
 │   ├── courses/      # Course management
+
 │   ├── users/        # User profiles and management
+
 │   ├── common/       # Shared modules and utilities
+
 │   └── main.ts       # Application entry point
+
 ├── test/             # Test files
+
 ├── .env              # Environment variables file
+
 ├── package.json      # Project metadata and dependencies
+
 └── README.md         # Project documentation
 Contributing
+
 We welcome contributions! Please follow these steps:
 
 # Fork the Project.
