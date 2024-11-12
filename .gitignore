@@ -1,3 +1,6 @@
+# project files
+./uploads
+./src/uploads
 # Logs
 logs
 *.log
@@ -53,7 +56,7 @@ web_modules/
 
 # Optional eslint cache
 .eslintcache
-
+.env
 # Optional stylelint cache
 .stylelintcache
 

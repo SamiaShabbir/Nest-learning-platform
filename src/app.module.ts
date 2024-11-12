@@ -50,8 +50,8 @@ console.log(join(__dirname, '..', 'src', 'templates'));
         port: Number('587'),  
         secure: false,  
         auth: {  
-          user: 'saamieeego1122@gmail.com',  
-          pass: 'tzpbmedskifcpfku',  
+          user: 'yourgmail@gmail.com',  
+          pass: 'yourpassword',  
         },  
       },  
       defaults: {  
