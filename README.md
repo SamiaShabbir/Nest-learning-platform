@@ -9,10 +9,6 @@ A feature‑rich Learning Management System (LMS) built with **Nest.js**. It pro
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript&logoColor=white)](#)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](#)
 
-
-> **Live/Docs**: (optional) add deployment link and API docs link
-
-
 ---
 
 
