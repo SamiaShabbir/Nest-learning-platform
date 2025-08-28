@@ -46,7 +46,7 @@ A feature‑rich Learning Management System (LMS) built with **Nest.js**. It pro
 ## Installation
 ### 1) Clone & Install
 ```bash
-git clone <(https://github.com/SamiaShabbir/Nest-learning-platform)>
+git clone <https://github.com/SamiaShabbir/Nest-learning-platform>
 cd nest-learning-platform
 npm install
 
