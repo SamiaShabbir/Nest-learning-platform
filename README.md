@@ -17,12 +17,6 @@ A feature‑rich Learning Management System (LMS) built with **Nest.js**. It pro
 - [Tech Stack](#tech-stack)
 - [Installation](#installation)
 - [Usage](#usage)
-- [API Documentation](#api-documentation)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
-
-
 ---
 
 
