@@ -61,14 +61,14 @@ cd nest-learning-platform
 npm install
 
 
-### 2) Environment Variables
+2) Environment Variables
 Create a .env file in the project root:
 PORT=3000
 DATABASE_URL="your_database_url"
 JWT_SECRET="your_jwt_secret"
 
 
-### 3) Run
+3) Run
 Dev
 npm run start:dev
 Prod
