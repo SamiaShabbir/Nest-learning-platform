@@ -3,6 +3,8 @@
 
 A feature‑rich Learning Management System (LMS) built with **Nest.js**. It provides educators and learners with tools for interactive courses, enrollment, progress tracking, user roles, and content management.
 
+[🔗 Frontend Repository: Learning Platform Frontend (Next.js)](https://github.com/Sadie2260/Learning-Platfrom)
+
 
 [![NestJS](https://img.shields.io/badge/NestJS-Framework-E0234E?logo=nestjs&logoColor=white)](#)
 [![Node](https://img.shields.io/badge/Node-18%2B-339933?logo=node.js&logoColor=white)](#)
@@ -13,10 +15,12 @@ A feature‑rich Learning Management System (LMS) built with **Nest.js**. It pro
 
 
 ## Table of Contents
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Installation](#installation)
-- [Usage](#usage)
+- [Nest Learning Platform](#nest-learning-platform)
+  - [Table of Contents](#table-of-contents)
+  - [Features](#features)
+  - [Tech Stack](#tech-stack)
+  - [Installation](#installation)
+    - [1) Clone \& Install](#1-clone--install)
 ---
 
 
@@ -110,3 +114,8 @@ git commit -m "feat(auth): add refresh token support"
 3.Push and open a Pull Request.
 Please see CONTRIBUTING.md for guidelines.
 
+👤 Author
+
+Samia Shabbir (Synterion Solutions)
+Portfolio: https://synterion-solutions.vercel.app/
+Email: <info.synterionsolutions@gmail.com>
